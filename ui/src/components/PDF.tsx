@@ -239,7 +239,7 @@ const Page = ({ pageInfo, onError }: PageProps) => {
                           return (
                               <>
                                   <SelectionBoundary
-                                      color={annotationStore.activeLabel.color}
+                                      color={'#70DDBA'}
                                       bounds={selection}
                                       selected={false}
                                   />

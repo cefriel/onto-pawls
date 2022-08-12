@@ -5,6 +5,7 @@ import { Modal, Select } from '@allenai/varnish';
 import { Bounds, TokenId, PDFPageInfo, Annotation, AnnotationStore } from '../context';
 import { CloseCircleFilled, EditFilled } from '@ant-design/icons';
 
+/*
 function hexToRgb(hex: string) {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     if (!result) {
@@ -16,6 +17,7 @@ function hexToRgb(hex: string) {
         b: parseInt(result[3], 16),
     };
 }
+*/
 
 function getBorderWidthFromBounds(bounds: Bounds): number {
     //
@@ -48,7 +50,7 @@ export const SelectionBoundary = ({
     const height = bounds.bottom - bounds.top;
     const rotateY = width < 0 ? -180 : 0;
     const rotateX = height < 0 ? -180 : 0;
-    const rgbColor = hexToRgb(color);
+    // const rgbColor = hexToRgb(color);
     const border = getBorderWidthFromBounds(bounds);
 
     return (
@@ -77,9 +79,7 @@ export const SelectionBoundary = ({
                 transform: `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`,
                 transformOrigin: 'top left',
                 border: `${border}px solid ${color}`,
-                background: `rgba(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b}, ${
-                    selected ? 0.3 : 0.1
-                })`,
+                background: `rgba(${112}, ${221}, ${186}, ${selected ? 0.3 : 0.1})`,
             }}>
             {children || null}
         </span>

@@ -34,7 +34,7 @@ export async function getTokens(sha: string): Promise<PageTokens[]> {
 
 export interface Label {
     text: string;
-    color: string;
+    // color: string;
 }
 
 export async function getLabels(): Promise<Label[]> {

@@ -7,6 +7,8 @@ import { CheckOutlined, CloseOutlined, InfoCircleOutlined } from '@ant-design/ic
 
 import { SidebarItem, SidebarItemTitle } from './common';
 
+import Dropdown from './Dropdown';
+
 const { CheckableTag } = Tag;
 
 export const Labels = () => {
@@ -65,11 +67,14 @@ export const Labels = () => {
                             onClick={() => {
                                 annotationStore.setActiveLabel(label);
                             }}
-                            checked={label === annotationStore.activeLabel}
-                            style={{ color: label.color }}>
+                            // style={{ color: label.color }} 
+                            checked={label === annotationStore.activeLabel}>
                             {label.text}
                         </LabelTag>
                     ))}
+                    <Dropdown
+                        list={annotationStore.labels}
+                        annotationStore={annotationStore}></Dropdown>
                 </div>
                 {annotationStore.relationLabels.length !== 0 ? (
                     <>
