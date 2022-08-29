@@ -8,6 +8,7 @@ import { CheckOutlined, CloseOutlined, InfoCircleOutlined } from '@ant-design/ic
 import { SidebarItem, SidebarItemTitle } from './common';
 
 import Dropdown from './Dropdown';
+import InputFile from './inputFile';
 
 const { CheckableTag } = Tag;
 
@@ -54,6 +55,7 @@ export const Labels = () => {
     // TODO(Mark): Style the tags so it's clear you can select them with the numeric keys.
     return (
         <SidebarItem>
+            <InputFile></InputFile>
             <SidebarItemTitle>Labels</SidebarItemTitle>
             <ExplainerText>
                 <InfoCircleOutlined style={{ marginRight: '3px' }} />
@@ -67,7 +69,7 @@ export const Labels = () => {
                             onClick={() => {
                                 annotationStore.setActiveLabel(label);
                             }}
-                            // style={{ color: label.color }} 
+                            // style={{ color: label.color }}
                             checked={label === annotationStore.activeLabel}>
                             {label.text}
                         </LabelTag>
@@ -86,8 +88,8 @@ export const Labels = () => {
                                     onClick={() => {
                                         annotationStore.setActiveRelationLabel(relation);
                                     }}
-                                    checked={relation === annotationStore.activeRelationLabel}
-                                    style={{ color: relation.color }}>
+                                    // style={{ color: relation.color }}
+                                    checked={relation === annotationStore.activeRelationLabel}>
                                     {relation.text}
                                 </LabelTag>
                             ))}

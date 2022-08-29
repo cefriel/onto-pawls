@@ -11,7 +11,7 @@ class Bounds(BaseModel):
 
 class Label(BaseModel):
     text: str
-    color: str
+    # color: str
 
 
 class TokenId(BaseModel):

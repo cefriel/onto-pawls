@@ -227,7 +227,8 @@ export const Selection = ({ pageInfo, annotation, showInfo = true }: SelectionPr
     if (!label) {
         color = theme.color.N4.hex; // grey as the default.
     } else {
-        color = label.color;
+        // color = label.color;
+        color = '#ff0000'; // red
     }
 
     const bounds = pageInfo.getScaledBounds(annotation.bounds);
