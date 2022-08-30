@@ -93,3 +93,17 @@ export async function getAnnotations(sha: string): Promise<PdfAnnotations> {
         return new PdfAnnotations(annotations, relations);
     });
 }
+
+/** 
+export function uploadOntology(file: FormData) {
+    console.log('File in uploadOntology: ', file);
+    return axios
+        .post('/api/upload', { file })
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((err) => {
+            console.log('index.ts', err);
+        });
+}
+*/

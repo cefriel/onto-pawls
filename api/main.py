@@ -1,10 +1,13 @@
+from tkinter.tix import Form
 from typing import List, Optional, Dict, Any
 import logging
 import os
 import json
 import glob
+from urllib import request
+import shutil
 
-from fastapi import FastAPI, HTTPException, Header, Response, Body
+from fastapi import FastAPI, HTTPException, Header, Response, Body, Form, File, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.encoders import jsonable_encoder
 
@@ -319,3 +322,20 @@ def get_allocation_info(x_auth_request_email: str = Header(None)) -> Allocation:
         response = Allocation(papers=papers, hasAllocatedPapers=True)
 
     return response
+
+##### aggiunte per import ontologie
+UPLOAD_FOLDER = 'onto/'
+@app.post("/api/upload")
+def uploadOntology(file: UploadFile = File(...)):
+    # l'argomento passato deve avere lo stesso nome che devinisco con
+    # formData.append('nomeArgomento', fileObj, fileObj.name); 
+    # Altrimenti errore: '422 unprocessable entity fastapi'
+    
+    print("file name: ", file.filename)
+    #file_location = f"{UPLOAD_FOLDER+file.filename}"
+    file_location = os.path.join(UPLOAD_FOLDER, f"{file.filename}")
+
+    with open(file_location, "wb+") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    return {"info": f"file '{file.filename}' saved at '{file_location}'"}
