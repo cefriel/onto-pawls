@@ -94,9 +94,21 @@ export async function getAnnotations(sha: string): Promise<PdfAnnotations> {
     });
 }
 
-/** 
-export function uploadOntology(file: FormData) {
+export async function uploadOntology(file: FormData) {
     console.log('File in uploadOntology: ', file);
+    try {
+        const response = await axios({
+            method: 'post',
+            url: '/api/upload',
+            data: file,
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        console.log('response: ', response);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+    /** utilizzando questo modo esce l'errore 'Unprocessable Entity'
     return axios
         .post('/api/upload', { file })
         .then((response) => {
@@ -105,5 +117,5 @@ export function uploadOntology(file: FormData) {
         .catch((err) => {
             console.log('index.ts', err);
         });
+    */
 }
-*/

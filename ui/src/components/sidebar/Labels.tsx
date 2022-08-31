@@ -8,7 +8,7 @@ import { CheckOutlined, CloseOutlined, InfoCircleOutlined } from '@ant-design/ic
 import { SidebarItem, SidebarItemTitle } from './common';
 
 import Dropdown from './Dropdown';
-import InputFile from './inputFile';
+import ModalPopup from './ModalPopup';
 
 const { CheckableTag } = Tag;
 
@@ -55,7 +55,7 @@ export const Labels = () => {
     // TODO(Mark): Style the tags so it's clear you can select them with the numeric keys.
     return (
         <SidebarItem>
-            <InputFile></InputFile>
+            <ModalPopup></ModalPopup>
             <SidebarItemTitle>Labels</SidebarItemTitle>
             <ExplainerText>
                 <InfoCircleOutlined style={{ marginRight: '3px' }} />

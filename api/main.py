@@ -7,6 +7,8 @@ import glob
 from urllib import request
 import shutil
 
+#from owlready2 import *
+
 from fastapi import FastAPI, HTTPException, Header, Response, Body, Form, File, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.encoders import jsonable_encoder
@@ -100,6 +102,17 @@ def update_status_json(status_path: str, sha: str, data: Dict[str, Any]):
         json.dump(status_json, st)
         st.truncate()
 
+def analyze_ontology(path: str):
+    #"file://C:\\Users\\youss\\progettoTesi\\owlready2\\ontologie\\p_plan.owl"
+    onto = os.path.join("file://", f"{path}")
+    onto = get_ontology(onto).load() 
+
+    result = list(default_world.sparql("""
+           SELECT ?x
+           { ?x a owl:Class . }
+    """))
+    print(result)
+    return result
 
 @app.get("/", status_code=204)
 def read_root():
@@ -337,5 +350,7 @@ def uploadOntology(file: UploadFile = File(...)):
 
     with open(file_location, "wb+") as buffer:
         shutil.copyfileobj(file.file, buffer)
+
+    #return analyze_ontology(os.path.abspath(file_location)) 
 
     return {"info": f"file '{file.filename}' saved at '{file_location}'"}
