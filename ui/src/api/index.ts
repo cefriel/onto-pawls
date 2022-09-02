@@ -129,13 +129,13 @@ export async function deleteFile(filename: string) {
         .catch((err) => console.error(err));
 }
 
-export async function getDataOfOntologiesSelected(ontologies: string[]) {
-    console.log('List of Ontologies Selected: ', ontologies);
+export async function getDataOfOntologiesSelected(ontologiesName: string[]) {
+    console.log('List of Ontologies Selected: ', ontologiesName);
     try {
         const response = await axios({
             method: 'post',
             url: '/api/upload/ontologies',
-            data: ontologies,
+            data: ontologiesName,
         });
         console.log('response: ', response);
         return response;

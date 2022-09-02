@@ -9,7 +9,7 @@ import shutil
 
 from owlready2 import *
 
-from fastapi import FastAPI, HTTPException, Header, Response, Body, Form, File, UploadFile
+from fastapi import FastAPI, HTTPException, Header, Response, Body, Form, File, UploadFile, Query
 from fastapi.responses import FileResponse
 from fastapi.encoders import jsonable_encoder
 
@@ -151,8 +151,8 @@ def analyze_ontology(path: str) -> OntologyData:  #"file://C:\\Users\\youss\\pro
     print("Classes:", classes_result, "\nProperties:", properties_result)
     return {"classes": sorted(list(classes_result)), "operations": sorted(list(properties_result))}
 
-def saveOntologyDataToJson(ontology: Ontology):
-    path = os.path.join(UPLOAD_FOLDER, "ontology.json")
+def saveOntologyDataToJson(ontology: Ontology, name: str):
+    path = os.path.join(EXTRACTED_DATA_FROM_ONTO_FOLDER, f"{name}.json")
     with open(path, "w+") as f:
         #json.dump({"name": json_annotations, "data": json_relations}, f)
         json.dump(ontology, f)
@@ -381,6 +381,7 @@ def get_allocation_info(x_auth_request_email: str = Header(None)) -> Allocation:
 
 ##### aggiunte per import ontologie
 UPLOAD_FOLDER = 'onto/' #definire in file configurations
+EXTRACTED_DATA_FROM_ONTO_FOLDER = 'onto/extractedData'
 @app.post("/api/upload")
 def uploadOntology(file: UploadFile = File(...)) -> OntologyData:
     # l'argomento passato deve avere lo stesso nome che devinisco con
@@ -395,7 +396,7 @@ def uploadOntology(file: UploadFile = File(...)) -> OntologyData:
         shutil.copyfileobj(file.file, buffer)
 
     result = analyze_ontology(os.path.abspath(file_location))
-    saveOntologyDataToJson({"name": file.filename, "data": result}) 
+    saveOntologyDataToJson({"name": file.filename, "data": result}, file.filename) 
         #forse meglio prendere il nome dall'onto
     print("#######Result",result)
 
@@ -406,15 +407,25 @@ def uploadOntology(file: UploadFile = File(...)) -> OntologyData:
 @app.delete("/api/upload/{filename}") 
 def deleteOntology(filename: str):
     print("file name of Ontology to delete: ", filename)
-    file_location = os.path.join(UPLOAD_FOLDER, f"{filename}")
-    path = os.path.abspath(file_location)
-    print("Path of file to remove:", path)
-    os.remove(path)
-    return "File removed..."
+    def removeOntology():
+        file_location = os.path.join(UPLOAD_FOLDER, f"{filename}")
+        path = os.path.abspath(file_location)
+        print("Path of file to remove:", path)
+        os.remove(path)
+    
+    def removeDataJsonOntology(): 
+        file_location = os.path.join(EXTRACTED_DATA_FROM_ONTO_FOLDER, f"{filename}.json")
+        path = os.path.abspath(file_location)
+        print("Path of file to remove:", path)
+        os.remove(path)
 
-@app.post("/api/upload")
-def uploadOntology(ontologiesNames: List[str]):
+    removeOntology()
+    removeDataJsonOntology()
+    return "Files removed..."
+
+@app.post("/api/upload/ontologies")
+def uploadOntology(ontologiesNames: List[str] = Query(default=None)):
     
     print("Names received: ", ontologiesNames)
-
+    #Devo restituire i dati (classi e properties) di tutte le ontologie
     return "ok..."

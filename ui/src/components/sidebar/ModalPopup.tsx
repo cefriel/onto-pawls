@@ -36,7 +36,7 @@ const App = () => {
     return (
         <>
             <Button variant="primary" onClick={handleShow}>
-                Launch modal
+                Manage Ontologies
             </Button>
 
             <Modal show={show} onHide={handleClose}>
