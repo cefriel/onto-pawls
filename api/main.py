@@ -402,3 +402,19 @@ def uploadOntology(file: UploadFile = File(...)) -> OntologyData:
     return result
 
     #return {"info": f"file '{file.filename}' saved at '{file_location}'"}
+
+@app.delete("/api/upload/{filename}") 
+def deleteOntology(filename: str):
+    print("file name of Ontology to delete: ", filename)
+    file_location = os.path.join(UPLOAD_FOLDER, f"{filename}")
+    path = os.path.abspath(file_location)
+    print("Path of file to remove:", path)
+    os.remove(path)
+    return "File removed..."
+
+@app.post("/api/upload")
+def uploadOntology(ontologiesNames: List[str]):
+    
+    print("Names received: ", ontologiesNames)
+
+    return "ok..."

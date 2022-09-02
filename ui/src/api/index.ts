@@ -119,3 +119,27 @@ export async function uploadOntology(file: FormData) {
         });
     */
 }
+
+export async function deleteFile(filename: string) {
+    axios
+        .delete(`http://localhost:8080/api/upload/${filename}`)
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((err) => console.error(err));
+}
+
+export async function getDataOfOntologiesSelected(ontologies: string[]) {
+    console.log('List of Ontologies Selected: ', ontologies);
+    try {
+        const response = await axios({
+            method: 'post',
+            url: '/api/upload/ontologies',
+            data: ontologies,
+        });
+        console.log('response: ', response);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}

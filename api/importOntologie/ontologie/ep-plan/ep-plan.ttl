@@ -1,0 +1,1014 @@
+@prefix : <https://w3id.org/ep-plan#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <https://w3id.org/ep-plan> .
+
+<https://w3id.org/ep-plan> rdf:type owl:Ontology ;
+                            <http://purl.org/dc/terms/created> "2019-03-06"^^xsd:date ;
+                            <http://purl.org/dc/terms/creator> "http://delicias.dia.fi.upm.es/members/DGarijo#me"^^xsd:anyURI ,
+                                                               "https://www.abdn.ac.uk/ncs/profiles/milan.markovic/"^^xsd:anyURI ;
+                            <http://purl.org/dc/terms/description> "PROV extension for linking Plans and parts of plans to their respective executions."@en ;
+                            <http://purl.org/dc/terms/license> "http://creativecommons.org/licenses/by-nc-sa/2.0/" ;
+                            <http://purl.org/dc/terms/title> "The EP-Plan ontology"@en ;
+                            <http://purl.org/vocab/vann/preferredNamespacePrefix> "ep-plan" ;
+                            <http://purl.org/vocab/vann/preferredNamespaceUri> "https://w3id.org/ep-plan" ;
+                            rdfs:comment "PROV extension for linking Plans and parts of plans to their respective executions. " ;
+                            owl:versionInfo "1.0" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/terms/created
+<http://purl.org/dc/terms/created> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/creator
+<http://purl.org/dc/terms/creator> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/description
+<http://purl.org/dc/terms/description> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/license
+<http://purl.org/dc/terms/license> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/title
+<http://purl.org/dc/terms/title> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+<http://purl.org/vocab/vann/preferredNamespacePrefix> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+<http://purl.org/vocab/vann/preferredNamespaceUri> rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://purl.org/net/p-plan#correspondsToStep
+<http://purl.org/net/p-plan#correspondsToStep> rdf:type owl:ObjectProperty ;
+                                               owl:equivalentProperty :correspondsToStep .
+
+
+###  http://purl.org/net/p-plan#correspondsToVariable
+<http://purl.org/net/p-plan#correspondsToVariable> rdf:type owl:ObjectProperty ;
+                                                   owl:equivalentProperty :correspondsToVariable .
+
+
+###  http://purl.org/net/p-plan#hasInputVar
+<http://purl.org/net/p-plan#hasInputVar> rdf:type owl:ObjectProperty ;
+                                         owl:equivalentProperty :hasInputVariable .
+
+
+###  http://purl.org/net/p-plan#hasOutputVar
+<http://purl.org/net/p-plan#hasOutputVar> rdf:type owl:ObjectProperty ;
+                                          owl:equivalentProperty :hasOutputVariable .
+
+
+###  http://purl.org/net/p-plan#isDecomposedAsPlan
+<http://purl.org/net/p-plan#isDecomposedAsPlan> rdf:type owl:ObjectProperty ;
+                                                owl:equivalentProperty :isDecomposedAsPlan .
+
+
+###  http://purl.org/net/p-plan#isInputVarOf
+<http://purl.org/net/p-plan#isInputVarOf> rdf:type owl:ObjectProperty ;
+                                          owl:equivalentProperty :isInputVariableOf .
+
+
+###  http://purl.org/net/p-plan#isOutputVarOf
+<http://purl.org/net/p-plan#isOutputVarOf> rdf:type owl:ObjectProperty ;
+                                           owl:equivalentProperty :isOutputVariableOf .
+
+
+###  http://purl.org/net/p-plan#isPrecededBy
+<http://purl.org/net/p-plan#isPrecededBy> rdf:type owl:ObjectProperty ;
+                                          owl:equivalentProperty :isPrecededBy .
+
+
+###  http://purl.org/net/p-plan#isStepOfPlan
+<http://purl.org/net/p-plan#isStepOfPlan> rdf:type owl:ObjectProperty ;
+                                          owl:equivalentProperty :isStepOfPlan .
+
+
+###  http://purl.org/net/p-plan#isSubPlanOfPlan
+<http://purl.org/net/p-plan#isSubPlanOfPlan> rdf:type owl:ObjectProperty ;
+                                             owl:equivalentProperty :isSubPlanOfPlan .
+
+
+###  http://purl.org/net/p-plan#isVariableOfPlan
+<http://purl.org/net/p-plan#isVariableOfPlan> rdf:type owl:ObjectProperty ;
+                                              owl:equivalentProperty :isVariableOfPlan .
+
+
+###  https://w3id.org/ep-plan#achieves
+:achieves rdf:type owl:ObjectProperty ;
+          owl:inverseOf :isAchievedBy ;
+          rdfs:domain [ rdf:type owl:Class ;
+                        owl:unionOf ( :CommunicationSpecification
+                                      :Constraint
+                                      :Plan
+                                      :ResponsibleAgent
+                                      :Step
+                                      :Variable
+                                    )
+                      ] ;
+          rdfs:range :Objective ;
+          rdfs:comment "Inverse of ep-plan:isAchievedBy." ;
+          rdfs:label "achieves" .
+
+
+###  https://w3id.org/ep-plan#constrains
+:constrains rdf:type owl:ObjectProperty ;
+            owl:inverseOf :hasConstraint ;
+            rdfs:domain :Constraint ;
+            rdfs:range [ rdf:type owl:Class ;
+                         owl:unionOf ( :CommunicationSpecification
+                                       :Plan
+                                       :Step
+                                     )
+                       ] ;
+            rdfs:comment "Inverse of ep-plan:hasConstraint." ;
+            rdfs:label "constrains" .
+
+
+###  https://w3id.org/ep-plan#correspondsToCommunicationSpecification
+:correspondsToCommunicationSpecification rdf:type owl:ObjectProperty ;
+                                         owl:inverseOf :hasCorrespondingCommunication ;
+                                         rdf:type owl:FunctionalProperty ;
+                                         rdfs:domain :Communication ;
+                                         rdfs:range :CommunicationSpecification ;
+                                         rdfs:comment "ep-plan:correspondsToCommunicationSpecification links ep-plan:Communication to its planned specification." ;
+                                         rdfs:label "correspondsToCommunicationSpecification" .
+
+
+###  https://w3id.org/ep-plan#correspondsToStep
+:correspondsToStep rdf:type owl:ObjectProperty ;
+                   owl:inverseOf :hasCorrespondingActivity ;
+                   rdf:type owl:FunctionalProperty ;
+                   rdfs:domain :Activity ;
+                   rdfs:range :Step ;
+                   rdfs:comment "ep-plan:correspondsToStep links a ep-plan:Activity to its planned ep-plan:Step" ;
+                   rdfs:label "correspondsToStep" .
+
+
+###  https://w3id.org/ep-plan#correspondsToVariable
+:correspondsToVariable rdf:type owl:ObjectProperty ;
+                       owl:inverseOf :hasCorrespondingEntity ;
+                       rdf:type owl:FunctionalProperty ;
+                       rdfs:domain :Entity ;
+                       rdfs:range :Variable ;
+                       rdfs:comment "ep-plan:correspondsToVariable binds a ep-plan:Entity (used by a ep-plan:Activity in the execution of a plan) to the ep-plan:Variable it represented it in the ep-plan:Plan." ;
+                       rdfs:label "correspondsToVariable" .
+
+
+###  https://w3id.org/ep-plan#decomposesMultiStep
+:decomposesMultiStep rdf:type owl:ObjectProperty ;
+                     owl:inverseOf :isDecomposedAsPlan ;
+                     rdfs:domain :Plan ;
+                     rdfs:range :MultiStep ;
+                     rdfs:comment "Inverse of ep-plan:isDecomposedAsPlan." ;
+                     rdfs:label "decomposesMultiStep" .
+
+
+###  https://w3id.org/ep-plan#evaluatedAgainst
+:evaluatedAgainst rdf:type owl:ObjectProperty ;
+                  owl:inverseOf :evaluatedFor ;
+                  rdfs:domain [ rdf:type owl:Class ;
+                                owl:unionOf ( :Activity
+                                              :Communication
+                                            )
+                              ] ;
+                  rdfs:range :Constraint ;
+                  rdfs:comment "ep-plan:evaluatedAgainst links ep-plan:Activity or ep-plan:Communication to an ep-plan:Constraint. The use of subproperties of ep-plan:evaluatedAgainst is encouraged to indicate whether the execution trace element satisfied the constraint." ;
+                  rdfs:label "evaluatedAgainst" .
+
+
+###  https://w3id.org/ep-plan#evaluatedFor
+:evaluatedFor rdf:type owl:ObjectProperty ;
+              rdfs:domain :Constraint ;
+              rdfs:range [ rdf:type owl:Class ;
+                           owl:unionOf ( :Activity
+                                         :Communication
+                                       )
+                         ] ;
+              rdfs:comment "Inverse of ep-plan:evaluatedAgainst." ;
+              rdfs:label "evaluatedFor" .
+
+
+###  https://w3id.org/ep-plan#evaluatedTraceElement
+:evaluatedTraceElement rdf:type owl:ObjectProperty ;
+                       owl:inverseOf :wasEvaluatedtraceElement ;
+                       rdfs:domain :ConstraintEvaluation ;
+                       rdfs:range [ rdf:type owl:Class ;
+                                    owl:unionOf ( :Activity
+                                                  :Communication
+                                                )
+                                  ] ;
+                       rdfs:comment "ep-plan:evaluatedTraceElement links ep-plan:ConstriantEvaluation to a ep-plan:Activity or ep-plan:Communication that were evaluated against a ep-plan:Constraint defined in the plan." ;
+                       rdfs:label "evaluatedTraceElement" .
+
+
+###  https://w3id.org/ep-plan#hasConstraint
+:hasConstraint rdf:type owl:ObjectProperty ;
+               rdfs:domain [ rdf:type owl:Class ;
+                             owl:unionOf ( :CommunicationSpecification
+                                           :Plan
+                                           :Step
+                                         )
+                           ] ;
+               rdfs:range :Constraint ;
+               rdfs:comment "ep-plan:hasConstraint links ep-plan:Step, ep-plan:CommunicationSpec or ep-plan:Plan to a ep-plan:Constraint. Please note, that we do not stipulate that this constriant must be strictly satisfied before the plan can continue. This is to enable inclusions of constraints defined by policies which can be violated under certain conditions and to also enable capture of incorrect behaviour of a system (e.g. a plan ignored a constriant)." ;
+               rdfs:label "hasConstraint" .
+
+
+###  https://w3id.org/ep-plan#hasConstraintImplementation
+:hasConstraintImplementation rdf:type owl:ObjectProperty ;
+                             owl:inverseOf :isConstraintImplementationOf ;
+                             rdfs:domain :Constraint ;
+                             rdfs:range rdfs:Resource ;
+                             rdfs:comment "ep-plan:hasConstraintImplementation links ep-plan:Constraint to any resource that provides details on how such constraint is implemented (e.g. a rule, script, etc.)." ;
+                             rdfs:label "hasConstraintImplementation" .
+
+
+###  https://w3id.org/ep-plan#hasCorrespondingActivity
+:hasCorrespondingActivity rdf:type owl:ObjectProperty ;
+                          rdfs:domain :Step ;
+                          rdfs:range :Activity ;
+                          rdfs:comment "Inverse of ep-plan:correspondsToStep." ;
+                          rdfs:label "hasCorrespondingActivity" .
+
+
+###  https://w3id.org/ep-plan#hasCorrespondingCommunication
+:hasCorrespondingCommunication rdf:type owl:ObjectProperty ;
+                               rdfs:domain :CommunicationSpecification ;
+                               rdfs:range :Communication ;
+                               rdfs:comment "Inverse of correspondsToCommunicationSpecification" ;
+                               rdfs:label "hasCorrespondingCommunication" .
+
+
+###  https://w3id.org/ep-plan#hasCorrespondingEntity
+:hasCorrespondingEntity rdf:type owl:ObjectProperty ;
+                        rdfs:domain :Variable ;
+                        rdfs:range :Entity ;
+                        rdfs:comment "Inverse of ep-plan:correspondsToVariable." ;
+                        rdfs:label "hasCorrespondingEntity" .
+
+
+###  https://w3id.org/ep-plan#hasInputVariable
+:hasInputVariable rdf:type owl:ObjectProperty ;
+                  owl:inverseOf :isInputVariableOf ;
+                  rdfs:domain :Step ;
+                  rdfs:range :Variable ;
+                  rdfs:comment "ep-plan:hasInputVariable binds a ep-plan:Step to the ep-plan:Variable that takes as input for the planned execution." ;
+                  rdfs:label "hasInputVariable" .
+
+
+###  https://w3id.org/ep-plan#hasOutputVariable
+:hasOutputVariable rdf:type owl:ObjectProperty ;
+                   owl:inverseOf :isOutputVariableOf ;
+                   rdfs:domain :Step ;
+                   rdfs:range :Variable ;
+                   rdfs:comment "ep-plan:hasOutputVariable binds a ep-plan:Step to the ep-plan:Variable that will be produced as output in the planned execution" ;
+                   rdfs:label "hasOutputVariable" .
+
+
+###  https://w3id.org/ep-plan#hasPart
+:hasPart rdf:type owl:ObjectProperty ;
+         owl:inverseOf :isPartOf ;
+         rdfs:domain :MultiVariable ;
+         rdfs:range :Variable ;
+         rdfs:comment "ep-plan:hasPart links amn ep-plan:MultiVariable to another ep-plan:Variable that represents a smaller part of a composite variable." ;
+         rdfs:label "hasPart" .
+
+
+###  https://w3id.org/ep-plan#hasPayload
+:hasPayload rdf:type owl:ObjectProperty ;
+            owl:inverseOf :isPayloadIn ;
+            rdfs:domain :CommunicationSpecification ;
+            rdfs:range :Variable ;
+            rdfs:comment "ep-plan:hasPayload links an ep-plan:Variable to an ep-plan:CommunicationSpecification and identyfies the variable that will be transferred according to the ep-plan:CommunicationSpecification." ;
+            rdfs:label "hasPayload" .
+
+
+###  https://w3id.org/ep-plan#hasPermittedAgent
+:hasPermittedAgent rdf:type owl:ObjectProperty ;
+                   owl:inverseOf :isPermittedAgentFor ;
+                   rdfs:domain [ rdf:type owl:Class ;
+                                 owl:unionOf ( :Plan
+                                               :Step
+                                             )
+                               ] ;
+                   rdfs:range :ResponsibleAgent ;
+                   rdfs:comment "ep-plan:hasPermittedAgent links ep-plan:Step or the overall ep-plan:Plan to an ep-plan:ResponsibleAgent denoting that  the agent is allowed to assume some form of responsibility during the execution. Please note that not all linked ep-plan:ResponsibleAgent(s) must also appear in the execution trace as ep-plan:Agent. ep-plan:hasPermittedAgent relationship merely indicates that it is possible for this agent to asssume some responsibility during the execution." ;
+                   rdfs:label "hasPermittedAgent" .
+
+
+###  https://w3id.org/ep-plan#hasRationale
+:hasRationale rdf:type owl:ObjectProperty ;
+              owl:inverseOf :isRationaleOf ;
+              rdfs:domain [ rdf:type owl:Class ;
+                            owl:unionOf ( :CommunicationSpecification
+                                          :Constraint
+                                          :Objective
+                                          :Plan
+                                          :ResponsibleAgent
+                                          :Step
+                                          :Variable
+                                        )
+                          ] ;
+              rdfs:range :Rationale ;
+              rdfs:comment "A property linking a plan element to the description of a rationale which provides some information on why such element was included in a plan." ;
+              rdfs:label "hasRationale" .
+
+
+###  https://w3id.org/ep-plan#hasRecipient
+:hasRecipient rdf:type owl:ObjectProperty ;
+              owl:inverseOf :isRecipientIn ;
+              rdfs:domain :CommunicationSpecification ;
+              rdfs:range :Step ;
+              rdfs:comment "ep-plan:hasRecipient links an ep-plan:Step to an ep-plan:CommunicationSpecification and indicates that the step is expected to receive an ep-plan:Variable that will be transferred according to the ep-plan:CommunicationSpecification." ;
+              rdfs:label "hasRecipient" .
+
+
+###  https://w3id.org/ep-plan#hasSender
+:hasSender rdf:type owl:ObjectProperty ;
+           owl:inverseOf :isSenderIn ;
+           rdfs:domain :CommunicationSpecification ;
+           rdfs:range :Step ;
+           rdfs:comment "ep-plan:hasSender links an ep-plan:Step to  an ep-plan:CommunicationSpecification and indicates that the step is expected to produce an ep-plan:Variable that will be transferred according to the ep-plan:CommunicationSpecification." ;
+           rdfs:label "hasSender" .
+
+
+###  https://w3id.org/ep-plan#hasTraceElement
+:hasTraceElement rdf:type owl:ObjectProperty ;
+                 owl:inverseOf :isElementOfTrace ;
+                 rdfs:domain :ExecutionTraceBundle ;
+                 rdfs:range [ rdf:type owl:Class ;
+                              owl:unionOf ( :Activity
+                                            :Agent
+                                            :Communication
+                                            :Entity
+                                          )
+                            ] ;
+                 rdfs:comment "ep-plan:hasTraceElement links ep-plan:ExecutionTraceBundle to execution trace elements ( i.e. ep-plan:Agent,ep-plan:Activity or ep-plan:Entity)." ;
+                 rdfs:label "hasTraceElement" .
+
+
+###  https://w3id.org/ep-plan#includesCommunicationSpecification
+:includesCommunicationSpecification rdf:type owl:ObjectProperty ;
+                                    rdfs:subPropertyOf :includesPlanElement ;
+                                    owl:inverseOf :isCommunicationSpecificationOfPlan ;
+                                    rdfs:domain :Plan ;
+                                    rdfs:range :CommunicationSpecification ;
+                                    rdfs:comment "Inverse of ep-plan:isCommunicationSpecificationOfPlan." ;
+                                    rdfs:label "includesCommunicationSpecification" .
+
+
+###  https://w3id.org/ep-plan#includesConstraint
+:includesConstraint rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :includesPlanElement ;
+                    owl:inverseOf :isConstraintOfPlan ;
+                    rdfs:domain :Plan ;
+                    rdfs:range :Constraint ;
+                    rdfs:comment "Inverse of ep-plan:isConstraintOfPlan." ;
+                    rdfs:label "includesConstraint" .
+
+
+###  https://w3id.org/ep-plan#includesObjective
+:includesObjective rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf :includesPlanElement ;
+                   owl:inverseOf :isObjectiveOfPlan ;
+                   rdfs:domain :Plan ;
+                   rdfs:range :Objective ;
+                   rdfs:comment "Inverse of ep-plan:isObjectiveOfPlan." ;
+                   rdfs:label "includesObjective" .
+
+
+###  https://w3id.org/ep-plan#includesPlanElement
+:includesPlanElement rdf:type owl:ObjectProperty ;
+                     owl:inverseOf :isElementOfPlan ;
+                     rdfs:domain :Plan ;
+                     rdfs:range [ rdf:type owl:Class ;
+                                  owl:unionOf ( :CommunicationSpecification
+                                                :Constraint
+                                                :Objective
+                                                :Plan
+                                                :ResponsibleAgent
+                                                :Step
+                                                :Variable
+                                              )
+                                ] ;
+                     rdfs:comment "Inverse of ep-plan:isElementOfPlan." ;
+                     rdfs:label "includesPlanElement" .
+
+
+###  https://w3id.org/ep-plan#includesPolicy
+:includesPolicy rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf :includesPlanElement ;
+                owl:inverseOf :isPolicyOfPlan ;
+                rdfs:domain :Plan ;
+                rdfs:range :Policy ;
+                rdfs:comment "Inverse of ep-plan:isPolicyOfPlan." ;
+                rdfs:label "includesPolicy" .
+
+
+###  https://w3id.org/ep-plan#includesResponsibleAgent
+:includesResponsibleAgent rdf:type owl:ObjectProperty ;
+                          rdfs:subPropertyOf :includesPlanElement ;
+                          owl:inverseOf :isResponsibleAgentOfPlan ;
+                          rdfs:domain :Plan ;
+                          rdfs:range :ResponsibleAgent ;
+                          rdfs:comment "Inverse of ep-plan:isResponsibleAgentOfPlan." ;
+                          rdfs:label "includesResponsibleAgent" .
+
+
+###  https://w3id.org/ep-plan#includesStep
+:includesStep rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf :includesPlanElement ;
+              owl:inverseOf :isStepOfPlan ;
+              rdfs:domain :Plan ;
+              rdfs:range :Step ;
+              rdfs:comment "Inverse of ep-plan:isStepOfPlan." ;
+              rdfs:label "includesStep" .
+
+
+###  https://w3id.org/ep-plan#includesSubPlan
+:includesSubPlan rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf :includesPlanElement ;
+                 owl:inverseOf :isSubPlanOfPlan ;
+                 rdf:type owl:TransitiveProperty ;
+                 rdfs:domain :Plan ;
+                 rdfs:range :Plan ;
+                 rdfs:comment "Inverse of ep-plan:isSubPlanOf." ;
+                 rdfs:label "includesSubPlan" .
+
+
+###  https://w3id.org/ep-plan#includesVariable
+:includesVariable rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :includesPlanElement ;
+                  owl:inverseOf :isVariableOfPlan ;
+                  rdfs:domain :Plan ;
+                  rdfs:range :Variable ;
+                  rdfs:comment "Inverse of ep-plan:isVariableOfPlan." ;
+                  rdfs:label "includesVariable" .
+
+
+###  https://w3id.org/ep-plan#isAchievedBy
+:isAchievedBy rdf:type owl:ObjectProperty ;
+              rdfs:domain :Objective ;
+              rdfs:range [ rdf:type owl:Class ;
+                           owl:unionOf ( :CommunicationSpecification
+                                         :Constraint
+                                         :Plan
+                                         :ResponsibleAgent
+                                         :Step
+                                         :Variable
+                                       )
+                         ] ;
+              rdfs:comment "ep-plan:isAchievedBy links ep-plan:Objective to a plan or individual plan element that is expected to achieve the objective specified by ep-plan:Objective." ;
+              rdfs:label "isAchievedBy" .
+
+
+###  https://w3id.org/ep-plan#isCommunicationSpecificationOfPlan
+:isCommunicationSpecificationOfPlan rdf:type owl:ObjectProperty ;
+                                    rdfs:subPropertyOf :isElementOfPlan ;
+                                    rdfs:domain :CommunicationSpecification ;
+                                    rdfs:range :Plan ;
+                                    rdfs:comment "ep-plan:isCommunicationSpecificationOfPlan binds a ep-plan:CommunicationSpecification to the ep-plan:Plan it corresponds to." ;
+                                    rdfs:label "isCommunicationSpecificationOfPlan" .
+
+
+###  https://w3id.org/ep-plan#isConstraintImplementationOf
+:isConstraintImplementationOf rdf:type owl:ObjectProperty ;
+                              rdfs:domain rdfs:Resource ;
+                              rdfs:range :Constraint ;
+                              rdfs:comment "Inverse of ep-plan:hasConstraintImplementation." ;
+                              rdfs:label "isConstraintImplementationOf" .
+
+
+###  https://w3id.org/ep-plan#isConstraintOfPlan
+:isConstraintOfPlan rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :isElementOfPlan ;
+                    rdfs:domain :Constraint ;
+                    rdfs:range :Plan ;
+                    rdfs:comment "ep-plan:isConstraintOfPlan binds a ep-plan:Constraint to the ep-plan:Plan it corresponds to." ;
+                    rdfs:label "isConstraintOfPlan" .
+
+
+###  https://w3id.org/ep-plan#isDecomposedAsPlan
+:isDecomposedAsPlan rdf:type owl:ObjectProperty ;
+                    rdfs:domain :MultiStep ;
+                    rdfs:range :Plan ;
+                    rdfs:comment "The ep-plan:isDecomposedAsPlan relationship binds a ep-plan:MultiStep to the ep-plan:Plan holding the definition of that step. That is, ep-plan:isDecomposedAsPlan links the MultiStep to the Plan sptecification where it is decomposed." ;
+                    rdfs:label "isDecomposedAsPlan" .
+
+
+###  https://w3id.org/ep-plan#isElementOfPlan
+:isElementOfPlan rdf:type owl:ObjectProperty ;
+                 rdfs:domain [ rdf:type owl:Class ;
+                               owl:unionOf ( :CommunicationSpecification
+                                             :Constraint
+                                             :Objective
+                                             :Plan
+                                             :ResponsibleAgent
+                                             :Step
+                                             :Variable
+                                           )
+                             ] ;
+                 rdfs:range :Plan ;
+                 rdfs:comment "ep-plan:isElementOfPlan binds a ep-plan:PlanElement to the ep-plan:Plan it corresponds to." ;
+                 rdfs:label "isElementOfPlan" .
+
+
+###  https://w3id.org/ep-plan#isElementOfTrace
+:isElementOfTrace rdf:type owl:ObjectProperty ;
+                  rdfs:domain [ rdf:type owl:Class ;
+                                owl:unionOf ( :Activity
+                                              :Agent
+                                              :Communication
+                                              :Entity
+                                            )
+                              ] ;
+                  rdfs:range :ExecutionTraceBundle ;
+                  rdfs:comment "Inverse of ep-plan:hasTraceElement." ;
+                  rdfs:label "isElementOfTrace" .
+
+
+###  https://w3id.org/ep-plan#isInputVariableOf
+:isInputVariableOf rdf:type owl:ObjectProperty ;
+                   rdfs:domain :Variable ;
+                   rdfs:range :Step ;
+                   rdfs:comment "Inverse of ep-plan:hasInputVariable" ;
+                   rdfs:label "isInputVariableOf" .
+
+
+###  https://w3id.org/ep-plan#isObjectiveOfPlan
+:isObjectiveOfPlan rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf :isElementOfPlan ;
+                   rdfs:domain :Objective ;
+                   rdfs:range :Plan ;
+                   rdfs:comment "ep-plan:isObjectiveOfPlan binds a ep-plan:Objective to the ep-plan:Plan it corresponds to." ;
+                   rdfs:label "isObjectiveOfPlan" .
+
+
+###  https://w3id.org/ep-plan#isOutputVariableOf
+:isOutputVariableOf rdf:type owl:ObjectProperty ;
+                    rdfs:domain :Variable ;
+                    rdfs:range :Step ;
+                    rdfs:comment "Inverse of p-plan:hasOutputVariable." ;
+                    rdfs:label "isOutputVariableOf" .
+
+
+###  https://w3id.org/ep-plan#isPartOf
+:isPartOf rdf:type owl:ObjectProperty ;
+          rdfs:domain :Variable ;
+          rdfs:range :MultiVariable ;
+          rdfs:comment "Inverse of ep-plan:hasPart." ;
+          rdfs:label "isPartOf" .
+
+
+###  https://w3id.org/ep-plan#isPayloadIn
+:isPayloadIn rdf:type owl:ObjectProperty ;
+             rdfs:domain :Variable ;
+             rdfs:range :CommunicationSpecification ;
+             rdfs:comment "Inverse of ep-plan:hasPayload." ;
+             rdfs:label "isPayloadIn" .
+
+
+###  https://w3id.org/ep-plan#isPermittedAgentFor
+:isPermittedAgentFor rdf:type owl:ObjectProperty ;
+                     rdfs:domain :ResponsibleAgent ;
+                     rdfs:range [ rdf:type owl:Class ;
+                                  owl:unionOf ( :Plan
+                                                :Step
+                                              )
+                                ] ;
+                     rdfs:comment "Inverse of ep-plan:hasPermittedAgent." ;
+                     rdfs:label "isPermittedAgentFor" .
+
+
+###  https://w3id.org/ep-plan#isPolicyOfPlan
+:isPolicyOfPlan rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf :isElementOfPlan ;
+                rdfs:domain :Policy ;
+                rdfs:range :Plan ;
+                rdfs:comment "ep-plan:isPolicyOfPlan binds a ep-plan:Policy to the ep-plan:Plan it corresponds to." ;
+                rdfs:label "isPolicyOfPlan" .
+
+
+###  https://w3id.org/ep-plan#isPrecededBy
+:isPrecededBy rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf owl:topObjectProperty ;
+              owl:inverseOf :precedes ;
+              rdf:type owl:TransitiveProperty ;
+              rdfs:domain :Step ;
+              rdfs:range :Step ;
+              rdfs:comment "Property that asserts which Step preceeds the current one." ;
+              rdfs:label "isPrecededBy" .
+
+
+###  https://w3id.org/ep-plan#isQualifiedEvaluationOf
+:isQualifiedEvaluationOf rdf:type owl:ObjectProperty ;
+                         owl:inverseOf :qualifiedEvaluation ;
+                         rdfs:domain :ConstraintEvaluation ;
+                         rdfs:range :Constraint ;
+                         rdfs:comment "Inverse of ep-plan:qualifiedEvaluation." ;
+                         rdfs:label "isQualifiedEvaluationOf" .
+
+
+###  https://w3id.org/ep-plan#isRationaleOf
+:isRationaleOf rdf:type owl:ObjectProperty ;
+               rdfs:domain :Rationale ;
+               rdfs:range [ rdf:type owl:Class ;
+                            owl:unionOf ( :CommunicationSpecification
+                                          :Constraint
+                                          :Objective
+                                          :Plan
+                                          :ResponsibleAgent
+                                          :Step
+                                          :Variable
+                                        )
+                          ] ;
+               rdfs:comment "Inverse of hasRationale." ;
+               rdfs:label "isRationaleOf" .
+
+
+###  https://w3id.org/ep-plan#isRecipientIn
+:isRecipientIn rdf:type owl:ObjectProperty ;
+               rdfs:domain :Step ;
+               rdfs:range :CommunicationSpecification ;
+               rdfs:comment "Inverse of ep-plan:hasRecipient." ;
+               rdfs:label "isRecipientIn" .
+
+
+###  https://w3id.org/ep-plan#isResponsibleAgentOfPlan
+:isResponsibleAgentOfPlan rdf:type owl:ObjectProperty ;
+                          rdfs:subPropertyOf :isElementOfPlan ;
+                          rdfs:domain :ResponsibleAgent ;
+                          rdfs:range :Plan ;
+                          rdfs:comment "ep-plan:isResponsibleAgentOfPlan binds a ep-plan:ResponsibleAgent to the ep-plan:Plan it corresponds to." ;
+                          rdfs:label "isResposibleAgentOfPlan" .
+
+
+###  https://w3id.org/ep-plan#isSenderIn
+:isSenderIn rdf:type owl:ObjectProperty ;
+            rdfs:domain :Step ;
+            rdfs:range :CommunicationSpecification ;
+            rdfs:comment "Inverse of ep-plan:hasSender." ;
+            rdfs:label "isSenderIn" .
+
+
+###  https://w3id.org/ep-plan#isStepOfPlan
+:isStepOfPlan rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf :isElementOfPlan ;
+              rdfs:domain :Step ;
+              rdfs:range :Plan ;
+              rdfs:comment "ep-plan:isStepOfPlan binds a ep-plan:Step to the ep-plan:Plan it corresponds to." ;
+              rdfs:label "isStepOfPlan" .
+
+
+###  https://w3id.org/ep-plan#isSubPlanOfPlan
+:isSubPlanOfPlan rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf :isElementOfPlan ;
+                 rdf:type owl:TransitiveProperty ;
+                 rdfs:domain :Plan ;
+                 rdfs:range :Plan ;
+                 rdfs:comment "ep-plan:Plan may be a subplan of another bigger ep-plan:Plan. The relation ep-plan:isSubPlanOfPlan is used to state the link among the two different plans. Note that if p1 is a sub-plan of p2, p1 will not necessarily be a step of p2. A multistep will represent p1 in p2, and link to p1 with the hasStepDecomposition relationship." ;
+                 rdfs:label "isSubPlanOfPlan" .
+
+
+###  https://w3id.org/ep-plan#isVariableOfPlan
+:isVariableOfPlan rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :isElementOfPlan ;
+                  rdfs:domain :Variable ;
+                  rdfs:range :Plan ;
+                  rdfs:comment "ep-plan:isVariableOfPlan binds a ep-plan:Variable to the ep-plan:Plan it corresponds to." ;
+                  rdfs:label "isVariableOfPlan" .
+
+
+###  https://w3id.org/ep-plan#precedes
+:precedes rdf:type owl:ObjectProperty ,
+                   owl:TransitiveProperty ;
+          rdfs:domain :Step ;
+          rdfs:range :Step ;
+          rdfs:comment "Inverse of ep-plan:isPrecededBy." ;
+          rdfs:label "precedes" .
+
+
+###  https://w3id.org/ep-plan#qualifiedEvaluation
+:qualifiedEvaluation rdf:type owl:ObjectProperty ;
+                     rdfs:domain :Constraint ;
+                     rdfs:range :ConstraintEvaluation ;
+                     rdfs:comment "ep-plan:qualifiedEvaluation links ep-plan:Constraint to ep-plan:ConstriantEvaluation." ;
+                     rdfs:label "qualifiedEvaluation" .
+
+
+###  https://w3id.org/ep-plan#satisfied
+:satisfied rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf :evaluatedAgainst ;
+           owl:inverseOf :satisfiedBy ;
+           rdfs:domain [ rdf:type owl:Class ;
+                         owl:unionOf ( :Activity
+                                       :Communication
+                                     )
+                       ] ;
+           rdfs:range :Constraint ;
+           rdfs:comment "ep-plan:satisfied links ep-plan:Activity or ep-plan:Communication to a ep-plan:Constraint. The property indicates that the execution trace element satisfied the constraint." ;
+           rdfs:label "satisfied" .
+
+
+###  https://w3id.org/ep-plan#satisfiedBy
+:satisfiedBy rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :evaluatedFor ;
+             rdfs:domain :Constraint ;
+             rdfs:range [ rdf:type owl:Class ;
+                          owl:unionOf ( :Activity
+                                        :Communication
+                                      )
+                        ] ;
+             rdfs:comment "Inverse of ep-plan:satisfied." ;
+             rdfs:label "satisfiedBy" .
+
+
+###  https://w3id.org/ep-plan#violated
+:violated rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf :evaluatedAgainst ;
+          owl:inverseOf :violatedBy ;
+          rdfs:domain [ rdf:type owl:Class ;
+                        owl:unionOf ( :Activity
+                                      :Communication
+                                    )
+                      ] ;
+          rdfs:range :Constraint ;
+          rdfs:comment "ep-plan:satisfied links ep-plan:Activity or ep-plan:Communication to a ep-plan:Constraint. The property indicates that the execution trace element did not satisfy the constraint." ;
+          rdfs:label "violated" .
+
+
+###  https://w3id.org/ep-plan#violatedBy
+:violatedBy rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf :evaluatedFor ;
+            rdfs:domain :Constraint ;
+            rdfs:range [ rdf:type owl:Class ;
+                         owl:unionOf ( :Activity
+                                       :Communication
+                                     )
+                       ] ;
+            rdfs:comment "Inverse of ep-plan:violated." ;
+            rdfs:label "violatedBy" .
+
+
+###  https://w3id.org/ep-plan#wasEvaluatedtraceElement
+:wasEvaluatedtraceElement rdf:type owl:ObjectProperty ;
+                          rdfs:domain [ rdf:type owl:Class ;
+                                        owl:unionOf ( :Activity
+                                                      :Communication
+                                                    )
+                                      ] ;
+                          rdfs:range :ConstraintEvaluation ;
+                          rdfs:comment "Inverse of ep-plan:evaluatedTraceElement." ;
+                          rdfs:label "wasEvaluatedTraceElement" .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://purl.org/net/p-plan#Activity
+<http://purl.org/net/p-plan#Activity> rdf:type owl:Class ;
+                                      owl:equivalentClass :Activity .
+
+
+###  http://purl.org/net/p-plan#Bundle
+<http://purl.org/net/p-plan#Bundle> rdf:type owl:Class ;
+                                    owl:equivalentClass :ExecutionTraceBundle .
+
+
+###  http://purl.org/net/p-plan#Entity
+<http://purl.org/net/p-plan#Entity> rdf:type owl:Class ;
+                                    owl:equivalentClass :Entity .
+
+
+###  http://purl.org/net/p-plan#MultiStep
+<http://purl.org/net/p-plan#MultiStep> rdf:type owl:Class ;
+                                       owl:equivalentClass :MultiStep .
+
+
+###  http://purl.org/net/p-plan#Plan
+<http://purl.org/net/p-plan#Plan> rdf:type owl:Class ;
+                                  owl:equivalentClass :Plan .
+
+
+###  http://purl.org/net/p-plan#Step
+<http://purl.org/net/p-plan#Step> rdf:type owl:Class ;
+                                  owl:equivalentClass :Step .
+
+
+###  http://purl.org/net/p-plan#Variable
+<http://purl.org/net/p-plan#Variable> rdf:type owl:Class ;
+                                      owl:equivalentClass :Variable .
+
+
+###  http://www.w3.org/2000/01/rdf-schema#Resource
+rdfs:Resource rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/prov#Activity
+<http://www.w3.org/ns/prov#Activity> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/prov#Agent
+<http://www.w3.org/ns/prov#Agent> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/prov#Bundle
+<http://www.w3.org/ns/prov#Bundle> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/prov#Collection
+<http://www.w3.org/ns/prov#Collection> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/prov#Communication
+<http://www.w3.org/ns/prov#Communication> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/prov#Entity
+<http://www.w3.org/ns/prov#Entity> rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/prov#Plan
+<http://www.w3.org/ns/prov#Plan> rdf:type owl:Class .
+
+
+###  https://w3id.org/ep-plan#Activity
+:Activity rdf:type owl:Class ;
+          rdfs:subClassOf <http://www.w3.org/ns/prov#Activity> ;
+          rdfs:comment "An element of an execution trace representing an individual process/activity corresponding to a  step of a plan and which used and/or generated  trace entities." ;
+          rdfs:label "Activity" .
+
+
+###  https://w3id.org/ep-plan#Agent
+:Agent rdf:type owl:Class ;
+       rdfs:subClassOf <http://www.w3.org/ns/prov#Agent> ;
+       rdfs:comment "A human or computational agent that can be responsible for the execution of an activity corresponding to a planned step or the overall plan execution." ;
+       rdfs:label "Agent" .
+
+
+###  https://w3id.org/ep-plan#Communication
+:Communication rdf:type owl:Class ;
+               rdfs:subClassOf <http://www.w3.org/ns/prov#Communication> ;
+               rdfs:comment "ep-plan:Communication is a type of prov:Communication representing a transfer of an entity between two activities according to some planned specification expressed as ep-plan:CommunicationSpecification." ;
+               rdfs:label "Communication" .
+
+
+###  https://w3id.org/ep-plan#CommunicationSpecification
+:CommunicationSpecification rdf:type owl:Class ;
+                            owl:disjointWith [ rdf:type owl:Class ;
+                                               owl:unionOf ( :Constraint
+                                                             :Policy
+                                                             :ResponsibleAgent
+                                                             :Step
+                                                           )
+                                             ] ;
+                            rdfs:comment "A specification of how communication/exchange of variables between two steps should be performed." ;
+                            rdfs:label "CommunicationSpecification" .
+
+
+###  https://w3id.org/ep-plan#Constraint
+:Constraint rdf:type owl:Class ;
+            owl:disjointWith [ rdf:type owl:Class ;
+                               owl:unionOf ( :CommunicationSpecification
+                                             :Policy
+                                             :ResponsibleAgent
+                                             :Step
+                                           )
+                             ] ;
+            rdfs:comment "A restriction placed on a particular step or a plan that is evaluated against an execution trace." ;
+            rdfs:label "Constraint" .
+
+
+###  https://w3id.org/ep-plan#ConstraintEvaluation
+:ConstraintEvaluation rdf:type owl:Class ;
+                      rdfs:comment "A concept used to qualify the relationship between a trace activity and a constraint associated with a step to which such activity corresponds to. The concept provides an opportunity to link additional information documenting the constraint evaluation process (e.g. a tool or an algorithm used to check for constraint violations, time when constraints were evaluated, etc.)." ;
+                      rdfs:label "ConstraintEvaluation" .
+
+
+###  https://w3id.org/ep-plan#Entity
+:Entity rdf:type owl:Class ;
+        rdfs:subClassOf <http://www.w3.org/ns/prov#Entity> ;
+        rdfs:comment "An element of an execution trace representing an indidual entity corresponding to a  variable of a plan which was used and/or generated by activities recorded in the execution trace." ;
+        rdfs:label "Entity" .
+
+
+###  https://w3id.org/ep-plan#EntityCollection
+:EntityCollection rdf:type owl:Class ;
+                  rdfs:subClassOf <http://www.w3.org/ns/prov#Collection> ,
+                                  :Entity ;
+                  rdfs:comment "A collection of entities corresponding to ep-plan:MultiVariable. ep-pla:Entity contained in such collection corresponds to ep-plan:Variable that is linked to ep-plan:MultiVariable and defined in the subplan of a plan that the  ep-plan:MultiVariable is defined in.  Entity Collection is typically used or generated by  ep-plan:MultiActivity." ;
+                  rdfs:label "Entity Collection" .
+
+
+###  https://w3id.org/ep-plan#ExecutionTraceBundle
+:ExecutionTraceBundle rdf:type owl:Class ;
+                      rdfs:subClassOf <http://www.w3.org/ns/prov#Bundle> ,
+                                      :Entity ;
+                      rdfs:comment "A collection of trace elements that were generated during a single plan execution." ;
+                      rdfs:label "Execution Trace Bundle" .
+
+
+###  https://w3id.org/ep-plan#FailedActivity
+:FailedActivity rdf:type owl:Class ;
+                rdfs:subClassOf :Activity ;
+                rdfs:comment "A concept representing an activity that was not executed in full, for example, due to constraint violation. Such an activity usually marks the point when the plan execution was interrupted due to some problem." ;
+                rdfs:label "Failed Activity" .
+
+
+###  https://w3id.org/ep-plan#MultiActivity
+:MultiActivity rdf:type owl:Class ;
+               rdfs:subClassOf :Activity ;
+               rdfs:comment "An activity that typically corresponds to a MultiStep which is decomposed as a Plan or the main execution activity that executed the plan. ep-plan:MultiActivity typically generates ep-plan:ExecutionTraceBundle." ;
+               rdfs:label "Multi Activity" .
+
+
+###  https://w3id.org/ep-plan#MultiStep
+:MultiStep rdf:type owl:Class ;
+           rdfs:subClassOf :Step ;
+           rdfs:comment "ep-plan:MultiStep is the representation of a composite step that can be described (decomposed) as another ep-plan:Plan." ;
+           rdfs:label "MultiStep" .
+
+
+###  https://w3id.org/ep-plan#MultiVariable
+:MultiVariable rdf:type owl:Class ;
+               rdfs:subClassOf :Variable ;
+               rdfs:comment "ep-plan:MultiVariable represents a composite variable that can be broken down into smaller parts represented as ep-plan:Variable(s)." ;
+               rdfs:label "MultiVariable" .
+
+
+###  https://w3id.org/ep-plan#Objective
+:Objective rdf:type owl:Class ;
+           rdfs:comment " ep-plan:Objective describes information detailing a specific purpose of a plan. Plans can have more than one objectives. Users are encouraged to extend this class, for example, to identify primary and secondary objectives of a plan." ;
+           rdfs:label "Objective" .
+
+
+###  https://w3id.org/ep-plan#Plan
+:Plan rdf:type owl:Class ;
+      rdfs:subClassOf <http://www.w3.org/ns/prov#Plan> ;
+      rdfs:comment "An ep-plan:Plan is a specific type of prov:Plan. It is composed of smaller steps that use and produce variables." ;
+      rdfs:label "Plan" .
+
+
+###  https://w3id.org/ep-plan#Policy
+:Policy rdf:type owl:Class ;
+        owl:disjointWith [ rdf:type owl:Class ;
+                           owl:unionOf ( :CommunicationSpecification
+                                         :Constraint
+                                         :ResponsibleAgent
+                                         :Step
+                                       )
+                         ] ;
+        rdfs:comment "A generic representation of a collection of rules that may be applicable in the context of a specific plan. A policy can provide a rationale for constraints being applied to steps as well as explain reasons including other plan elements. For example, a data protection policy might require that steps are executed by specific agents and that a data anonymisation step is included in the plan." ;
+        rdfs:label "Policy" .
+
+
+###  https://w3id.org/ep-plan#Rationale
+:Rationale rdf:type owl:Class ;
+           rdfs:comment "A generic concept describing a specific justification of a plan or an individual plan element. For example, a  data anonymisation step might be included in the plan to protect personal information as a result of a data protection policy associated with a plan (i.e. the reason for including such a step in a plan). Similarly, a data protection policy associated with a plan can be linked to a description of the General Data Protection Regulation (GDPR) which provides the reason why such policy was implemented." ;
+           rdfs:label "Rationale" .
+
+
+###  https://w3id.org/ep-plan#ResponsibleAgent
+:ResponsibleAgent rdf:type owl:Class ;
+                  owl:disjointWith [ rdf:type owl:Class ;
+                                     owl:unionOf ( :CommunicationSpecification
+                                                   :Constraint
+                                                   :Policy
+                                                   :Step
+                                                 )
+                                   ] ;
+                  rdfs:comment "An agent that can bear some responsibility for execution of activities corresponding to the planned steps." ;
+                  rdfs:label "ResponsibleAgent" .
+
+
+###  https://w3id.org/ep-plan#Step
+:Step rdf:type owl:Class ;
+      owl:disjointWith :Variable ;
+      rdfs:comment "An ep-plan:Step represents the planned execution activity." ;
+      rdfs:label "Step" .
+
+
+###  https://w3id.org/ep-plan#Variable
+:Variable rdf:type owl:Class ;
+          rdfs:comment "An ep-plan:Variable represents a description of the input of the planned Activity (ep-plan:Step)" ;
+          rdfs:label "Variable" .
+
+
+###  Generated by the OWL API (version 5.1.9) https://github.com/owlcs/owlapi/
