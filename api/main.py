@@ -7,7 +7,7 @@ import glob
 from urllib import request
 import shutil
 
-#from owlready2 import *
+from owlready2 import *
 
 from fastapi import FastAPI, HTTPException, Header, Response, Body, Form, File, UploadFile
 from fastapi.responses import FileResponse
@@ -17,6 +17,7 @@ from app.metadata import PaperStatus, Allocation
 from app.annotations import Annotation, RelationGroup, PdfAnnotation
 from app.utils import StackdriverJsonFormatter
 from app import pre_serve
+from app.ontologies import *
 
 IN_PRODUCTION = os.getenv("IN_PRODUCTION", "dev")
 
@@ -102,17 +103,59 @@ def update_status_json(status_path: str, sha: str, data: Dict[str, Any]):
         json.dump(status_json, st)
         st.truncate()
 
-def analyze_ontology(path: str):
-    #"file://C:\\Users\\youss\\progettoTesi\\owlready2\\ontologie\\p_plan.owl"
+def renderLabelsOfOntology(entity):
+    #label = entity.label.first() #soltanto con p_pan le prop. vengono del tipo C:\Users\...\ontologie\p_plan.correspondsToStep
+    #label = entity.name
+    #con entrambe le istruzioni precedenti perdo l'informazione: onto.Nome
+    """
+    if label == None:
+        return entity
+    return label
+    """
+    return str(entity)
+
+def analyze_ontology(path: str) -> OntologyData:  #"file://C:\\Users\\youss\\progettoTesi\\owlready2\\ontologie\\p_plan.owl"
+
+    classes_result = set() 
+    properties_result = set()
+
     onto = os.path.join("file://", f"{path}")
     onto = get_ontology(onto).load() 
 
-    result = list(default_world.sparql("""
-           SELECT ?x
-           { ?x a owl:Class . }
-    """))
-    print(result)
-    return result
+    print("path of onto: ", onto)
+
+    def getClasses():
+        for entity in onto.classes():
+            print("->Class: ", entity)
+            rendered = renderLabelsOfOntology(entity)
+            print(rendered)
+            classes_result.add(rendered)
+    def getProperties():
+        for data_property in list(onto.data_properties()):
+            print("->Property: ", data_property)
+            rendered = renderLabelsOfOntology(data_property)
+
+            print(rendered)
+
+            properties_result.add(rendered)
+
+        for object_properties in list(onto.object_properties()):
+            print("->Property: ", object_properties)
+            rendered = renderLabelsOfOntology(object_properties)
+
+            print(rendered)
+
+            properties_result.add(rendered)
+    getClasses()
+    getProperties()
+    print("Classes:", classes_result, "\nProperties:", properties_result)
+    return {"classes": sorted(list(classes_result)), "operations": sorted(list(properties_result))}
+
+def saveOntologyDataToJson(ontology: Ontology):
+    path = os.path.join(UPLOAD_FOLDER, "ontology.json")
+    with open(path, "w+") as f:
+        #json.dump({"name": json_annotations, "data": json_relations}, f)
+        json.dump(ontology, f)
 
 @app.get("/", status_code=204)
 def read_root():
@@ -337,9 +380,9 @@ def get_allocation_info(x_auth_request_email: str = Header(None)) -> Allocation:
     return response
 
 ##### aggiunte per import ontologie
-UPLOAD_FOLDER = 'onto/'
+UPLOAD_FOLDER = 'onto/' #definire in file configurations
 @app.post("/api/upload")
-def uploadOntology(file: UploadFile = File(...)):
+def uploadOntology(file: UploadFile = File(...)) -> OntologyData:
     # l'argomento passato deve avere lo stesso nome che devinisco con
     # formData.append('nomeArgomento', fileObj, fileObj.name); 
     # Altrimenti errore: '422 unprocessable entity fastapi'
@@ -351,6 +394,11 @@ def uploadOntology(file: UploadFile = File(...)):
     with open(file_location, "wb+") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    #return analyze_ontology(os.path.abspath(file_location)) 
+    result = analyze_ontology(os.path.abspath(file_location))
+    saveOntologyDataToJson({"name": file.filename, "data": result}) 
+        #forse meglio prendere il nome dall'onto
+    print("#######Result",result)
 
-    return {"info": f"file '{file.filename}' saved at '{file_location}'"}
+    return result
+
+    #return {"info": f"file '{file.filename}' saved at '{file_location}'"}

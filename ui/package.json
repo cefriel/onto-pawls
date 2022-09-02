@@ -22,6 +22,9 @@
     "@allenai/varnish": "^1.0.0",
     "@allenai/varnish-react-router": "^1.0.4",
     "@ant-design/icons": "^4.2.1",
+    "@fortawesome/fontawesome-svg-core": "^6.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@types/jest": "^24.0.9",
     "@types/node": "11.9.5",
     "@types/react": "^16.9.0",
@@ -69,5 +72,7 @@
     "tmpl": "^1.0.5",
     "nanoid": "^3.3.4"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "sass": "^1.54.8"
+  }
 }

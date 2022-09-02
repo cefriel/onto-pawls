@@ -19,3 +19,5 @@ python-multipart
 # Allows us to use FastAPI's FileResponse for serving pdfs.
 aiofiles
 
+# to work with ontologies
+owlready2
