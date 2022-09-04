@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Tag, Switch } from '@allenai/varnish';
 
@@ -14,11 +14,19 @@ const { CheckableTag } = Tag;
 
 export const Labels = () => {
     const annotationStore = useContext(AnnotationStore);
-
+    const [dataOfOntologies, setDataOfOntologies]: [
+        dataOfOntologies: any,
+        setDataOfOntologies: any
+    ] = useState([]);
+    const updateDataOfOntologies = (data: any) => {
+        setDataOfOntologies(data);
+    };
     const onToggle = () => {
         annotationStore.toggleFreeFormAnnotations(!annotationStore.freeFormAnnotations);
     };
-
+    useEffect(() => {
+        console.log('Labels useEffect - dataOfOntologies: ', dataOfOntologies);
+    }, [dataOfOntologies]);
     useEffect(() => {
         const onKeyPress = (e: KeyboardEvent) => {
             // Numeric keys 1-9
@@ -55,7 +63,7 @@ export const Labels = () => {
     // TODO(Mark): Style the tags so it's clear you can select them with the numeric keys.
     return (
         <SidebarItem>
-            <ModalPopup></ModalPopup>
+            <ModalPopup updateDataOfOntologies={updateDataOfOntologies}></ModalPopup>
             <SidebarItemTitle>Labels</SidebarItemTitle>
             <ExplainerText>
                 <InfoCircleOutlined style={{ marginRight: '3px' }} />
@@ -75,7 +83,8 @@ export const Labels = () => {
                         </LabelTag>
                     ))}
                     <Dropdown
-                        list={annotationStore.labels}
+                        // list={annotationStore.labels}
+                        list={dataOfOntologies}
                         annotationStore={annotationStore}></Dropdown>
                 </div>
                 {annotationStore.relationLabels.length !== 0 ? (

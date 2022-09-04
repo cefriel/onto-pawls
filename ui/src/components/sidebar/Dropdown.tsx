@@ -5,9 +5,10 @@ import { Label } from '../../api';
 
 const App = ({ list, annotationStore }: { list: any; annotationStore: any }) => {
     const [userChoice, setUserChoice] = useState('');
-    const listLabels = list.map((label: Label) => label.text);
-    const labels = listLabels.map((value: any) => ({ value, label: value }));
-    console.log(labels);
+    const listLabels = list.map((onto: any) => ({ value: onto, label: onto }));
+    // const labels = listLabels.map((value: any) => ({ value, label: value }));
+    console.log('Labels in Dropdown: ', listLabels);
+    console.log('dataOfOnto in Dropdown: ', list);
     const colourStyles = {
         control: (styles: any) => ({ ...styles, backgroundColor: 'white' }),
         option: (styles: any) => {
@@ -22,7 +23,7 @@ const App = ({ list, annotationStore }: { list: any; annotationStore: any }) => 
     };
     return (
         <Select
-            options={labels}
+            options={listLabels}
             styles={colourStyles}
             onChange={(choice: any) => {
                 const label: Label = {

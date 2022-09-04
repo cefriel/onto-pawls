@@ -19,9 +19,10 @@ const InputFile = ({ files, updateFiles }: { files: any; updateFiles: any }) => 
         if (!fileObj) {
             return;
         }
-        const fileAlreadyUploaded = files.some((file: any) => file.filename === fileObj.filename);
+        const fileAlreadyUploaded = files.some((file: any) => file.name === fileObj.name);
         if (fileAlreadyUploaded) {
             alert('File già caricato, seleziona un file con un nome diverso.');
+            console.log('File già caricato, seleziona un file con un nome diverso.', fileObj.name);
             return;
         }
         fileObj.isUploading = true;

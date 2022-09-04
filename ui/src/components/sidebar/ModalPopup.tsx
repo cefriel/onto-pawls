@@ -7,7 +7,7 @@ import FileList from './FileList';
 import { getDataOfOntologiesSelected, getNamesOfOntologiesAlreadyUploaded } from '../../api/index';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const App = () => {
+const App = ({ updateDataOfOntologies }: { updateDataOfOntologies: any }) => {
     const [show, setShow] = useState(false);
     const [files, setFiles]: [files: any, setFiles: any] = useState([]);
     // all'inizio forse devo richiedere all'api la lista dei file già caricati
@@ -21,16 +21,11 @@ const App = () => {
                     key: value, // forse non serve più
                     name: value,
                 }));
+                console.log('names', names);
                 setFiles(names);
             }
         });
         console.log('files...:', files);
-        /*
-        console.log(
-            'response: ',
-            Promise.resolve(response).then((r) => r.data)
-        );
-        */
     }, []);
     const removeFile = (filename: any) => {
         setFiles(files.filter((file: any) => file.name !== filename));
@@ -45,10 +40,31 @@ const App = () => {
     };
     const handleShow = () => setShow(true);
     const askDataOfOntologies = () => {
-        const result: string[] = [];
-        files.map((f: any) => result.push(f.name));
-        console.log('Result names of onto: ', result);
-        getDataOfOntologiesSelected(result);
+        const ontologiesNamesToSend: string[] = [];
+        files.map((f: any) => ontologiesNamesToSend.push(f.name));
+        console.log('Result names of onto: ', ontologiesNamesToSend);
+        const dataOfOntoFromApi: any = getDataOfOntologiesSelected(ontologiesNamesToSend).then(
+            (r) => {
+                const classes: string[] = [];
+                const properties: string[] = [];
+
+                r?.data.forEach(
+                    (onto: any) => {
+                        onto.data.classes.map((classOnto: string) => classes.push(classOnto));
+                        onto.data.properties.map((propertyOnto: string) =>
+                            properties.push(propertyOnto)
+                        );
+                    }
+                    // classes.push(onto)
+                );
+
+                const result = classes.concat(properties);
+                console.log('result data: ', r?.data);
+                console.log('result classes + properties: ', result);
+                updateDataOfOntologies(result);
+            }
+        );
+        console.log('Onto data received from api: ', dataOfOntoFromApi);
     };
     const updateFiles = (_file: any) => {
         setFiles([...files, _file]);
