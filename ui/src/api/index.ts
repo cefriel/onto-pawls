@@ -129,17 +129,41 @@ export async function deleteFile(filename: string) {
         .catch((err) => console.error(err));
 }
 
-export async function getDataOfOntologiesSelected(ontologiesName: string[]) {
-    console.log('List of Ontologies Selected: ', ontologiesName);
+export async function getDataOfOntologiesSelected(_ontologiesName: string[]) {
+    console.log('List of Ontologies Selected: ', _ontologiesName);
     try {
         const response = await axios({
             method: 'post',
             url: '/api/upload/ontologies',
-            data: ontologiesName,
+            data: _ontologiesName,
         });
-        console.log('response: ', response);
+        console.log('response data: ', response.data);
         return response;
     } catch (error) {
         console.log(error);
     }
+    // return axios.post(`/api/upload/ontologies`, _ontologiesName);
+}
+
+interface OntologiesNames {
+    ontologiesNames: string[];
+}
+
+export async function getNamesOfOntologiesAlreadyUploaded(): Promise<OntologiesNames> {
+    return await axios
+        .get('/api/ontology/names')
+        .then((r) => r.data)
+        .catch((err) => console.log(err));
+    /*
+    try {
+        const response = await axios({
+            method: 'get',
+            url: '/api/ontology/names',
+        });
+        console.log('response data: ', response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+    */
 }

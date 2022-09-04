@@ -4,10 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import '../style/InputFile.scss';
 
-const InputFile = ({ updateFiles }: { updateFiles: any }) => {
+const InputFile = ({ files, updateFiles }: { files: any; updateFiles: any }) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
     const formData = new FormData();
-    // const [files, setFiles]: [files: any, setFiles: any] = useState([]);
     const handleClick = () => {
         // open file input box on click of other element
         inputRef?.current?.click();
@@ -18,6 +17,11 @@ const InputFile = ({ updateFiles }: { updateFiles: any }) => {
         event.preventDefault();
         const fileObj = event.target.files && event.target.files[0];
         if (!fileObj) {
+            return;
+        }
+        const fileAlreadyUploaded = files.some((file: any) => file.filename === fileObj.filename);
+        if (fileAlreadyUploaded) {
+            alert('File già caricato, seleziona un file con un nome diverso.');
             return;
         }
         fileObj.isUploading = true;

@@ -5,12 +5,12 @@ from pydantic import BaseModel
 class OntologyClass(BaseModel):
     name: str
 
-class OntologyOperations(BaseModel):
+class OntologyProperties(BaseModel):
     name: str
 
 class OntologyData(BaseModel):
     classes: List[OntologyClass]
-    operations: List[OntologyOperations]
+    properties: List[OntologyProperties]
 
 class Ontology(BaseModel):
     name: str
