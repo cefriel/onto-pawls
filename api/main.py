@@ -452,7 +452,7 @@ def getCLassesAndPropertiesFromJsonOntology(filename: str) -> OntologyData:
     propertiesResult: Any
     exists = os.path.exists(file_location)
     if not exists:
-        response = {"classes": [], "properties": []}
+        return {"classes": [], "properties": []}
     else: 
         with open(file_location) as f:
             onto = json.load(f)
@@ -466,4 +466,13 @@ def getCLassesAndPropertiesFromJsonOntology(filename: str) -> OntologyData:
 
 @app.get("/api/ontology/names")
 def getNamesOntologiesAlreadyUploaded():
-    return {"ontologiesNames": ["x.nt", "y.xml"]}
+    namesOfOnto = list()
+
+    for file in os.listdir(EXTRACTED_DATA_FROM_ONTO_FOLDER):
+        if file.endswith('.json'):
+            result = file.split('.json')[0]
+            namesOfOnto.append(result)
+            
+    print('---->Onto already uploaded: ', namesOfOnto)
+    #return {"ontologiesNames": ["x.nt", "y.xml"]}
+    return {"ontologiesNames": namesOfOnto}

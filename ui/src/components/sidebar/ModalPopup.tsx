@@ -10,12 +10,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const App = ({ updateDataOfOntologies }: { updateDataOfOntologies: any }) => {
     const [show, setShow] = useState(false);
     const [files, setFiles]: [files: any, setFiles: any] = useState([]);
-    // all'inizio forse devo richiedere all'api la lista dei file già caricati
+
     useEffect(() => {
         // Chiamo api: dammi lista dei file che sono già stati caricati predentemente
         getNamesOfOntologiesAlreadyUploaded().then((result) => {
-            console.log('Result of promise.then: ', result);
-            console.log('List:', result.ontologiesNames);
             if (result.ontologiesNames.length > 0) {
                 const names = result.ontologiesNames.map((value: any) => ({
                     key: value, // forse non serve più
@@ -27,6 +25,10 @@ const App = ({ updateDataOfOntologies }: { updateDataOfOntologies: any }) => {
         });
         console.log('files...:', files);
     }, []);
+
+    useEffect(() => {
+        askDataOfOntologies();
+    }, [files]);
     const removeFile = (filename: any) => {
         setFiles(files.filter((file: any) => file.name !== filename));
     };
@@ -35,36 +37,37 @@ const App = ({ updateDataOfOntologies }: { updateDataOfOntologies: any }) => {
         // Chiamata Api: dammi i dati delle ontologie che ti mando
         // ricevuti i dati setto il context di Dropdowm.
         // getDataOfOntologiesSelected(files);
-        askDataOfOntologies();
+        // askDataOfOntologies(); non serve più
+        // faccio una chiamata api ad ogni file aggiunto per risolvere il problema del menu che non si popola
+        // quando la pagina si carica inizialmente.
         setShow(false);
     };
     const handleShow = () => setShow(true);
     const askDataOfOntologies = () => {
-        const ontologiesNamesToSend: string[] = [];
-        files.map((f: any) => ontologiesNamesToSend.push(f.name));
-        console.log('Result names of onto: ', ontologiesNamesToSend);
-        const dataOfOntoFromApi: any = getDataOfOntologiesSelected(ontologiesNamesToSend).then(
-            (r) => {
-                const classes: string[] = [];
-                const properties: string[] = [];
+        if (files && files.length > 0) {
+            const ontologiesNamesToSend: string[] = [];
+            files.map((f: any) => ontologiesNamesToSend.push(f.name));
+            console.log('Result names of onto: ', ontologiesNamesToSend);
+            const dataOfOntoFromApi: any = getDataOfOntologiesSelected(ontologiesNamesToSend).then(
+                (r) => {
+                    const classes: string[] = [];
+                    const properties: string[] = [];
 
-                r?.data.forEach(
-                    (onto: any) => {
+                    r?.data.forEach((onto: any) => {
                         onto.data.classes.map((classOnto: string) => classes.push(classOnto));
                         onto.data.properties.map((propertyOnto: string) =>
                             properties.push(propertyOnto)
                         );
-                    }
-                    // classes.push(onto)
-                );
+                    });
 
-                const result = classes.concat(properties);
-                console.log('result data: ', r?.data);
-                console.log('result classes + properties: ', result);
-                updateDataOfOntologies(result);
-            }
-        );
-        console.log('Onto data received from api: ', dataOfOntoFromApi);
+                    const result = classes.concat(properties);
+                    console.log('result data: ', r?.data);
+                    console.log('result classes + properties: ', result);
+                    updateDataOfOntologies(result);
+                }
+            );
+            console.log('Onto data received from api: ', dataOfOntoFromApi);
+        }
     };
     const updateFiles = (_file: any) => {
         setFiles([...files, _file]);

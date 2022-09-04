@@ -6,7 +6,6 @@ import { Label } from '../../api';
 const App = ({ list, annotationStore }: { list: any; annotationStore: any }) => {
     const [userChoice, setUserChoice] = useState('');
     const listLabels = list.map((onto: any) => ({ value: onto, label: onto }));
-    // const labels = listLabels.map((value: any) => ({ value, label: value }));
     console.log('Labels in Dropdown: ', listLabels);
     console.log('dataOfOnto in Dropdown: ', list);
     const colourStyles = {
@@ -27,14 +26,13 @@ const App = ({ list, annotationStore }: { list: any; annotationStore: any }) => 
             styles={colourStyles}
             onChange={(choice: any) => {
                 const label: Label = {
-                    text: choice.value,
+                    text: choice.label,
                 };
-                setUserChoice(choice.value);
-                console.log('choice.value: ', choice.value);
+                setUserChoice(choice.label);
+                console.log('choice.label: ', choice.label);
                 annotationStore.setActiveLabel(label);
                 console.log('label: ', label);
                 console.log('userChoice: ', userChoice);
-                // O "ricreo" il formato di label partendo dal nome oppure modifico annotationStore...
             }}
         />
     );
