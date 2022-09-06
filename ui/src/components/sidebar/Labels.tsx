@@ -1,16 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Tag, Switch } from '@allenai/varnish';
+import { Switch } from '@allenai/varnish';
 
 import { AnnotationStore } from '../../context';
-import { CheckOutlined, CloseOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 
 import { SidebarItem, SidebarItemTitle } from './common';
 
 import Dropdown from './Dropdown';
 import ModalPopup from './ModalPopup';
-
-const { CheckableTag } = Tag;
 
 export const Labels = () => {
     const annotationStore = useContext(AnnotationStore);
@@ -64,48 +62,19 @@ export const Labels = () => {
     return (
         <SidebarItem>
             <ModalPopup updateDataOfOntologies={updateDataOfOntologies}></ModalPopup>
-            <SidebarItemTitle>Labels</SidebarItemTitle>
-            <ExplainerText>
-                <InfoCircleOutlined style={{ marginRight: '3px' }} />
-                Use arrow keys to select labels to annotate.
-            </ExplainerText>
+            <SidebarItemTitle>Classes</SidebarItemTitle>
             <Container>
                 <div>
-                    {annotationStore.labels.map((label) => (
-                        <LabelTag
-                            key={label.text}
-                            onClick={() => {
-                                annotationStore.setActiveLabel(label);
-                            }}
-                            // style={{ color: label.color }}
-                            checked={label === annotationStore.activeLabel}>
-                            {label.text}
-                        </LabelTag>
-                    ))}
-                    <Dropdown
-                        // list={annotationStore.labels}
-                        list={dataOfOntologies}
-                        annotationStore={annotationStore}></Dropdown>
+                    <Dropdown list={dataOfOntologies} annotationStore={annotationStore}></Dropdown>
                 </div>
-                {annotationStore.relationLabels.length !== 0 ? (
-                    <>
-                        <SidebarItemTitle>Relations</SidebarItemTitle>
-                        <div>
-                            {annotationStore.relationLabels.map((relation) => (
-                                <LabelTag
-                                    key={relation.text}
-                                    onClick={() => {
-                                        annotationStore.setActiveRelationLabel(relation);
-                                    }}
-                                    // style={{ color: relation.color }}
-                                    checked={relation === annotationStore.activeRelationLabel}>
-                                    {relation.text}
-                                </LabelTag>
-                            ))}
-                        </div>
-                    </>
-                ) : null}
-
+                <>
+                    <SidebarItemTitle>Properties</SidebarItemTitle>
+                    <div>
+                        <Dropdown
+                            list={dataOfOntologies}
+                            annotationStore={annotationStore}></Dropdown>
+                    </div>
+                </>
                 <div>
                     Free Form Annotations
                     <Toggle
@@ -119,21 +88,6 @@ export const Labels = () => {
         </SidebarItem>
     );
 };
-
-const ExplainerText = styled.div`
-    font-size: ${({ theme }) => theme.spacing.sm};
-
-    &,
-    & * {
-        color: ${({ theme }) => theme.color.N6};
-    }
-`;
-
-const LabelTag = styled(CheckableTag)`
-    &.ant-tag-checkable-checked {
-        background-color: #303030;
-    }
-`;
 
 const Toggle = styled(Switch)`
     margin: 4px;

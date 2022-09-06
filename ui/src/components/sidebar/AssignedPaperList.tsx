@@ -58,7 +58,7 @@ export const AssignedPaperList = ({ papers }: { papers: PaperStatus[] }) => {
 
     return (
         <SidebarItem>
-            <SidebarItemTitle>Papers</SidebarItemTitle>
+            <SidebarItemTitle>Documents</SidebarItemTitle>
             <ToggleDescription>Show Finished Papers:</ToggleDescription>
             <Toggle
                 size="small"

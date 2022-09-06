@@ -28,21 +28,9 @@ export const AnnotationSummary = ({ annotation }: AnnotationSummaryProps) => {
         annotation.tokens === null
             ? 'Freeform'
             : annotation.tokens.map((t) => pageInfo.tokens[t.tokenIndex].text).join(' ');
-    /*
     return (
         <PaddedRow>
             <Overflow>{text}</Overflow>
-            <SmallTag color={annotation.label.color}>{annotation.label.text}</SmallTag>
-            <SmallTag>{annotation.label.text}</SmallTag>
-            <SmallTag color="grey">Page {pageInfo.page.pageNumber}</SmallTag>
-            <DeleteFilled onClick={onDelete} />
-        </PaddedRow>
-    );
-    */
-    return (
-        <PaddedRow>
-            <Overflow>{text}</Overflow>
-            <SmallTag>{annotation.label.text}</SmallTag>
             <SmallTag>{annotation.label.text}</SmallTag>
             <SmallTag color="grey">Page {pageInfo.page.pageNumber}</SmallTag>
             <DeleteFilled onClick={onDelete} />
