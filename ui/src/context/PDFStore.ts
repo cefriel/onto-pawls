@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 import { PDFPageProxy, PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 
-import { Token, Label } from '../api';
+import { Token, OntoClass } from '../api';
 import { TokenId, Annotation } from './AnnotationStore';
 
 export type Optional<T> = T | undefined;
@@ -95,16 +95,16 @@ function doOverlap(a: Bounds, b: Bounds): boolean {
 export function getNewAnnotation(
     page: PDFPageInfo,
     selection: Bounds,
-    activeLabel: Label,
+    activeOntoClass: OntoClass,
     freeform: boolean
 ): Optional<Annotation> {
     let annotation: Optional<Annotation>;
 
     const normalized = normalizeBounds(selection);
     if (freeform) {
-        annotation = page.getFreeFormAnnotationForBounds(normalized, activeLabel);
+        annotation = page.getFreeFormAnnotationForBounds(normalized, activeOntoClass);
     } else {
-        annotation = page.getAnnotationForBounds(normalized, activeLabel);
+        annotation = page.getAnnotationForBounds(normalized, activeOntoClass);
     }
     return annotation;
 }
@@ -116,7 +116,7 @@ export class PDFPageInfo {
         public bounds?: Bounds
     ) {}
 
-    getFreeFormAnnotationForBounds(selection: Bounds, label: Label): Annotation {
+    getFreeFormAnnotationForBounds(selection: Bounds, ontoClass: OntoClass): Annotation {
         if (this.bounds === undefined) {
             throw new Error('Unknown Page Bounds');
         }
@@ -127,10 +127,10 @@ export class PDFPageInfo {
         // to the PDF page's original scale means we can render it everywhere.
         const bounds = scaled(selection, 1 / this.scale);
 
-        return new Annotation(bounds, this.page.pageNumber - 1, label);
+        return new Annotation(bounds, this.page.pageNumber - 1, ontoClass);
     }
 
-    getAnnotationForBounds(selection: Bounds, label: Label): Optional<Annotation> {
+    getAnnotationForBounds(selection: Bounds, ontoClass: OntoClass): Optional<Annotation> {
         /* This function is quite complicated. Our objective here is to
            compute overlaps between a bounding box provided by a user and
            grobid token spans associated with a pdf. The complexity here is
@@ -169,7 +169,7 @@ export class PDFPageInfo {
             return undefined;
         }
         const bounds = spanningBound(tokenBounds);
-        return new Annotation(bounds, this.page.pageNumber - 1, label, ids);
+        return new Annotation(bounds, this.page.pageNumber - 1, ontoClass, ids);
     }
 
     getScaledTokenBounds(t: Token): Bounds {

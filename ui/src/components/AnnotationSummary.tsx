@@ -31,7 +31,7 @@ export const AnnotationSummary = ({ annotation }: AnnotationSummaryProps) => {
     return (
         <PaddedRow>
             <Overflow>{text}</Overflow>
-            <SmallTag>{annotation.label.text}</SmallTag>
+            <SmallTag>{annotation.ontoClass.text}</SmallTag>
             <SmallTag color="grey">Page {pageInfo.page.pageNumber}</SmallTag>
             <DeleteFilled onClick={onDelete} />
         </PaddedRow>

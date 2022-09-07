@@ -32,16 +32,34 @@ export async function getTokens(sha: string): Promise<PageTokens[]> {
     return axios.get(`${docURL(sha)}/tokens`).then((r) => r.data);
 }
 
-export interface Label {
-    text: string;
-    // color: string;
+export interface OntoClass {
+    id: string; // serve per il rendering nei menù, lo assegnerò dal backend
+    text: string; // testo che verrà mostrato all'utente
+    baseIri: string;
+    iri: string;
+    labelFromOwlready: string; // permetterà di fare i controlli con domain/range di Relation
 }
 
-export async function getLabels(): Promise<Label[]> {
+export interface OntoProperty {
+    id: string; // serve per il rendering nei menù
+    text: string; // testo che verrà mostrato all'utente
+    baseIri: string;
+    iri: string;
+    labelFromOwlready: string; // permetterà di fare i controlli con domain/range di Relation
+    domain: string[]; // conterrà la lista degli IRI completi di modo poi di fare il check
+    range: string[]; // come domain. Ricorda che potrebbero essere vuote! (in questo caso la relazione
+    // è 'libera')
+}
+
+/**
+ *
+ */
+// TODO: da modificare i nomi dei due metodi
+export async function getLabels(): Promise<OntoClass[]> {
     return axios.get('/api/annotation/labels').then((r) => r.data);
 }
 
-export async function getRelations(): Promise<Label[]> {
+export async function getRelations(): Promise<OntoProperty[]> {
     return axios.get('/api/annotation/relations').then((r) => r.data);
 }
 
@@ -108,16 +126,6 @@ export async function uploadOntology(file: FormData) {
     } catch (error) {
         console.log(error);
     }
-    /** utilizzando questo modo esce l'errore 'Unprocessable Entity'
-    return axios
-        .post('/api/upload', { file })
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((err) => {
-            console.log('index.ts', err);
-        });
-    */
 }
 
 export async function deleteFile(filename: string) {
@@ -154,16 +162,4 @@ export async function getNamesOfOntologiesAlreadyUploaded(): Promise<OntologiesN
         .get('/api/ontology/names')
         .then((r) => r.data)
         .catch((err) => console.log(err));
-    /*
-    try {
-        const response = await axios({
-            method: 'get',
-            url: '/api/ontology/names',
-        });
-        console.log('response data: ', response.data);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-    }
-    */
 }

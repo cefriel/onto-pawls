@@ -50,12 +50,12 @@ interface HandleAnnotationSelectionProps {
 }
 export const HandleAnnotationSelection = ({ setModalVisible }: HandleAnnotationSelectionProps) => {
     const annotationStore = useContext(AnnotationStore);
-    const { selectedAnnotations, setSelectedAnnotations, activeRelationLabel } = annotationStore;
+    const { selectedAnnotations, setSelectedAnnotations, activeOntoProperty } = annotationStore;
     useEffect(() => {
         const onShiftUp = (e: KeyboardEvent) => {
             const shift = e.keyCode === 16;
             const somethingSelected = selectedAnnotations.length !== 0;
-            const hasRelations = activeRelationLabel !== undefined;
+            const hasRelations = activeOntoProperty !== undefined;
             // Shift key up, the user has selected something,
             // and this annotation project has relation labels.
             if (shift && somethingSelected && hasRelations) {
@@ -73,7 +73,7 @@ export const HandleAnnotationSelection = ({ setModalVisible }: HandleAnnotationS
         return () => {
             window.removeEventListener('keyup', onShiftUp);
         };
-    }, [activeRelationLabel, selectedAnnotations, setModalVisible]);
+    }, [activeOntoProperty, selectedAnnotations, setModalVisible]);
 
     return null;
 };

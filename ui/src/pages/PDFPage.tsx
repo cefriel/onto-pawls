@@ -24,7 +24,8 @@ import {
     PaperStatus,
     getAllocatedPaperStatus,
     getLabels,
-    Label,
+    OntoClass,
+    OntoProperty,
     getAnnotations,
     getRelations,
 } from '../api';
@@ -67,10 +68,10 @@ export const PDFPage = () => {
 
     const [assignedPaperStatuses, setAssignedPaperStatuses] = useState<PaperStatus[]>([]);
     const [activePaperStatus, setActivePaperStatus] = useState<PaperStatus>();
-    const [activeLabel, setActiveLabel] = useState<Label>();
-    const [labels, setLabels] = useState<Label[]>([]);
-    const [relationLabels, setRelationLabels] = useState<Label[]>([]);
-    const [activeRelationLabel, setActiveRelationLabel] = useState<Label>();
+    const [activeOntoClass, setActiveOntoClass] = useState<OntoClass>();
+    const [ontoClasses, setOntoClasses] = useState<OntoClass[]>([]);
+    const [ontoProperties, setOntoProperties] = useState<OntoProperty[]>([]);
+    const [activeOntoProperty, setActiveOntoProperty] = useState<OntoProperty>();
     const [freeFormAnnotations, toggleFreeFormAnnotations] = useState<boolean>(false);
     const [hideLabels, setHideLabels] = useState<boolean>(false);
 
@@ -105,16 +106,16 @@ export const PDFPage = () => {
     };
 
     useEffect(() => {
-        getLabels().then((labels) => {
-            setLabels(labels);
-            setActiveLabel(labels[0]);
+        getLabels().then((ontoCLass) => {
+            setOntoClasses(ontoCLass);
+            setActiveOntoClass(ontoCLass[0]);
         });
     }, []);
 
     useEffect(() => {
-        getRelations().then((relations) => {
-            setRelationLabels(relations);
-            setActiveRelationLabel(relations[0]);
+        getRelations().then((ontoProperty) => {
+            setOntoProperties(ontoProperty);
+            setActiveOntoProperty(ontoProperty[0]);
         });
     }, [sha]);
 
@@ -241,12 +242,12 @@ export const PDFPage = () => {
                         }}>
                         <AnnotationStore.Provider
                             value={{
-                                labels,
-                                activeLabel,
-                                setActiveLabel,
-                                relationLabels,
-                                activeRelationLabel,
-                                setActiveRelationLabel,
+                                ontoClasses,
+                                activeOntoClass,
+                                setActiveOntoClass,
+                                ontoProperties,
+                                activeOntoProperty,
+                                setActiveOntoProperty,
                                 pdfAnnotations,
                                 setPdfAnnotations,
                                 selectedAnnotations,
@@ -274,7 +275,7 @@ export const PDFPage = () => {
                                             annotations={pdfAnnotations.annotations}
                                         />
                                     ) : null}
-                                    {activeRelationLabel ? (
+                                    {activeOntoProperty ? (
                                         <Relations relations={pdfAnnotations.relations} />
                                     ) : null}
                                     {activePaperStatus ? (
@@ -282,13 +283,13 @@ export const PDFPage = () => {
                                     ) : null}
                                 </SidebarContainer>
                                 <PDFContainer>
-                                    {activeRelationLabel ? (
+                                    {activeOntoProperty ? (
                                         <RelationModal
                                             visible={relationModalVisible}
                                             onClick={onRelationModalOk}
                                             onCancel={onRelationModalCancel}
                                             source={selectedAnnotations}
-                                            label={activeRelationLabel}
+                                            label={activeOntoProperty}
                                         />
                                     ) : null}
                                     <PDF />

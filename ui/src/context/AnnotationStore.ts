@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Bounds } from './PDFStore';
-import { Label } from '../api';
+import { OntoClass, OntoProperty } from '../api';
 
 export interface TokenId {
     pageIndex: number;
@@ -10,7 +10,11 @@ export interface TokenId {
 }
 
 export class RelationGroup {
-    constructor(public sourceIds: string[], public targetIds: string[], public label: Label) {}
+    constructor(
+        public sourceIds: string[],
+        public targetIds: string[],
+        public property: OntoProperty
+    ) {}
 
     updateForAnnotationDeletion(a: Annotation): RelationGroup | undefined {
         const sourceEmpty = this.sourceIds.length === 0;
@@ -41,11 +45,11 @@ export class RelationGroup {
             return undefined;
         }
 
-        return new RelationGroup(newSourceIds, newTargetIds, this.label);
+        return new RelationGroup(newSourceIds, newTargetIds, this.property);
     }
 
     static fromObject(obj: RelationGroup) {
-        return new RelationGroup(obj.sourceIds, obj.targetIds, obj.label);
+        return new RelationGroup(obj.sourceIds, obj.targetIds, obj.property);
     }
 }
 
@@ -55,7 +59,7 @@ export class Annotation {
     constructor(
         public bounds: Bounds,
         public readonly page: number,
-        public readonly label: Label,
+        public readonly ontoClass: OntoClass, // prima era generico: Label usato anche per Relations
         public readonly tokens: TokenId[] | null = null,
         id: string | undefined = undefined
     ) {
@@ -74,14 +78,14 @@ export class Annotation {
         return new Annotation(
             delta.bounds ?? Object.assign({}, this.bounds),
             delta.page ?? this.page,
-            delta.label ?? Object.assign({}, this.label),
+            delta.ontoClass ?? Object.assign({}, this.ontoClass),
             delta.tokens ?? this.tokens?.map((t) => Object.assign({}, t)),
             this.id
         );
     }
 
     static fromObject(obj: Annotation) {
-        return new Annotation(obj.bounds, obj.page, obj.label, obj.tokens, obj.id);
+        return new Annotation(obj.bounds, obj.page, obj.ontoClass, obj.tokens, obj.id);
     }
 }
 
@@ -127,13 +131,13 @@ export class PdfAnnotations {
 }
 
 interface _AnnotationStore {
-    labels: Label[];
-    activeLabel?: Label;
-    setActiveLabel: (label: Label) => void;
+    ontoClasses: OntoClass[];
+    activeOntoClass?: OntoClass;
+    setActiveOntoClass: (ontoClass: OntoClass) => void;
 
-    relationLabels: Label[];
-    activeRelationLabel?: Label;
-    setActiveRelationLabel: (label: Label) => void;
+    ontoProperties: OntoProperty[];
+    activeOntoProperty?: OntoProperty;
+    setActiveOntoProperty: (ontoProperty: OntoProperty) => void;
 
     pdfAnnotations: PdfAnnotations;
     setPdfAnnotations: (t: PdfAnnotations) => void;
@@ -150,14 +154,14 @@ interface _AnnotationStore {
 
 export const AnnotationStore = createContext<_AnnotationStore>({
     pdfAnnotations: new PdfAnnotations([], []),
-    labels: [],
-    activeLabel: undefined,
-    setActiveLabel: (_?: Label) => {
+    ontoClasses: [],
+    activeOntoClass: undefined,
+    setActiveOntoClass: (_?: OntoClass) => {
         throw new Error('Unimplemented');
     },
-    relationLabels: [],
-    activeRelationLabel: undefined,
-    setActiveRelationLabel: (_?: Label) => {
+    ontoProperties: [],
+    activeOntoProperty: undefined,
+    setActiveOntoProperty: (_?: OntoProperty) => {
         throw new Error('Unimplemented');
     },
     selectedAnnotations: [],

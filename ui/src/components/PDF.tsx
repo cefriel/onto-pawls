@@ -188,12 +188,12 @@ const Page = ({ pageInfo, onError }: PageProps) => {
             onMouseUp={
                 selection
                     ? () => {
-                          if (annotationStore.activeLabel) {
+                          if (annotationStore.activeOntoClass) {
                               const newAnnotation = getNewAnnotation(
                                   // TODO(Mark): Change
                                   pageInfo,
                                   selection,
-                                  annotationStore.activeLabel,
+                                  annotationStore.activeOntoClass,
                                   annotationStore.freeFormAnnotations
                               );
                               if (newAnnotation) {
@@ -222,12 +222,12 @@ const Page = ({ pageInfo, onError }: PageProps) => {
                         />
                     ))
             }
-            {selection && annotationStore.activeLabel
+            {selection && annotationStore.activeOntoClass
                 ? (() => {
-                      if (selection && annotationStore.activeLabel) {
+                      if (selection && annotationStore.activeOntoClass) {
                           const annotation = pageInfo.getAnnotationForBounds(
                               normalizeBounds(selection),
-                              annotationStore.activeLabel
+                              annotationStore.activeOntoClass
                           );
                           const tokens =
                               annotation &&

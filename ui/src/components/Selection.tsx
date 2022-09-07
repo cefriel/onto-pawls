@@ -138,7 +138,7 @@ interface EditLabelModalProps {
 const EditLabelModal = ({ annotation, onHide }: EditLabelModalProps) => {
     const annotationStore = useContext(AnnotationStore);
 
-    const [selectedLabel, setSelectedLabel] = useState(annotation.label);
+    const [selectedLabel, setSelectedLabel] = useState(annotation.ontoClass);
 
     // There are onMouseDown listeners on the <canvas> that handle the
     // creation of new annotations. We use this function to prevent that
@@ -153,12 +153,12 @@ const EditLabelModal = ({ annotation, onHide }: EditLabelModalProps) => {
             // Numeric keys 1-9
             if (e.keyCode >= 49 && e.keyCode <= 57) {
                 const index = Number.parseInt(e.key) - 1;
-                if (index < annotationStore.labels.length) {
-                    const selectedLabel = annotationStore.labels[index];
+                if (index < annotationStore.ontoClasses.length) {
+                    const selectedLabel = annotationStore.ontoClasses[index];
                     annotationStore.setPdfAnnotations(
                         annotationStore.pdfAnnotations
                             .deleteAnnotation(annotation)
-                            .withNewAnnotation(annotation.update({ label: selectedLabel }))
+                            .withNewAnnotation(annotation.update({ ontoClass: selectedLabel }))
                     );
                     onHide();
                 }
@@ -181,7 +181,7 @@ const EditLabelModal = ({ annotation, onHide }: EditLabelModalProps) => {
                 annotationStore.setPdfAnnotations(
                     annotationStore.pdfAnnotations
                         .deleteAnnotation(annotation)
-                        .withNewAnnotation(annotation.update({ label: selectedLabel }))
+                        .withNewAnnotation(annotation.update({ ontoClass: selectedLabel }))
                 );
                 onHide();
             }}
@@ -192,14 +192,14 @@ const EditLabelModal = ({ annotation, onHide }: EditLabelModalProps) => {
                 value={selectedLabel.text}
                 onMouseDown={onMouseDown}
                 onChange={(labelText) => {
-                    const label = annotationStore.labels.find((l) => l.text === labelText);
+                    const label = annotationStore.ontoClasses.find((l) => l.text === labelText);
                     if (!label) {
                         return;
                     }
                     setSelectedLabel(label);
                 }}
                 style={{ display: 'block' }}>
-                {annotationStore.labels.map((l) => (
+                {annotationStore.ontoClasses.map((l) => (
                     <Select.Option value={l.text} key={l.text}>
                         {l.text}
                     </Select.Option>
@@ -216,7 +216,7 @@ interface SelectionProps {
 }
 
 export const Selection = ({ pageInfo, annotation, showInfo = true }: SelectionProps) => {
-    const label = annotation.label;
+    const label = annotation.ontoClass;
     const theme = useContext(ThemeContext);
 
     const [isEditLabelModalVisible, setIsEditLabelModalVisible] = useState(false);

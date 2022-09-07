@@ -335,6 +335,7 @@ def get_labels() -> List[Dict[str, str]]:
     """
     Get the labels used for annotation for this app.
     """
+    #Da modificare: se ci sono ontologie caricate..., altrimenti lista vuota
     return configuration.labels
 
 
@@ -396,6 +397,7 @@ def uploadOntology(file: UploadFile = File(...)) -> OntologyData:
     with open(file_location, "wb+") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
+    print('@@@Absolute Path of ontology: ', os.path.abspath(file_location))
     result = analyze_ontology(os.path.abspath(file_location))
     saveOntologyDataToJson({"name": file.filename, "data": result}, file.filename) 
         #forse meglio prendere il nome dall'onto

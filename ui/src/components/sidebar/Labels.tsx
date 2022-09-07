@@ -25,40 +25,8 @@ export const Labels = () => {
     useEffect(() => {
         console.log('Labels useEffect - dataOfOntologies: ', dataOfOntologies);
     }, [dataOfOntologies]);
-    useEffect(() => {
-        const onKeyPress = (e: KeyboardEvent) => {
-            // Numeric keys 1-9
-            if (e.keyCode >= 49 && e.keyCode <= 57) {
-                const index = Number.parseInt(e.key) - 1;
-                if (index < annotationStore.labels.length) {
-                    annotationStore.setActiveLabel(annotationStore.labels[index]);
-                }
-            }
-            // Left/Right Arrow keys
-            if (e.keyCode === 37 || e.keyCode === 39) {
-                if (!annotationStore.activeLabel) {
-                    annotationStore.setActiveLabel(annotationStore.labels[0]);
-                    return;
-                }
-                const currentIndex = annotationStore.labels.indexOf(annotationStore.activeLabel);
-                // Right goes forward
-                let next =
-                    currentIndex === annotationStore.labels.length - 1 ? 0 : currentIndex + 1;
-                // Left goes backward
-                if (e.keyCode === 37) {
-                    next =
-                        currentIndex === 0 ? annotationStore.labels.length - 1 : currentIndex - 1;
-                }
-                annotationStore.setActiveLabel(annotationStore.labels[next]);
-            }
-        };
-        window.addEventListener('keydown', onKeyPress);
-        return () => {
-            window.removeEventListener('keydown', onKeyPress);
-        };
-    }, [annotationStore]);
 
-    // TODO(Mark): Style the tags so it's clear you can select them with the numeric keys.
+    // TODO: DISTINZIONE TRA MENU' Classes e Properties
     return (
         <SidebarItem>
             <ModalPopup updateDataOfOntologies={updateDataOfOntologies}></ModalPopup>
