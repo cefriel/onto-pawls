@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { Switch } from '@allenai/varnish';
 
@@ -7,40 +7,33 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 
 import { SidebarItem, SidebarItemTitle } from './common';
 
-import Dropdown from './Dropdown';
+import DropdownOntoClasses from './DropdownOntoClasses';
+import DropdownOntoProperties from './DropdownOntoProperties';
 import ModalPopup from './ModalPopup';
 
 export const Labels = () => {
     const annotationStore = useContext(AnnotationStore);
-    const [dataOfOntologies, setDataOfOntologies]: [
-        dataOfOntologies: any,
-        setDataOfOntologies: any
-    ] = useState([]);
-    const updateDataOfOntologies = (data: any) => {
-        setDataOfOntologies(data);
-    };
     const onToggle = () => {
         annotationStore.toggleFreeFormAnnotations(!annotationStore.freeFormAnnotations);
     };
-    useEffect(() => {
-        console.log('Labels useEffect - dataOfOntologies: ', dataOfOntologies);
-    }, [dataOfOntologies]);
 
     // TODO: DISTINZIONE TRA MENU' Classes e Properties
     return (
         <SidebarItem>
-            <ModalPopup updateDataOfOntologies={updateDataOfOntologies}></ModalPopup>
+            <ModalPopup annotationStore={annotationStore}></ModalPopup>
             <SidebarItemTitle>Classes</SidebarItemTitle>
             <Container>
                 <div>
-                    <Dropdown list={dataOfOntologies} annotationStore={annotationStore}></Dropdown>
+                    <DropdownOntoClasses
+                        list={annotationStore.ontoClasses}
+                        annotationStore={annotationStore}></DropdownOntoClasses>
                 </div>
                 <>
                     <SidebarItemTitle>Properties</SidebarItemTitle>
                     <div>
-                        <Dropdown
-                            list={dataOfOntologies}
-                            annotationStore={annotationStore}></Dropdown>
+                        <DropdownOntoProperties
+                            list={annotationStore.ontoProperties}
+                            annotationStore={annotationStore}></DropdownOntoProperties>
                     </div>
                 </>
                 <div>

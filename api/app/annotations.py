@@ -8,11 +8,35 @@ class Bounds(BaseModel):
     right: float
     bottom: float
 
-
+#non servirà più
 class Label(BaseModel):
     text: str
     # color: str
 
+class OntoClass(BaseModel):
+    id: str # serve per il rendering nei menù, lo assegnerò dal backend
+    text: str # testo che verrà mostrato all'utente
+    baseIri: str
+    iri: str
+    labelFromOwlready: str # permetterà di fare i controlli con domain/range di Relation
+
+class OntoProperty(BaseModel):
+    id: str  # serve per il rendering nei menù
+    text: str  # testo che verrà mostrato all'utente
+    baseIri: str
+    iri: str
+    labelFromOwlready: str # permetterà di fare i controlli con domain/range di Relation
+    domain: List[str] # conterrà la lista degli IRI completi di modo poi di fare il check
+    range: List[str] # come domain. Ricorda che potrebbero essere vuote! (in questo caso la relazione
+    # è 'libera')
+
+class OntologyData(BaseModel):
+    classes: List[OntoClass]
+    properties: List[OntoProperty]
+
+class Ontology(BaseModel):
+    name: str
+    data: OntologyData
 
 class TokenId(BaseModel):
     pageIndex: int
@@ -22,7 +46,7 @@ class TokenId(BaseModel):
 class Annotation(BaseModel):
     id: str
     page: int
-    label: Label
+    ontoClass: OntoClass
     bounds: Bounds
     tokens: Optional[List[TokenId]] = None
 
@@ -30,7 +54,7 @@ class Annotation(BaseModel):
 class RelationGroup(BaseModel):
     sourceIds: List[str]
     targetIds: List[str]
-    label: Label
+    ontoProperty: OntoProperty
 
 
 class PdfAnnotation(BaseModel):

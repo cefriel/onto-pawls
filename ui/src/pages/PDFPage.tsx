@@ -23,11 +23,13 @@ import {
     PageTokens,
     PaperStatus,
     getAllocatedPaperStatus,
-    getLabels,
     OntoClass,
     OntoProperty,
     getAnnotations,
-    getRelations,
+    getClasses,
+    getProperties,
+    getNamesOfOntologiesAlreadyUploaded,
+    OntologiesNames,
 } from '../api';
 import {
     PDFPageInfo,
@@ -76,7 +78,7 @@ export const PDFPage = () => {
     const [hideLabels, setHideLabels] = useState<boolean>(false);
 
     const [relationModalVisible, setRelationModalVisible] = useState<boolean>(false);
-
+    const [ontoNames, setOntoNames] = useState<OntologiesNames>();
     // React's Error Boundaries don't work for us because a lot of work is done by pdfjs in
     // a background task (a web worker). We instead setup a top level error handler that's
     // passed around as needed so we can display a nice error to the user when something
@@ -106,18 +108,32 @@ export const PDFPage = () => {
     };
 
     useEffect(() => {
-        getLabels().then((ontoCLass) => {
-            setOntoClasses(ontoCLass);
-            setActiveOntoClass(ontoCLass[0]);
+        getNamesOfOntologiesAlreadyUploaded().then((ontologiesName) => {
+            setOntoNames(ontologiesName);
         });
     }, []);
 
     useEffect(() => {
-        getRelations().then((ontoProperty) => {
-            setOntoProperties(ontoProperty);
-            setActiveOntoProperty(ontoProperty[0]);
-        });
-    }, [sha]);
+        if (ontoNames !== undefined && ontoNames.ontologiesNames.length > 0) {
+            getClasses(ontoNames).then((ontoClasses) => {
+                if (ontoClasses !== undefined) {
+                    setOntoClasses(ontoClasses);
+                    setActiveOntoClass(ontoClasses[0]);
+                }
+            });
+        }
+    }, [ontoNames]);
+
+    useEffect(() => {
+        if (ontoNames !== undefined && ontoNames.ontologiesNames.length > 0) {
+            getProperties(ontoNames).then((ontoProperty) => {
+                if (ontoProperty !== undefined) {
+                    setOntoProperties(ontoProperty);
+                    setActiveOntoProperty(ontoProperty[0]);
+                }
+            });
+        }
+    }, [ontoNames, sha]);
 
     useEffect(() => {
         getAllocatedPaperStatus()
@@ -242,10 +258,14 @@ export const PDFPage = () => {
                         }}>
                         <AnnotationStore.Provider
                             value={{
+                                ontoNames,
+                                setOntoNames,
                                 ontoClasses,
+                                setOntoClasses,
                                 activeOntoClass,
                                 setActiveOntoClass,
                                 ontoProperties,
+                                setOntoProperties,
                                 activeOntoProperty,
                                 setActiveOntoProperty,
                                 pdfAnnotations,

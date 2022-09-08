@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Bounds } from './PDFStore';
-import { OntoClass, OntoProperty } from '../api';
+import { OntoClass, OntoProperty, OntologiesNames } from '../api';
 
 export interface TokenId {
     pageIndex: number;
@@ -131,11 +131,16 @@ export class PdfAnnotations {
 }
 
 interface _AnnotationStore {
+    ontoNames?: OntologiesNames;
+    setOntoNames: (_ontoNames: OntologiesNames) => void;
+
     ontoClasses: OntoClass[];
+    setOntoClasses: (ontoClasses: OntoClass[]) => void;
     activeOntoClass?: OntoClass;
     setActiveOntoClass: (ontoClass: OntoClass) => void;
 
     ontoProperties: OntoProperty[];
+    setOntoProperties: (ontoProperties: OntoProperty[]) => void;
     activeOntoProperty?: OntoProperty;
     setActiveOntoProperty: (ontoProperty: OntoProperty) => void;
 
@@ -154,12 +159,22 @@ interface _AnnotationStore {
 
 export const AnnotationStore = createContext<_AnnotationStore>({
     pdfAnnotations: new PdfAnnotations([], []),
+    ontoNames: undefined,
+    setOntoNames: (_?: OntologiesNames) => {
+        throw new Error('Unimplemented');
+    },
     ontoClasses: [],
+    setOntoClasses: (_?: OntoClass[]) => {
+        throw new Error('Unimplemented');
+    },
     activeOntoClass: undefined,
     setActiveOntoClass: (_?: OntoClass) => {
         throw new Error('Unimplemented');
     },
     ontoProperties: [],
+    setOntoProperties: (_?: OntoProperty[]) => {
+        throw new Error('Unimplemented');
+    },
     activeOntoProperty: undefined,
     setActiveOntoProperty: (_?: OntoProperty) => {
         throw new Error('Unimplemented');

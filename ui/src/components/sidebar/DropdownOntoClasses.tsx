@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { OntoClass } from '../../api';
-// import { AnnotationStore } from '../../context';
 
 const App = ({ list, annotationStore }: { list: OntoClass[]; annotationStore: any }) => {
-    const [userChoice, setUserChoice] = useState('');
+    // const [userChoice, setUserChoice] = useState('');
+    const [classes, setClasses]: [classes: any, setClasses: any] = useState([]);
+    /*
     const listLabels = list.map((ontoClass: OntoClass) => ({
         value: ontoClass.id,
         label: ontoClass.text,
     }));
-    console.log('Labels in Dropdown: ', listLabels);
-    console.log('dataOfOnto in Dropdown: ', list);
+    */
+    console.log('list props: ', list);
+    useEffect(() => {
+        console.log('AnnotationStore.ontoClasses: ', annotationStore.ontoClasses);
+        const listLabels = annotationStore.ontoClasses.map((ontoClass: OntoClass) => ({
+            value: ontoClass.id,
+            label: ontoClass.text,
+        }));
+        setClasses(listLabels);
+    }, [annotationStore.ontoClasses]);
     const colourStyles = {
         control: (styles: any) => ({ ...styles, backgroundColor: 'white' }),
         option: (styles: any) => {
@@ -24,21 +33,20 @@ const App = ({ list, annotationStore }: { list: OntoClass[]; annotationStore: an
         },
     };
     const ontoClassFromId = (id: string) => {
-        return list.find((ontoClass: OntoClass) => {
+        return annotationStore.ontoClasses.find((ontoClass: OntoClass) => {
             return ontoClass.id === id;
         });
     };
     return (
         <Select
-            options={listLabels}
+            options={classes}
             styles={colourStyles}
             onChange={(choice: any) => {
                 const resultClass: OntoClass | undefined = ontoClassFromId(choice.value);
-                setUserChoice(choice.label);
+                // setUserChoice(choice.label);
                 console.log('choice.label: ', choice.label);
                 console.log('Class found from id ', choice.value, ' is: ', resultClass);
-                annotationStore.setActiveLabel(resultClass);
-                console.log('userChoice: ', userChoice);
+                annotationStore.setActiveOntoClass(resultClass);
             }}
         />
     );

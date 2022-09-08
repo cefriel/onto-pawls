@@ -4,6 +4,7 @@ import logging
 import os
 import json
 import glob
+import uuid
 from urllib import request
 import shutil
 
@@ -14,10 +15,9 @@ from fastapi.responses import FileResponse
 from fastapi.encoders import jsonable_encoder
 
 from app.metadata import PaperStatus, Allocation
-from app.annotations import Annotation, RelationGroup, PdfAnnotation
+from app.annotations import Annotation, OntoClass, OntoProperty, RelationGroup, PdfAnnotation, OntologyData, Ontology
 from app.utils import StackdriverJsonFormatter
 from app import pre_serve
-from app.ontologies import *
 
 IN_PRODUCTION = os.getenv("IN_PRODUCTION", "dev")
 
@@ -116,40 +116,72 @@ def renderLabelsOfOntology(entity):
 
 def analyze_ontology(path: str) -> OntologyData:  #"file://C:\\Users\\youss\\progettoTesi\\owlready2\\ontologie\\p_plan.owl"
 
-    classes_result = set() 
-    properties_result = set()
+    classes_result = list() 
+    properties_result = list()
 
     onto = os.path.join("file://", f"{path}")
     onto = get_ontology(onto).load() 
 
     print("path of onto: ", onto)
 
+    def extractNameFromIri(entity):
+        return entity.iri.rsplit('/', 1)[-1]
+
     def getClasses():
         for entity in onto.classes():
             print("->Class: ", entity)
-            rendered = renderLabelsOfOntology(entity)
-            print(rendered)
-            classes_result.add(rendered)
+            className = extractNameFromIri(entity)
+            ontoClass = OntoClass(
+                id=str(uuid.uuid4()),
+                text=className,
+                baseIri=onto.base_iri,
+                iri=entity.iri,
+                labelFromOwlready=str(entity)
+            )
+            print("-> OntoClass extracted from ontology: ", ontoClass)
+            classes_result.append(ontoClass)
     def getProperties():
         for data_property in list(onto.data_properties()):
             print("->Property: ", data_property)
-            rendered = renderLabelsOfOntology(data_property)
+            propertyName = extractNameFromIri(data_property)
+            ontoProperty = OntoProperty(
+                id=str(uuid.uuid4()),
+                text=propertyName,
+                baseIri=onto.base_iri,
+                iri=data_property.iri,
+                labelFromOwlready=str(data_property),
+                omain=[], #TODO da sostituire con i dati reali
+                range=[]
+                #domain=data_property.domain, # TODO: conterrà la lista degli IRI completi di modo poi di fare il check
+                #range=data_property.range
+            )
+            print("-> DataProperty extracted from ontology: ", ontoProperty)
 
-            print(rendered)
+            properties_result.append(ontoProperty)
 
-            properties_result.add(rendered)
+        for object_property in list(onto.object_properties()):
+            print("->Property: ", object_property)
+            propertyName = extractNameFromIri(object_property)
+            ontoProperty = OntoProperty(
+                id=str(uuid.uuid4()),
+                text=propertyName,
+                baseIri=onto.base_iri,
+                iri=object_property.iri,
+                labelFromOwlready=str(object_property),
+                domain=[], #TODO da sostituire con i dati reali
+                range=[]
+                #domain=object_property.domain, #TODO: conterrà la lista degli IRI completi di modo poi di fare il check
+                #range=object_property.range   
+            )
+            print("-> DataProperty extracted from ontology: ", ontoProperty)
 
-        for object_properties in list(onto.object_properties()):
-            print("->Property: ", object_properties)
-            rendered = renderLabelsOfOntology(object_properties)
-
-            print(rendered)
-
-            properties_result.add(rendered)
+            properties_result.append(ontoProperty)
     getClasses()
     getProperties()
-    print("Classes:", classes_result, "\nProperties:", properties_result)
-    return {"classes": sorted(list(classes_result)), "properties": sorted(list(properties_result))}
+    json_classes = [jsonable_encoder(c) for c in classes_result]
+    json_properties = [jsonable_encoder(p) for p in properties_result]
+    # si potrebbe restituire la lista ordinata in base a text
+    return {"classes": json_classes, "properties": json_properties}
     #return OntologyData(classes=sorted(list(classes_result)), properties=sorted(list(properties_result)))
 
 def saveOntologyDataToJson(ontology: Ontology, name: str):
@@ -329,23 +361,36 @@ def get_tokens(sha: str):
 
     return response
 
-
-@app.get("/api/annotation/labels")
-def get_labels() -> List[Dict[str, str]]:
+@app.post("/api/annotation/classes")
+def get_classes(ontoNames: List[str]) -> List[OntoClass]:
     """
     Get the labels used for annotation for this app.
     """
-    #Da modificare: se ci sono ontologie caricate..., altrimenti lista vuota
-    return configuration.labels
+    print("OntoNames rivevuti: ", ontoNames)
+    resultClasses = list()
+    for filename in ontoNames:
+        print("working on onto: ", filename)
+        classes_properties = getCLassesAndPropertiesFromJsonOntology(filename)
+        print("----> classes: ", classes_properties['classes'])
+        resultClasses.extend(classes_properties['classes'])
+
+    return resultClasses
 
 
-@app.get("/api/annotation/relations")
-def get_relations() -> List[Dict[str, str]]:
+@app.post("/api/annotation/properties")
+def get_properties(ontoNames: List[str]) -> List[OntoProperty]:
     """
     Get the relations used for annotation for this app.
     """
-    return configuration.relations
+    print("OntoNames rivevuti: ", ontoNames)
+    resultProperties = list()
+    for filename in ontoNames:
+        print("working on onto: ", filename)
+        classes_properties = getCLassesAndPropertiesFromJsonOntology(filename)
+        print("----> properties: ", classes_properties['properties'])
+        resultProperties.extend(classes_properties['properties'])
 
+    return resultProperties
 
 @app.get("/api/annotation/allocation/info")
 def get_allocation_info(x_auth_request_email: str = Header(None)) -> Allocation:
@@ -461,7 +506,6 @@ def getCLassesAndPropertiesFromJsonOntology(filename: str) -> OntologyData:
 
         classesResult = onto['data']['classes']
         propertiesResult = onto['data']['properties']
-    print("classesResult:", classesResult)
     #response = OntologyData(classes=classesResult, properties=propertiesResult) 
     #pydantic.error_wrappers.ValidationError: 
     return {"classes": classesResult, "properties": propertiesResult}

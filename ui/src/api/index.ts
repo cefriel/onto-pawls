@@ -55,12 +55,34 @@ export interface OntoProperty {
  *
  */
 // TODO: da modificare i nomi dei due metodi
-export async function getLabels(): Promise<OntoClass[]> {
-    return axios.get('/api/annotation/labels').then((r) => r.data);
+export async function getClasses(_ontologiesNames: OntologiesNames) {
+    const ontoNames: string[] = _ontologiesNames.ontologiesNames;
+    try {
+        const response = await axios({
+            method: 'post',
+            url: '/api/annotation/classes',
+            data: ontoNames,
+        });
+        console.log('response data: ', response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-export async function getRelations(): Promise<OntoProperty[]> {
-    return axios.get('/api/annotation/relations').then((r) => r.data);
+export async function getProperties(_ontologiesNames: OntologiesNames) {
+    const ontoNames: string[] = _ontologiesNames.ontologiesNames;
+    try {
+        const response = await axios({
+            method: 'post',
+            url: '/api/annotation/properties',
+            data: ontoNames,
+        });
+        console.log('response data: ', response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export interface PaperStatus {
@@ -96,6 +118,8 @@ export async function getAllocatedPaperStatus(): Promise<Allocation> {
 }
 
 export function saveAnnotations(sha: string, pdfAnnotations: PdfAnnotations): Promise<any> {
+    console.log('pdfAnnotations.annotations: ', pdfAnnotations.annotations);
+    console.log('pdfAnnotations.relations: ', pdfAnnotations.relations);
     return axios.post(`/api/doc/${sha}/annotations`, {
         annotations: pdfAnnotations.annotations,
         relations: pdfAnnotations.relations,
@@ -153,7 +177,7 @@ export async function getDataOfOntologiesSelected(_ontologiesName: string[]) {
     // return axios.post(`/api/upload/ontologies`, _ontologiesName);
 }
 
-interface OntologiesNames {
+export interface OntologiesNames {
     ontologiesNames: string[];
 }
 
