@@ -13,7 +13,7 @@ export class RelationGroup {
     constructor(
         public sourceIds: string[],
         public targetIds: string[],
-        public property: OntoProperty
+        public ontoProperty: OntoProperty
     ) {}
 
     updateForAnnotationDeletion(a: Annotation): RelationGroup | undefined {
@@ -45,11 +45,11 @@ export class RelationGroup {
             return undefined;
         }
 
-        return new RelationGroup(newSourceIds, newTargetIds, this.property);
+        return new RelationGroup(newSourceIds, newTargetIds, this.ontoProperty);
     }
 
     static fromObject(obj: RelationGroup) {
-        return new RelationGroup(obj.sourceIds, obj.targetIds, obj.property);
+        return new RelationGroup(obj.sourceIds, obj.targetIds, obj.ontoProperty);
     }
 }
 

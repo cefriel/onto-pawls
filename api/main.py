@@ -150,7 +150,7 @@ def analyze_ontology(path: str) -> OntologyData:  #"file://C:\\Users\\youss\\pro
                 baseIri=onto.base_iri,
                 iri=data_property.iri,
                 labelFromOwlready=str(data_property),
-                omain=[], #TODO da sostituire con i dati reali
+                domain=[], #TODO da sostituire con i dati reali
                 range=[]
                 #domain=data_property.domain, # TODO: conterrà la lista degli IRI completi di modo poi di fare il check
                 #range=data_property.range

@@ -45,7 +45,7 @@ export const RelationModal = ({
             <h5>Choose a Relation</h5>
             {annotationStore.ontoProperties.map((relation) => (
                 <CheckableTag
-                    key={relation.text} // TODO cambirare in relation.id nel caso si crei id
+                    key={relation.id} // TODO cambirare in relation.id nel caso si crei id
                     onClick={() => {
                         annotationStore.setActiveOntoProperty(relation);
                     }}

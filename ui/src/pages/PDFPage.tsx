@@ -133,7 +133,7 @@ export const PDFPage = () => {
                 }
             });
         }
-    }, [ontoNames, sha]);
+    }, [ontoNames]);
 
     useEffect(() => {
         getAllocatedPaperStatus()

@@ -28,27 +28,20 @@ const App = ({ annotationStore }: { annotationStore: any }) => {
         askDataOfOntologies();
     }, [files]);
     const removeFile = (filename: any) => {
-        // TODO: aggiornare anche AnnotationStore
         const filesUpdated = files.filter((file: any) => file.name !== filename);
-        setFiles(filesUpdated);
-        const ontologiesNames: string[] = files.map((file: any) => file.name);
+        const ontologiesNames: string[] = filesUpdated.map((file: any) => file.name);
         const ontoNamesResult: OntologiesNames = { ontologiesNames: ontologiesNames };
         annotationStore.setOntoNames(ontoNamesResult);
+        console.log('New list of Names after removing ', filename, ' is: ', ontoNamesResult);
+        console.log('AnnotationStore.ontoNames: ', annotationStore.ontoNames);
+        setFiles(filesUpdated);
     };
-    // forse meglio gestire qui il set dei valori del Menù dei labels (vedi uso di Context in react)
     const handleClose = () => {
-        // Chiamata Api: dammi i dati delle ontologie che ti mando
-        // ricevuti i dati setto il context di Dropdowm.
-        // getDataOfOntologiesSelected(files);
-        // askDataOfOntologies(); non serve più
-        // faccio una chiamata api ad ogni file aggiunto per risolvere il problema del menu che non si popola
-        // quando la pagina si carica inizialmente.
         setShow(false);
     };
     const handleShow = () => setShow(true);
     const askDataOfOntologies = () => {
         if (files && files.length > 0) {
-            // TODO
             // Chiedi prima tutte le classi e setta la var di annotationStore
             // Chiedi ora tutte le properties e setta la var di annotationStore
             const ontologiesNamesToSend: string[] = [];
@@ -69,6 +62,11 @@ const App = ({ annotationStore }: { annotationStore: any }) => {
         }
     };
     const updateFiles = (_file: any) => {
+        const ontologiesNamesUpdated: string[] = [];
+        files.map((f: any) => ontologiesNamesUpdated.push(f.name));
+        ontologiesNamesUpdated.push(_file.name);
+        const ontoNamesResult: OntologiesNames = { ontologiesNames: ontologiesNamesUpdated };
+        annotationStore.setOntoNames(ontoNamesResult);
         setFiles([...files, _file]);
     };
 
