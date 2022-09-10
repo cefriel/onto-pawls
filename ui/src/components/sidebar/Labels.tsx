@@ -24,15 +24,12 @@ export const Labels = () => {
             <SidebarItemTitle>Classes</SidebarItemTitle>
             <Container>
                 <div>
-                    <DropdownOntoClasses
-                        list={annotationStore.ontoClasses}
-                        annotationStore={annotationStore}></DropdownOntoClasses>
+                    <DropdownOntoClasses annotationStore={annotationStore}></DropdownOntoClasses>
                 </div>
                 <>
                     <SidebarItemTitle>Properties</SidebarItemTitle>
                     <div>
                         <DropdownOntoProperties
-                            list={annotationStore.ontoProperties}
                             annotationStore={annotationStore}></DropdownOntoProperties>
                     </div>
                 </>

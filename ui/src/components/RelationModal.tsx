@@ -1,10 +1,9 @@
 import React, { useState, useContext } from 'react';
-import { Modal, Tag, Transfer } from '@allenai/varnish';
+import { Modal, Transfer } from '@allenai/varnish';
 import { Annotation, RelationGroup, AnnotationStore } from '../context';
 import { OntoProperty } from '../api';
 import { AnnotationSummary } from './AnnotationSummary';
-
-const { CheckableTag } = Tag;
+import DropdownOntoProperties from './sidebar/DropdownOntoProperties';
 
 interface RelationModalProps {
     visible: boolean;
@@ -43,16 +42,7 @@ export const RelationModal = ({
                 setTargetKeys([]);
             }}>
             <h5>Choose a Relation</h5>
-            {annotationStore.ontoProperties.map((relation) => (
-                <CheckableTag
-                    key={relation.id} // TODO cambirare in relation.id nel caso si crei id
-                    onClick={() => {
-                        annotationStore.setActiveOntoProperty(relation);
-                    }}
-                    checked={relation === annotationStore.activeOntoProperty}>
-                    {relation.text}
-                </CheckableTag>
-            ))}
+            <DropdownOntoProperties annotationStore={annotationStore}></DropdownOntoProperties>
             <br />
             <Transfer
                 dataSource={transferSource}

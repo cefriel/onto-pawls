@@ -1,37 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { OntoClass, OntoProperty } from '../../api';
+import { OntoProperty } from '../../api';
 
-const App = ({ list, annotationStore }: { list: OntoProperty[]; annotationStore: any }) => {
-    // const [userChoice, setUserChoice] = useState('');
-    const listLabels = list.map((ontoClass: OntoClass) => ({
-        value: ontoClass.id,
-        label: ontoClass.text,
-    }));
+const App = ({ annotationStore }: { annotationStore: any }) => {
+    const [properties, setProperties]: [properties: any, setProperties: any] = useState([]);
+    useEffect(() => {
+        const listLabels = annotationStore.ontoProperties.map((ontoProperty: OntoProperty) => ({
+            value: ontoProperty.id,
+            label: ontoProperty.text,
+        }));
+        setProperties(listLabels);
+    }, [annotationStore.ontoProperties]);
     const colourStyles = {
         control: (styles: any) => ({ ...styles, backgroundColor: 'white' }),
         option: (styles: any) => {
             return {
                 ...styles,
-                backgroundColor: 'blue',
-                color: '#FFF',
+                color: 'black',
                 cursor: 'default',
                 zIndex: 100,
             };
         },
     };
     const ontoPropertyFromId = (id: string) => {
-        return list.find((ontoProperty: OntoProperty) => {
+        return annotationStore.ontoProperties.find((ontoProperty: OntoProperty) => {
             return ontoProperty.id === id;
         });
     };
     return (
         <Select
-            options={listLabels}
+            options={properties}
             styles={colourStyles}
             onChange={(choice: any) => {
                 const resultProperty: OntoProperty | undefined = ontoPropertyFromId(choice.value);
-                // setUserChoice(choice.label);
                 console.log('choice.label: ', choice.label);
                 console.log('Property found from id ', choice.value, ' is: ', resultProperty);
                 annotationStore.setActiveOntoProperty(resultProperty);

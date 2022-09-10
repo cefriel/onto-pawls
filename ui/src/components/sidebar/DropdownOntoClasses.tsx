@@ -2,16 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { OntoClass } from '../../api';
 
-const App = ({ list, annotationStore }: { list: OntoClass[]; annotationStore: any }) => {
-    // const [userChoice, setUserChoice] = useState('');
+const App = ({ annotationStore }: { annotationStore: any }) => {
     const [classes, setClasses]: [classes: any, setClasses: any] = useState([]);
-    /*
-    const listLabels = list.map((ontoClass: OntoClass) => ({
-        value: ontoClass.id,
-        label: ontoClass.text,
-    }));
-    */
-    console.log('list props: ', list);
+
     useEffect(() => {
         console.log('AnnotationStore.ontoClasses: ', annotationStore.ontoClasses);
         const listLabels = annotationStore.ontoClasses.map((ontoClass: OntoClass) => ({
@@ -25,8 +18,7 @@ const App = ({ list, annotationStore }: { list: OntoClass[]; annotationStore: an
         option: (styles: any) => {
             return {
                 ...styles,
-                backgroundColor: 'blue',
-                color: '#FFF',
+                color: 'black',
                 cursor: 'default',
                 zIndex: 100,
             };
