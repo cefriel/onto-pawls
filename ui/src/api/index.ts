@@ -20,16 +20,24 @@ export interface PageTokens {
     tokens: Token[];
 }
 
-function docURL(sha: string): string {
-    return `/api/doc/${sha}`;
+export interface OntologiesNames {
+    ontologiesNames: string[];
 }
 
-export function pdfURL(sha: string): string {
-    return `${docURL(sha)}/pdf`;
+export interface PaperStatus {
+    sha: string;
+    name: string;
+    annotations: number;
+    relations: number;
+    finished: boolean;
+    junk: boolean;
+    comments: string;
+    completedAt?: Date;
 }
 
-export async function getTokens(sha: string): Promise<PageTokens[]> {
-    return axios.get(`${docURL(sha)}/tokens`).then((r) => r.data);
+export interface Allocation {
+    papers: PaperStatus[];
+    hasAllocatedPapers: boolean;
 }
 
 export interface OntoClass {
@@ -51,10 +59,18 @@ export interface OntoProperty {
     // è 'libera')
 }
 
-/**
- *
- */
-// TODO: da modificare i nomi dei due metodi
+function docURL(sha: string): string {
+    return `/api/doc/${sha}`;
+}
+
+export function pdfURL(sha: string): string {
+    return `${docURL(sha)}/pdf`;
+}
+
+export async function getTokens(sha: string): Promise<PageTokens[]> {
+    return axios.get(`${docURL(sha)}/tokens`).then((r) => r.data);
+}
+
 export async function getClasses(_ontologiesNames: OntologiesNames) {
     const ontoNames: string[] = _ontologiesNames.ontologiesNames;
     try {
@@ -83,22 +99,6 @@ export async function getProperties(_ontologiesNames: OntologiesNames) {
     } catch (error) {
         console.log(error);
     }
-}
-
-export interface PaperStatus {
-    sha: string;
-    name: string;
-    annotations: number;
-    relations: number;
-    finished: boolean;
-    junk: boolean;
-    comments: string;
-    completedAt?: Date;
-}
-
-export interface Allocation {
-    papers: PaperStatus[];
-    hasAllocatedPapers: boolean;
 }
 
 export async function setPdfComment(sha: string, comments: string) {
@@ -159,10 +159,6 @@ export async function deleteFile(filename: string) {
             console.log(res);
         })
         .catch((err) => console.error(err));
-}
-
-export interface OntologiesNames {
-    ontologiesNames: string[];
 }
 
 export async function getNamesOfOntologiesAlreadyUploaded(): Promise<OntologiesNames> {

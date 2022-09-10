@@ -56,9 +56,17 @@ export const HandleAnnotationSelection = ({ setModalVisible }: HandleAnnotationS
             const shift = e.keyCode === 16;
             const somethingSelected = selectedAnnotations.length !== 0;
             const hasRelations = activeOntoProperty !== undefined;
+            // user can create a relation between exactly 2 annotations
+            if (shift && (selectedAnnotations.length > 2 || selectedAnnotations.length === 1)) {
+                notification.error({
+                    message: 'Are you trying to create a relation?',
+                    description: 'To create a Relation you need to select exactly 2 annnotations.',
+                });
+                setSelectedAnnotations([]);
+            }
             // Shift key up, the user has selected something,
             // and this annotation project has relation labels.
-            if (shift && somethingSelected && hasRelations) {
+            else if (shift && somethingSelected && hasRelations) {
                 setModalVisible(true);
             }
             // Otherwise we just clear the selection,

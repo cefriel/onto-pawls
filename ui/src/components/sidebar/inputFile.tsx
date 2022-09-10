@@ -12,7 +12,6 @@ const InputFile = ({ files, updateFiles }: { files: any; updateFiles: any }) => 
         inputRef?.current?.click();
     };
 
-    // TODO: da sistemare per fileObj.isUploading...
     const handleFileChange = async (event: any) => {
         event.preventDefault();
         const fileObj = event.target.files && event.target.files[0];
@@ -22,7 +21,6 @@ const InputFile = ({ files, updateFiles }: { files: any; updateFiles: any }) => 
         const fileAlreadyUploaded = files.some((file: any) => file.name === fileObj.name);
         if (fileAlreadyUploaded) {
             alert('File già caricato, seleziona un file con un nome diverso.');
-            console.log('File già caricato, seleziona un file con un nome diverso.', fileObj.name);
             return;
         }
         fileObj.isUploading = true;
@@ -46,12 +44,7 @@ const InputFile = ({ files, updateFiles }: { files: any; updateFiles: any }) => 
         <>
             <div className="file-card">
                 <div className="file-inputs">
-                    <input
-                        // style={{ display: 'none' }}
-                        ref={inputRef}
-                        type="file"
-                        onChange={handleFileChange}
-                    />
+                    <input ref={inputRef} type="file" onChange={handleFileChange} />
                     <button onClick={handleClick}>
                         <i>
                             <FontAwesomeIcon icon={faPlus} />
