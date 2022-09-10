@@ -5,7 +5,12 @@ import json
 class Configuration(NamedTuple):
     """
     General configuration for the annotation tool.
-
+    upload_ontology_directory: str, required.
+        The directory where will be stored the 
+        ontologies uploaded
+    extracted_data_from_ontology_directory: str, required.
+        The directory where will be stored the json file containing
+        data extracted from the ontologies uploaded
     output_directory: str, required.
         The directory where the pdfs and
         annotation output will be stored.
@@ -16,7 +21,8 @@ class Configuration(NamedTuple):
     users_file: Name str, required
         Filename where list of allowed users is specified.
     """
-
+    upload_ontology_directory: str
+    extracted_data_from_ontology_directory: str
     output_directory: str
     labels: List[Dict[str, str]]
     relations: List[Dict[str, str]]

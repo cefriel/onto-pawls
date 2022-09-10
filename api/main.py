@@ -114,7 +114,24 @@ def renderLabelsOfOntology(entity):
     """
     return str(entity)
 
-def analyze_ontology(path: str) -> OntologyData:  #"file://C:\\Users\\youss\\progettoTesi\\owlready2\\ontologie\\p_plan.owl"
+def getClassesAndPropertiesFromJsonOntology(filename: str) -> OntologyData:
+    file_location = os.path.join(configuration.extracted_data_from_ontology_directory, f"{filename}.json")
+    classesResult: Any
+    propertiesResult: Any
+    exists = os.path.exists(file_location)
+    if not exists:
+        return {"classes": [], "properties": []}
+    else: 
+        with open(file_location) as f:
+            onto = json.load(f)
+
+        classesResult = onto['data']['classes']
+        propertiesResult = onto['data']['properties']
+
+    return {"classes": classesResult, "properties": propertiesResult}
+
+def analyze_ontology(path: str) -> OntologyData:  
+    #https://owlready2.readthedocs.io/en/v0.37/onto.html -> Loading an ontology from OWL files
 
     classes_result = list() 
     properties_result = list()
@@ -129,8 +146,8 @@ def analyze_ontology(path: str) -> OntologyData:  #"file://C:\\Users\\youss\\pro
 
     def getClasses():
         for entity in onto.classes():
-            print("->Class: ", entity)
             className = extractNameFromIri(entity)
+
             ontoClass = OntoClass(
                 id=str(uuid.uuid4()),
                 text=className,
@@ -138,12 +155,13 @@ def analyze_ontology(path: str) -> OntologyData:  #"file://C:\\Users\\youss\\pro
                 iri=entity.iri,
                 labelFromOwlready=str(entity)
             )
-            print("-> OntoClass extracted from ontology: ", ontoClass)
+
             classes_result.append(ontoClass)
+
     def getProperties():
         for data_property in list(onto.data_properties()):
-            print("->Property: ", data_property)
             propertyName = extractNameFromIri(data_property)
+
             ontoProperty = OntoProperty(
                 id=str(uuid.uuid4()),
                 text=propertyName,
@@ -155,13 +173,12 @@ def analyze_ontology(path: str) -> OntologyData:  #"file://C:\\Users\\youss\\pro
                 #domain=data_property.domain, # TODO: conterrà la lista degli IRI completi di modo poi di fare il check
                 #range=data_property.range
             )
-            print("-> DataProperty extracted from ontology: ", ontoProperty)
 
             properties_result.append(ontoProperty)
 
         for object_property in list(onto.object_properties()):
-            print("->Property: ", object_property)
             propertyName = extractNameFromIri(object_property)
+
             ontoProperty = OntoProperty(
                 id=str(uuid.uuid4()),
                 text=propertyName,
@@ -173,21 +190,20 @@ def analyze_ontology(path: str) -> OntologyData:  #"file://C:\\Users\\youss\\pro
                 #domain=object_property.domain, #TODO: conterrà la lista degli IRI completi di modo poi di fare il check
                 #range=object_property.range   
             )
-            print("-> DataProperty extracted from ontology: ", ontoProperty)
 
             properties_result.append(ontoProperty)
+
     getClasses()
     getProperties()
+
     json_classes = [jsonable_encoder(c) for c in classes_result]
     json_properties = [jsonable_encoder(p) for p in properties_result]
-    # si potrebbe restituire la lista ordinata in base a text
+
     return {"classes": json_classes, "properties": json_properties}
-    #return OntologyData(classes=sorted(list(classes_result)), properties=sorted(list(properties_result)))
 
 def saveOntologyDataToJson(ontology: Ontology, name: str):
-    path = os.path.join(EXTRACTED_DATA_FROM_ONTO_FOLDER, f"{name}.json")
+    path = os.path.join(configuration.extracted_data_from_ontology_directory, f"{name}.json")
     with open(path, "w+") as f:
-        #json.dump({"name": json_annotations, "data": json_relations}, f)
         json.dump(ontology, f)
 
 @app.get("/", status_code=204)
@@ -370,7 +386,7 @@ def get_classes(ontoNames: List[str]) -> List[OntoClass]:
     resultClasses = list()
     for filename in ontoNames:
         print("working on onto: ", filename)
-        classes_properties = getCLassesAndPropertiesFromJsonOntology(filename)
+        classes_properties = getClassesAndPropertiesFromJsonOntology(filename)
         print("----> classes: ", classes_properties['classes'])
         resultClasses.extend(classes_properties['classes'])
 
@@ -386,7 +402,7 @@ def get_properties(ontoNames: List[str]) -> List[OntoProperty]:
     resultProperties = list()
     for filename in ontoNames:
         print("working on onto: ", filename)
-        classes_properties = getCLassesAndPropertiesFromJsonOntology(filename)
+        classes_properties = getClassesAndPropertiesFromJsonOntology(filename)
         print("----> properties: ", classes_properties['properties'])
         resultProperties.extend(classes_properties['properties'])
 
@@ -426,43 +442,33 @@ def get_allocation_info(x_auth_request_email: str = Header(None)) -> Allocation:
 
     return response
 
-##### aggiunte per import ontologie
-UPLOAD_FOLDER = 'onto/' #definire in file configurations
-EXTRACTED_DATA_FROM_ONTO_FOLDER = 'onto/extractedData'
-@app.post("/api/upload")
+@app.post("/api/upload/ontology")
 def uploadOntology(file: UploadFile = File(...)) -> OntologyData:
     # l'argomento passato deve avere lo stesso nome che devinisco con
     # formData.append('nomeArgomento', fileObj, fileObj.name); 
     # Altrimenti errore: '422 unprocessable entity fastapi'
-    
-    print("file name: ", file.filename)
-    #file_location = f"{UPLOAD_FOLDER+file.filename}"
-    file_location = os.path.join(UPLOAD_FOLDER, f"{file.filename}")
+ 
+    file_location = os.path.join(configuration.upload_ontology_directory, f"{file.filename}")
 
     with open(file_location, "wb+") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    print('@@@Absolute Path of ontology: ', os.path.abspath(file_location))
     result = analyze_ontology(os.path.abspath(file_location))
     saveOntologyDataToJson({"name": file.filename, "data": result}, file.filename) 
-        #forse meglio prendere il nome dall'onto
-    print("#######Result",result)
 
     return result
 
-    #return {"info": f"file '{file.filename}' saved at '{file_location}'"}
-
-@app.delete("/api/upload/{filename}") 
+@app.delete("/api/ontology/{filename}") 
 def deleteOntology(filename: str):
     print("file name of Ontology to delete: ", filename)
     def removeOntology():
-        file_location = os.path.join(UPLOAD_FOLDER, f"{filename}")
+        file_location = os.path.join(configuration.upload_ontology_directory, f"{filename}")
         path = os.path.abspath(file_location)
         print("Path of file to remove:", path)
         os.remove(path)
     
     def removeDataJsonOntology(): 
-        file_location = os.path.join(EXTRACTED_DATA_FROM_ONTO_FOLDER, f"{filename}.json")
+        file_location = os.path.join(configuration.extracted_data_from_ontology_directory, f"{filename}.json")
         path = os.path.abspath(file_location)
         print("Path of file to remove:", path)
         os.remove(path)
@@ -471,54 +477,13 @@ def deleteOntology(filename: str):
     removeDataJsonOntology()
     return "Files removed..."
 
-@app.post("/api/upload/ontologies")
-def uploadOntology(ontologiesName: List[str]) -> List[Ontology]: #cambiare nome metodo 
-    
-    print("Names received: ", ontologiesName)
-    
-    ontologyList = []
-    for ontologyName in ontologiesName:
-        print("->Ontology name: ", ontologyName)
-        dataOfOnto = getCLassesAndPropertiesFromJsonOntology(ontologyName)
-        print("Classi estratte: ", dataOfOnto['classes'])
-        print("Properties estratte: ", dataOfOnto['properties'])
-
-        ontologyList.append({"name": ontologyName, "data": dataOfOnto})
-    #Devo restituire i dati (classi e properties) di tutte le ontologie
-    #Il front end li utilizzerà per mostrarle all'utente e permettergli di selezionare quella di 
-    #cui ha bisogno per annotare il documento
-
-    #Per ogni nome di ontologia ricevuta, concatena le classi e le properties da ogni nomeOnto.json
-    #Oppure provare a restituire una lista di oggetti di Ontology
-    return ontologyList
-
-@app.post("/api/upload/ontologies")
-def getCLassesAndPropertiesFromJsonOntology(filename: str) -> OntologyData:
-    file_location = os.path.join(EXTRACTED_DATA_FROM_ONTO_FOLDER, f"{filename}.json")
-    classesResult: Any
-    propertiesResult: Any
-    exists = os.path.exists(file_location)
-    if not exists:
-        return {"classes": [], "properties": []}
-    else: 
-        with open(file_location) as f:
-            onto = json.load(f)
-
-        classesResult = onto['data']['classes']
-        propertiesResult = onto['data']['properties']
-    #response = OntologyData(classes=classesResult, properties=propertiesResult) 
-    #pydantic.error_wrappers.ValidationError: 
-    return {"classes": classesResult, "properties": propertiesResult}
-
 @app.get("/api/ontology/names")
 def getNamesOntologiesAlreadyUploaded():
     namesOfOnto = list()
 
-    for file in os.listdir(EXTRACTED_DATA_FROM_ONTO_FOLDER):
+    for file in os.listdir(configuration.extracted_data_from_ontology_directory):
         if file.endswith('.json'):
             result = file.split('.json')[0]
             namesOfOnto.append(result)
-            
-    print('---->Onto already uploaded: ', namesOfOnto)
-    #return {"ontologiesNames": ["x.nt", "y.xml"]}
+
     return {"ontologiesNames": namesOfOnto}

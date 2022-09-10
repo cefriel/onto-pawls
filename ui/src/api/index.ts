@@ -141,7 +141,7 @@ export async function uploadOntology(file: FormData) {
     try {
         const response = await axios({
             method: 'post',
-            url: '/api/upload',
+            url: '/api/upload/ontology',
             data: file,
             headers: { 'Content-Type': 'multipart/form-data' },
         });
@@ -154,27 +154,11 @@ export async function uploadOntology(file: FormData) {
 
 export async function deleteFile(filename: string) {
     axios
-        .delete(`http://localhost:8080/api/upload/${filename}`)
+        .delete(`http://localhost:8080/api/ontology/${filename}`)
         .then((res) => {
             console.log(res);
         })
         .catch((err) => console.error(err));
-}
-
-export async function getDataOfOntologiesSelected(_ontologiesName: string[]) {
-    console.log('List of Ontologies Selected: ', _ontologiesName);
-    try {
-        const response = await axios({
-            method: 'post',
-            url: '/api/upload/ontologies',
-            data: _ontologiesName,
-        });
-        console.log('response data: ', response.data);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-    // return axios.post(`/api/upload/ontologies`, _ontologiesName);
 }
 
 export interface OntologiesNames {
