@@ -16,7 +16,7 @@ ui/*.log
 .env
 
 # Ignore any files in ./skiff_files
-skiff_files/*
+# skiff_files/*	de-commentare questa riga 
 
 ### Python Build Related ### 
 
