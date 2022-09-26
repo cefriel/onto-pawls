@@ -79,7 +79,7 @@ export async function getClasses(_ontologiesNames: OntologiesNames) {
             url: '/api/annotation/classes',
             data: ontoNames,
         });
-        console.log('response data: ', response.data);
+        // console.log('response data: ', response.data);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -94,7 +94,7 @@ export async function getProperties(_ontologiesNames: OntologiesNames) {
             url: '/api/annotation/properties',
             data: ontoNames,
         });
-        console.log('response data: ', response.data);
+        // console.log('response data: ', response.data);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -118,8 +118,8 @@ export async function getAllocatedPaperStatus(): Promise<Allocation> {
 }
 
 export function saveAnnotations(sha: string, pdfAnnotations: PdfAnnotations): Promise<any> {
-    console.log('pdfAnnotations.annotations: ', pdfAnnotations.annotations);
-    console.log('pdfAnnotations.relations: ', pdfAnnotations.relations);
+    // console.log('pdfAnnotations.annotations: ', pdfAnnotations.annotations);
+    // console.log('pdfAnnotations.relations: ', pdfAnnotations.relations);
     return axios.post(`/api/doc/${sha}/annotations`, {
         annotations: pdfAnnotations.annotations,
         relations: pdfAnnotations.relations,
@@ -145,7 +145,7 @@ export async function uploadOntology(file: FormData) {
             data: file,
             headers: { 'Content-Type': 'multipart/form-data' },
         });
-        console.log('response: ', response);
+        // console.log('response: ', response);
         return response;
     } catch (error) {
         console.log(error);

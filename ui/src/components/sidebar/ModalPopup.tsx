@@ -34,6 +34,10 @@ const App = ({ annotationStore }: { annotationStore: any }) => {
         annotationStore.setOntoNames(ontoNamesResult);
         console.log('New list of Names after removing ', filename, ' is: ', ontoNamesResult);
         console.log('AnnotationStore.ontoNames: ', annotationStore.ontoNames);
+        if (ontologiesNames.length === 0) {
+            annotationStore.setOntoClasses([]);
+            annotationStore.setOntoProperties([]);
+        }
         setFiles(filesUpdated);
     };
     const handleClose = () => {
