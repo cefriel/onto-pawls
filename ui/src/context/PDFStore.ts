@@ -127,7 +127,7 @@ export class PDFPageInfo {
         // to the PDF page's original scale means we can render it everywhere.
         const bounds = scaled(selection, 1 / this.scale);
 
-        return new Annotation(bounds, this.page.pageNumber - 1, ontoClass);
+        return new Annotation(bounds, this.page.pageNumber - 1, ontoClass, null, undefined, null);
     }
 
     getAnnotationForBounds(selection: Bounds, ontoClass: OntoClass): Optional<Annotation> {
@@ -169,7 +169,9 @@ export class PDFPageInfo {
             return undefined;
         }
         const bounds = spanningBound(tokenBounds);
-        return new Annotation(bounds, this.page.pageNumber - 1, ontoClass, ids);
+        const text = ids.map((t) => this.tokens[t.tokenIndex].text).join(' ');
+        console.log('Text of annotation: ', text);
+        return new Annotation(bounds, this.page.pageNumber - 1, ontoClass, ids, undefined, text);
     }
 
     getScaledTokenBounds(t: Token): Bounds {

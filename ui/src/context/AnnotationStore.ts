@@ -61,7 +61,8 @@ export class Annotation {
         public readonly page: number,
         public readonly ontoClass: OntoClass, // prima era generico: Label usato anche per Relations
         public readonly tokens: TokenId[] | null = null,
-        id: string | undefined = undefined
+        id: string | undefined = undefined,
+        public readonly text: string | null
     ) {
         this.id = id || uuidv4();
     }
@@ -80,12 +81,13 @@ export class Annotation {
             delta.page ?? this.page,
             delta.ontoClass ?? Object.assign({}, this.ontoClass),
             delta.tokens ?? this.tokens?.map((t) => Object.assign({}, t)),
-            this.id
+            this.id,
+            delta.text ?? this.text
         );
     }
 
     static fromObject(obj: Annotation) {
-        return new Annotation(obj.bounds, obj.page, obj.ontoClass, obj.tokens, obj.id);
+        return new Annotation(obj.bounds, obj.page, obj.ontoClass, obj.tokens, obj.id, obj.text);
     }
 }
 
