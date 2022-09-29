@@ -9,6 +9,7 @@ import { SidebarItem, SidebarItemTitle } from './common';
 
 import DropdownOntoClasses from './DropdownOntoClasses';
 import DropdownOntoProperties from './DropdownOntoProperties';
+import { DownloadExportedAnnotations } from './DownloadExportedAnnotations';
 import ModalPopup from './ModalPopup';
 
 export const Labels = () => {
@@ -17,10 +18,10 @@ export const Labels = () => {
         annotationStore.toggleFreeFormAnnotations(!annotationStore.freeFormAnnotations);
     };
 
-    // TODO: DISTINZIONE TRA MENU' Classes e Properties
     return (
         <SidebarItem>
             <ModalPopup annotationStore={annotationStore}></ModalPopup>
+            <DownloadExportedAnnotations></DownloadExportedAnnotations>
             <SidebarItemTitle>Classes</SidebarItemTitle>
             <Container>
                 <div>

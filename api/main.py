@@ -1,3 +1,4 @@
+from fileinput import filename
 from tkinter.tix import Form
 from typing import List, Optional, Dict, Any
 import logging
@@ -487,3 +488,16 @@ def getNamesOntologiesAlreadyUploaded():
             namesOfOnto.append(result)
 
     return {"ontologiesNames": namesOfOnto}
+
+@app.get("/api/annotation/export")
+def export_annotations(
+) -> PdfAnnotation:
+    annotations = os.path.join(
+        configuration.output_directory, "b4194f16757b9ff894a32278265e459543ec9931962a575b00e50a2ed543f592", f"development_user@example.com_annotations.json"
+    )
+    exists = os.path.exists(annotations)
+
+    if not exists:
+        raise HTTPException(status_code=404, detail=f"pdf b4194f16757b9ff894a32278265e459543ec9931962a575b00e50a2ed543f592 not found.")
+
+    return FileResponse(annotations, headers={"Access-Control-Expose-Headers":"Content-Disposition"}, media_type="application/json", filename="test.json")
