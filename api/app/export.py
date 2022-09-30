@@ -16,7 +16,7 @@ relations = list()
 
 def export_annotations(path: str, path_export: str):
     data = load_annotations(path)
-    
+
     global annotations
     global relations
 
@@ -36,7 +36,6 @@ def export_annotations(path: str, path_export: str):
 
     return os.path.abspath(path_export_with_extension)
 
-# g.bind("resources_ep-plan", "https://w3id.org/ep-plan/resource/")
 def get_iriResource(object: Any):
     base_iri = object['ontoClass']['iri'].split('#')[0]
     resource_iri = base_iri + "/resource/" + object['id']
@@ -44,11 +43,8 @@ def get_iriResource(object: Any):
     return resource_iri
 
 def get_annotation_by_id(id: str):
-    print("TEST--> annotations:", annotations)
     for annotation in annotations:
-        print("INSIDE")
         if (annotation['id'] == id):
-            print("annotation found by id:", annotation)
             return annotation
     
     return None
@@ -62,12 +58,10 @@ def analyze_annotation(object: Any, g: Graph):
     g.add((s, RDF.type, o))
     g.add((s, RDFS.comment, comment))
 
-    print("\n\t s:", s, "\t o:", o )
-
 def analyze_relation(object: Any, g: Graph):
     source_annotation_id = object['sourceIds'][0]
     target_annotation_id = object['targetIds'][0]
-    print("source_annotation id: ", source_annotation_id, "\t target_annotation id: ", target_annotation_id)
+
     source_annotation = get_annotation_by_id(source_annotation_id)
     target_annotation = get_annotation_by_id(target_annotation_id)
     

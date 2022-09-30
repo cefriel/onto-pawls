@@ -154,7 +154,7 @@ export async function uploadOntology(file: FormData) {
 
 export async function deleteFile(filename: string) {
     axios
-        .delete(`http://localhost:8080/api/ontology/${filename}`)
+        .delete(`/api/ontology/${filename}`)
         .then((res) => {
             console.log(res);
         })
