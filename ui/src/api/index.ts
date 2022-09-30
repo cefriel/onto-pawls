@@ -167,3 +167,14 @@ export async function getNamesOfOntologiesAlreadyUploaded(): Promise<OntologiesN
         .then((r) => r.data)
         .catch((err) => console.log(err));
 }
+
+export async function exportAnnotations(sha: string) {
+    return axios.get(`/api/annotation/${sha}/export`, {
+        responseType: 'blob',
+        /* 
+            headers: {
+            Authorization: 'Bearer <token>', // add authentication information as required by the backend APIs.
+            },
+        */
+    });
+}

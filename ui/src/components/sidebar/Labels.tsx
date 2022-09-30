@@ -12,7 +12,7 @@ import DropdownOntoProperties from './DropdownOntoProperties';
 import { DownloadExportedAnnotations } from './DownloadExportedAnnotations';
 import ModalPopup from './ModalPopup';
 
-export const Labels = () => {
+export const Labels = ({ sha }: any) => {
     const annotationStore = useContext(AnnotationStore);
     const onToggle = () => {
         annotationStore.toggleFreeFormAnnotations(!annotationStore.freeFormAnnotations);
@@ -21,7 +21,7 @@ export const Labels = () => {
     return (
         <SidebarItem>
             <ModalPopup annotationStore={annotationStore}></ModalPopup>
-            <DownloadExportedAnnotations></DownloadExportedAnnotations>
+            <DownloadExportedAnnotations sha={sha}></DownloadExportedAnnotations>
             <SidebarItemTitle>Classes</SidebarItemTitle>
             <Container>
                 <div>

@@ -489,15 +489,15 @@ def getNamesOntologiesAlreadyUploaded():
 
     return {"ontologiesNames": namesOfOnto}
 
-@app.get("/api/annotation/export")
-def export_annotations(
-) -> PdfAnnotation:
+@app.get("/api/annotation/{sha}/export")
+def export_annotations(sha: str, x_auth_request_email: str = Header(None)):
+    user = get_user_from_header(x_auth_request_email)
     annotations = os.path.join(
-        configuration.output_directory, "b4194f16757b9ff894a32278265e459543ec9931962a575b00e50a2ed543f592", f"development_user@example.com_annotations.json"
+        configuration.output_directory, sha, f"{user}_annotations.json"
     )
     exists = os.path.exists(annotations)
 
     if not exists:
-        raise HTTPException(status_code=404, detail=f"pdf b4194f16757b9ff894a32278265e459543ec9931962a575b00e50a2ed543f592 not found.")
+        raise HTTPException(status_code=404, detail=f"pdf {sha} not found.")
 
-    return FileResponse(annotations, headers={"Access-Control-Expose-Headers":"Content-Disposition"}, media_type="application/json", filename="test.json")
+    return FileResponse(annotations, headers={"Access-Control-Expose-Headers":"Content-Disposition"}, media_type="application/json", filename=sha+"-extractedAnnotations.json")

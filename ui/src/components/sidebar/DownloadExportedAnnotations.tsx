@@ -1,10 +1,10 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useDownloadFile } from '../../utils/useDownloadFile';
 import { Button, ButtonState } from './button';
 import { Alert } from 'react-bootstrap';
+import { exportAnnotations } from '../../api';
 
-export const DownloadExportedAnnotations: React.FC = () => {
+export const DownloadExportedAnnotations = ({ sha }: any) => {
     const [buttonState, setButtonState] = useState<ButtonState>(ButtonState.Primary);
     const [showAlert, setShowAlert] = useState<boolean>(false);
 
@@ -19,19 +19,12 @@ export const DownloadExportedAnnotations: React.FC = () => {
         }, 3000);
     };
 
-    const downloadFile = () => {
-        return axios.get('/api/annotation/export', {
-            responseType: 'blob',
-            /* 
-                headers: {
-                Authorization: 'Bearer <token>', // add authentication information as required by the backend APIs.
-                },
-            */
-        });
+    const askApi = () => {
+        return exportAnnotations(sha);
     };
 
     const { ref, url, download, name } = useDownloadFile({
-        apiDefinition: downloadFile,
+        apiDefinition: askApi,
         preDownloading,
         postDownloading,
         onError: onErrorDownloadFile,

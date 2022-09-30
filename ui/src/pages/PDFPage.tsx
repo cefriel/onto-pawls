@@ -287,7 +287,7 @@ export const PDFPage = () => {
                             <WithSidebar width={sidebarWidth}>
                                 <SidebarContainer width={sidebarWidth}>
                                     <Header />
-                                    <Labels />
+                                    <Labels sha={sha} />
                                     <AssignedPaperList papers={assignedPaperStatuses} />
                                     {activePaperStatus ? (
                                         <Annotations
