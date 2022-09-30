@@ -76,7 +76,7 @@ const App = ({ annotationStore }: { annotationStore: any }) => {
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
+            <Button variant="primary" className="btn m-1" onClick={handleShow}>
                 Manage Ontologies
             </Button>
 

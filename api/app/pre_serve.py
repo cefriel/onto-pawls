@@ -22,6 +22,7 @@ class Configuration(NamedTuple):
         Filename where list of allowed users is specified.
     """
     upload_ontology_directory: str
+    directory_extracted_annotations: str
     extracted_data_from_ontology_directory: str
     output_directory: str
     labels: List[Dict[str, str]]

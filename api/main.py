@@ -18,7 +18,7 @@ from fastapi.encoders import jsonable_encoder
 from app.metadata import PaperStatus, Allocation
 from app.annotations import Annotation, OntoClass, OntoProperty, RelationGroup, PdfAnnotation, OntologyData, Ontology
 from app.utils import StackdriverJsonFormatter
-from app import pre_serve
+from app import pre_serve, export
 
 IN_PRODUCTION = os.getenv("IN_PRODUCTION", "dev")
 
@@ -500,4 +500,16 @@ def export_annotations(sha: str, x_auth_request_email: str = Header(None)):
     if not exists:
         raise HTTPException(status_code=404, detail=f"pdf {sha} not found.")
 
-    return FileResponse(annotations, headers={"Access-Control-Expose-Headers":"Content-Disposition"}, media_type="application/json", filename=sha+"-extractedAnnotations.json")
+    abspath_annotations = os.path.abspath(annotations)
+    path_export = os.path.join(
+        configuration.directory_extracted_annotations, f"{sha}_extractedAnnotations"
+    )
+    abspath_export = os.path.abspath(path_export)
+    print("\npaths Annotations:", abspath_annotations, "\texport: ", abspath_export)
+
+    abspath_export_result = export.export_annotations(abspath_annotations, abspath_export)
+    print("\nResult path: ", abspath_export_result)
+    filename_export_result = abspath_export_result.split("/")[-1]
+    print("filename: ", filename_export_result)
+
+    return FileResponse(abspath_export_result, headers={"Access-Control-Expose-Headers":"Content-Disposition"}, media_type="text/turtle", filename=filename_export_result)

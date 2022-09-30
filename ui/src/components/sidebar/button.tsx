@@ -15,8 +15,8 @@ interface ButtonProps {
 export const Button: React.FC<ButtonProps> = ({ buttonState, onClick, label }) => {
     const isLoading = buttonState === ButtonState.Loading;
     return (
-        <div className="d-flex justify-content-center mt-5">
-            <InternalButton onClick={onClick} variant="primary" size="sm">
+        <div className="d-flex">
+            <InternalButton onClick={onClick} variant="primary" className="btn m-1">
                 {isLoading && (
                     <Spinner
                         as="span"
