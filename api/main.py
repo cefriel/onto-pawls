@@ -512,4 +512,4 @@ def export_annotations(sha: str, x_auth_request_email: str = Header(None)):
     filename_export_result = abspath_export_result.split("/")[-1]
     print("filename: ", filename_export_result)
 
-    return FileResponse(abspath_export_result, headers={"Access-Control-Expose-Headers":"Content-Disposition"}, media_type="text/turtle", filename=filename_export_result)
+    return FileResponse(abspath_export_result, headers={"Access-Control-Expose-Headers":"Content-Disposition"}, media_type="application/n-triples", filename=filename_export_result)

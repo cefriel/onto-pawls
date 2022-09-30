@@ -3,7 +3,7 @@ from rdflib import *
 import os
 import json
 
-format_predefined = "ttl"
+format_predefined = "nt"
 
 def load_annotations(path: str):
     with open(path) as f:
@@ -15,10 +15,10 @@ annotations = list()
 relations = list()
 
 def export_annotations(path: str, path_export: str):
-    annotations = list()
-    relations = list()
-
     data = load_annotations(path)
+    
+    global annotations
+    global relations
 
     annotations = data['annotations']
     relations = data['relations']
@@ -44,8 +44,11 @@ def get_iriResource(object: Any):
     return resource_iri
 
 def get_annotation_by_id(id: str):
+    print("TEST--> annotations:", annotations)
     for annotation in annotations:
+        print("INSIDE")
         if (annotation['id'] == id):
+            print("annotation found by id:", annotation)
             return annotation
     
     return None
@@ -64,7 +67,7 @@ def analyze_annotation(object: Any, g: Graph):
 def analyze_relation(object: Any, g: Graph):
     source_annotation_id = object['sourceIds'][0]
     target_annotation_id = object['targetIds'][0]
-
+    print("source_annotation id: ", source_annotation_id, "\t target_annotation id: ", target_annotation_id)
     source_annotation = get_annotation_by_id(source_annotation_id)
     target_annotation = get_annotation_by_id(target_annotation_id)
     
