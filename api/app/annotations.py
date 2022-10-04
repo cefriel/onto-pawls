@@ -49,7 +49,7 @@ class Annotation(BaseModel):
     ontoClass: OntoClass
     bounds: Bounds
     tokens: Optional[List[TokenId]] = None
-    text: str
+    text: str = None
 
 
 class RelationGroup(BaseModel):
