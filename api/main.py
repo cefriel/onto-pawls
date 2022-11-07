@@ -7,6 +7,8 @@ import json
 import glob
 import uuid
 from urllib import request
+from pathlib import Path
+from typing import Union
 import shutil
 
 from owlready2 import *
@@ -459,6 +461,35 @@ def uploadOntology(file: UploadFile = File(...)) -> OntologyData:
 
     return result
 
+def copy(source: Union[str, Path], destination: Union[str, Path]) -> None:
+    shutil.copy(str(source), str(destination))
+
+@app.post("/api/upload/doc")
+def uploadDocument(file: UploadFile = File(...)):
+    """
+    Add a PDF to the pawls dataset (skiff_files/).
+    """
+    #base_dir = Path("skiff_files/apps/pawls/papers")
+    #base_dir.mkdir(exist_ok=True, parents=True)
+
+    pdf = str(file.filename)
+
+    pdf_name = Path(pdf).stem
+    print("pdf_name: ", pdf_name)
+
+    output_dir = os.path.join(configuration.output_directory, pdf_name)
+
+    print("output_dir: ", output_dir)
+
+    file_location = os.path.join(output_dir, f"{file.filename}")
+    print("file_location: ", os.path.abspath(file_location))
+
+    os.mkdir(output_dir)
+
+    with open(file_location, "wb+") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    #copy(pdf, output_dir / (pdf_name + '.pdf'))
+
 @app.delete("/api/ontology/{filename}") 
 def deleteOntology(filename: str):
     print("file name of Ontology to delete: ", filename)
@@ -489,9 +520,6 @@ def getNamesOntologiesAlreadyUploaded():
 
     return {"ontologiesNames": namesOfOnto}
 
-@app.get("/api/doc/names")
-def getNamesDocumentsAlreadyUploaded(): 
-    return {}
 @app.get("/api/annotation/{sha}/export")
 def export_annotations(sha: str, x_auth_request_email: str = Header(None)):
     user = get_user_from_header(x_auth_request_email)

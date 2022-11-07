@@ -5,14 +5,16 @@ import Modal from 'react-bootstrap/Modal';
 import { notification } from '@allenai/varnish';
 import InputFile from './inputFile';
 import FileList from './FileList';
-import { getAllocatedPaperStatus } from '../../api/index';
+import { getAllocatedPaperStatus, uploadDocument } from '../../api/index';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
     const [show, setShow] = useState(false);
     const [files, setFiles]: [files: any, setFiles: any] = useState([]);
     const supportedFiles = 'PDF';
-
+    const api = (param: any) => {
+        uploadDocument(param);
+    };
     useEffect(() => {
         getAllocatedPaperStatus()
             .then((allocation) => {
@@ -23,8 +25,8 @@ const App = () => {
             .catch((err: any) => {
                 console.log(err);
                 notification.warn({
-                    message: 'Error importing documents',
-                    description: 'No description was given for this warning',
+                    message: 'Error',
+                    description: 'Error showing list of documents already imported.',
                 });
             });
     }, []);
@@ -58,6 +60,7 @@ const App = () => {
                     <InputFile
                         files={files}
                         updateFiles={updateFiles}
+                        api={api}
                         supportedFiles={supportedFiles}></InputFile>
                     <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">

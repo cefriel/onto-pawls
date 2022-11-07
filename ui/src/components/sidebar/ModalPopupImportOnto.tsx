@@ -4,17 +4,19 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import InputFile from './inputFile';
 import FileList from './FileList';
-import { OntologiesNames, getClasses, getProperties } from '../../api/index';
+import { OntologiesNames, getClasses, getProperties, uploadOntology } from '../../api/index';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = ({ annotationStore }: { annotationStore: any }) => {
     const [show, setShow] = useState(false);
     const [files, setFiles]: [files: any, setFiles: any] = useState([]);
     const supportedFiles = 'N-Triples, RDF/XML, OWL/XML';
-
+    const api = (param: any) => {
+        uploadOntology(param);
+    };
     useEffect(() => {
         const _ontoNames = annotationStore.ontoNames.ontologiesNames;
-        // Chiamo api: dammi lista dei file che sono già stati caricati predentemente
+        // Chiamo api: dammi lista delle ontologie che sono già state caricate predentemente
         if (_ontoNames.length > 0) {
             const names = _ontoNames.map((value: any) => ({
                 key: value, // forse non serve più
@@ -89,6 +91,7 @@ const App = ({ annotationStore }: { annotationStore: any }) => {
                     <InputFile
                         files={files}
                         updateFiles={updateFiles}
+                        api={api}
                         supportedFiles={supportedFiles}></InputFile>
                     <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">

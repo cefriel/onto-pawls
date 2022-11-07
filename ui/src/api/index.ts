@@ -24,10 +24,6 @@ export interface OntologiesNames {
     ontologiesNames: string[];
 }
 
-export interface DocumentsNames {
-    documentsNames: string[];
-}
-
 export interface PaperStatus {
     sha: string;
     name: string;
@@ -156,6 +152,21 @@ export async function uploadOntology(file: FormData) {
     }
 }
 
+export async function uploadDocument(file: FormData) {
+    console.log('File in uploadDocument: ', file);
+    try {
+        const response = await axios({
+            method: 'post',
+            url: '/api/upload/doc',
+            data: file,
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export async function deleteFile(filename: string) {
     axios
         .delete(`/api/ontology/${filename}`)
@@ -168,13 +179,6 @@ export async function deleteFile(filename: string) {
 export async function getNamesOfOntologiesAlreadyUploaded(): Promise<OntologiesNames> {
     return await axios
         .get('/api/ontology/names')
-        .then((r) => r.data)
-        .catch((err) => console.log(err));
-}
-
-export async function getNamesOfDocumentsAlreadyUploaded(): Promise<DocumentsNames> {
-    return await axios
-        .get('/api/doc/names')
         .then((r) => r.data)
         .catch((err) => console.log(err));
 }

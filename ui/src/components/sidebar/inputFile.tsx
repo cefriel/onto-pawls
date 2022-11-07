@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { uploadOntology } from '../../api/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import '../style/InputFile.scss';
@@ -7,10 +6,12 @@ import '../style/InputFile.scss';
 const InputFile = ({
     files,
     updateFiles,
+    api,
     supportedFiles,
 }: {
     files: any;
     updateFiles: any;
+    api: any;
     supportedFiles: string;
 }) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
@@ -42,7 +43,7 @@ const InputFile = ({
 
         // can still access file object here with  fileObj and fileObj.name
         formData.append('file', fileObj, fileObj.name);
-        uploadOntology(formData);
+        api(formData);
         // da fare try catch (se uploadOntology ok => ... altrimenti catch errore)
         fileObj.isUploading = false;
         updateFiles(fileObj);
