@@ -4,7 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import '../style/InputFile.scss';
 
-const InputFile = ({ files, updateFiles }: { files: any; updateFiles: any }) => {
+const InputFile = ({
+    files,
+    updateFiles,
+    supportedFiles,
+}: {
+    files: any;
+    updateFiles: any;
+    supportedFiles: string;
+}) => {
     const inputRef = useRef<HTMLInputElement | null>(null);
     const formData = new FormData();
     const handleClick = () => {
@@ -53,7 +61,7 @@ const InputFile = ({ files, updateFiles }: { files: any; updateFiles: any }) => 
                     </button>
                 </div>
                 <p className="main">Supported files</p>
-                <p className="info">N-Triples, RDF/XML, OWL/XML</p>
+                <p className="info">{supportedFiles}</p>
             </div>
         </>
     );

@@ -10,7 +10,8 @@ import { SidebarItem, SidebarItemTitle } from './common';
 import DropdownOntoClasses from './DropdownOntoClasses';
 import DropdownOntoProperties from './DropdownOntoProperties';
 import { DownloadExportedAnnotations } from './DownloadExportedAnnotations';
-import ModalPopup from './ModalPopup';
+import ModalPopupImportOnto from './ModalPopupImportOnto';
+import ModalPopupImportDocuments from './ModalPopupImportDocuments';
 
 export const Labels = ({ sha }: any) => {
     const annotationStore = useContext(AnnotationStore);
@@ -20,7 +21,8 @@ export const Labels = ({ sha }: any) => {
 
     return (
         <SidebarItem>
-            <ModalPopup annotationStore={annotationStore}></ModalPopup>
+            <ModalPopupImportDocuments></ModalPopupImportDocuments>
+            <ModalPopupImportOnto annotationStore={annotationStore}></ModalPopupImportOnto>
             <DownloadExportedAnnotations sha={sha}></DownloadExportedAnnotations>
             <SidebarItemTitle>Classes</SidebarItemTitle>
             <Container>

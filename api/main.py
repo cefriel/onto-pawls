@@ -489,6 +489,9 @@ def getNamesOntologiesAlreadyUploaded():
 
     return {"ontologiesNames": namesOfOnto}
 
+@app.get("/api/doc/names")
+def getNamesDocumentsAlreadyUploaded(): 
+    return {}
 @app.get("/api/annotation/{sha}/export")
 def export_annotations(sha: str, x_auth_request_email: str = Header(None)):
     user = get_user_from_header(x_auth_request_email)

@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const App = ({ annotationStore }: { annotationStore: any }) => {
     const [show, setShow] = useState(false);
     const [files, setFiles]: [files: any, setFiles: any] = useState([]);
+    const supportedFiles = 'N-Triples, RDF/XML, OWL/XML';
 
     useEffect(() => {
         const _ontoNames = annotationStore.ontoNames.ontologiesNames;
@@ -85,7 +86,10 @@ const App = ({ annotationStore }: { annotationStore: any }) => {
                     <Modal.Title>Manage Ontologies</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <InputFile files={files} updateFiles={updateFiles}></InputFile>
+                    <InputFile
+                        files={files}
+                        updateFiles={updateFiles}
+                        supportedFiles={supportedFiles}></InputFile>
                     <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                             <FileList files={files} removeFile={removeFile} />
