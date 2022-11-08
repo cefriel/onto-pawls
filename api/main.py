@@ -483,12 +483,12 @@ def uploadDocument(file: UploadFile = File(...)):
 
     file_location = os.path.join(output_dir, f"{file.filename}")
     print("file_location: ", os.path.abspath(file_location))
-
-    os.mkdir(output_dir)
+    
+    os.umask(0)
+    os.mkdir(output_dir, 0o777)
 
     with open(file_location, "wb+") as buffer:
         shutil.copyfileobj(file.file, buffer)
-    #copy(pdf, output_dir / (pdf_name + '.pdf'))
 
 @app.delete("/api/ontology/{filename}") 
 def deleteOntology(filename: str):
