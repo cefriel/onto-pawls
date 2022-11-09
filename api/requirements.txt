@@ -22,3 +22,6 @@ aiofiles
 # to work with ontologies
 owlready2
 rdflib
+
+pandas
+pdfplumber

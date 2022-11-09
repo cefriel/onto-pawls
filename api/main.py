@@ -20,6 +20,7 @@ from fastapi.encoders import jsonable_encoder
 from app.metadata import PaperStatus, Allocation
 from app.annotations import Annotation, OntoClass, OntoProperty, RelationGroup, PdfAnnotation, OntologyData, Ontology
 from app.utils import StackdriverJsonFormatter
+from app.preprocess import preprocess
 from app import pre_serve, export
 
 IN_PRODUCTION = os.getenv("IN_PRODUCTION", "dev")
@@ -489,6 +490,8 @@ def uploadDocument(file: UploadFile = File(...)):
 
     with open(file_location, "wb+") as buffer:
         shutil.copyfileobj(file.file, buffer)
+    
+    preprocess("pdfplumber", file_location)
 
 @app.delete("/api/ontology/{filename}") 
 def deleteOntology(filename: str):
