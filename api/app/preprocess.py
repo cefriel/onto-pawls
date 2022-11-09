@@ -2,9 +2,6 @@ import os
 from pathlib import Path
 import json
 
-import click
-import glob
-
 from app.pawls.preprocessors.pdfplumber import process_pdfplumber
 
 def preprocess(preprocessor: str, p: str):

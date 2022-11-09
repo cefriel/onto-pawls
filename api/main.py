@@ -21,6 +21,7 @@ from app.metadata import PaperStatus, Allocation
 from app.annotations import Annotation, OntoClass, OntoProperty, RelationGroup, PdfAnnotation, OntologyData, Ontology
 from app.utils import StackdriverJsonFormatter
 from app.preprocess import preprocess
+from app.assign import assign
 from app import pre_serve, export
 
 IN_PRODUCTION = os.getenv("IN_PRODUCTION", "dev")
@@ -466,12 +467,13 @@ def copy(source: Union[str, Path], destination: Union[str, Path]) -> None:
     shutil.copy(str(source), str(destination))
 
 @app.post("/api/upload/doc")
-def uploadDocument(file: UploadFile = File(...)):
+def uploadDocument(x_auth_request_email: str = Header(None), file: UploadFile = File(...)):
     """
     Add a PDF to the pawls dataset (skiff_files/).
     """
     #base_dir = Path("skiff_files/apps/pawls/papers")
     #base_dir.mkdir(exist_ok=True, parents=True)
+    user = get_user_from_header(x_auth_request_email)
 
     pdf = str(file.filename)
 
@@ -492,6 +494,8 @@ def uploadDocument(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
     
     preprocess("pdfplumber", file_location)
+
+    assign(configuration.output_directory, user, pdf_name)
 
 @app.delete("/api/ontology/{filename}") 
 def deleteOntology(filename: str):
