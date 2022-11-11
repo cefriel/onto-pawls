@@ -497,6 +497,8 @@ def uploadDocument(x_auth_request_email: str = Header(None), file: UploadFile = 
 
     assign(configuration.output_directory, user, pdf_name)
 
+    return "ok"
+
 @app.delete("/api/ontology/{filename}") 
 def deleteOntology(filename: str):
     print("file name of Ontology to delete: ", filename)

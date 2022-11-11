@@ -10,9 +10,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const App = ({ annotationStore }: { annotationStore: any }) => {
     const [show, setShow] = useState(false);
     const [files, setFiles]: [files: any, setFiles: any] = useState([]);
+    const [isUploading, setIsUploading] = useState<boolean>(false);
+    const [anyFileUploaded, setAnyFileUploaded] = useState<boolean>(false);
     const supportedFiles = 'N-Triples, RDF/XML, OWL/XML';
     const api = (param: any) => {
         uploadOntology(param);
+    };
+    const changeStateFileIsUploading = (value: boolean) => {
+        setIsUploading(value);
+        console.log('File is uploding? ', isUploading);
+    };
+    const changeStateAnyFileUploaded = (value: boolean) => {
+        setAnyFileUploaded(value);
+        console.log('Any file was uploaded? ', isUploading);
+        // if no file was uploaded then there is no need to refreshh the page after the modal is closed.
     };
     useEffect(() => {
         const _ontoNames = annotationStore.ontoNames.ontologiesNames;
@@ -44,7 +55,13 @@ const App = ({ annotationStore }: { annotationStore: any }) => {
         setFiles(filesUpdated);
     };
     const handleClose = () => {
-        setShow(false);
+        if (anyFileUploaded && !isUploading) {
+            setShow(false);
+            window.location.reload();
+        }
+        if (!anyFileUploaded && !isUploading) {
+            setShow(false);
+        }
     };
     const handleShow = () => setShow(true);
     const askDataOfOntologies = () => {
@@ -91,6 +108,8 @@ const App = ({ annotationStore }: { annotationStore: any }) => {
                     <InputFile
                         files={files}
                         updateFiles={updateFiles}
+                        changeStateFileIsUploading={changeStateFileIsUploading}
+                        changeStateAnyFileUploaded={changeStateAnyFileUploaded}
                         api={api}
                         supportedFiles={supportedFiles}></InputFile>
                     <Form>

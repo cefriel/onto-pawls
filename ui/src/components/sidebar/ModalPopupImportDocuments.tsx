@@ -11,9 +11,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const App = () => {
     const [show, setShow] = useState(false);
     const [files, setFiles]: [files: any, setFiles: any] = useState([]);
+    const [isUploading, setIsUploading] = useState<boolean>(false);
+    const [anyFileUploaded, setAnyFileUploaded] = useState<boolean>(false);
     const supportedFiles = 'PDF';
     const api = (param: any) => {
-        uploadDocument(param);
+        return uploadDocument(param);
+    };
+    const changeStateFileIsUploading = (value: boolean) => {
+        setIsUploading(value);
+        console.log('File is uploding? ', isUploading);
+    };
+    const changeStateAnyFileUploaded = (value: boolean) => {
+        setAnyFileUploaded(value);
+        console.log('Any file was uploaded? ', isUploading);
+        // if no file was uploaded then there is no need to refreshh the page after the modal is closed.
     };
     useEffect(() => {
         getAllocatedPaperStatus()
@@ -36,7 +47,13 @@ const App = () => {
         // no action for now
     };
     const handleClose = () => {
-        setShow(false);
+        if (anyFileUploaded && !isUploading) {
+            setShow(false);
+            window.location.reload();
+        }
+        if (!anyFileUploaded && !isUploading) {
+            setShow(false);
+        }
     };
     const handleShow = () => setShow(true);
     const updateFiles = (_file: any) => {
@@ -60,6 +77,8 @@ const App = () => {
                     <InputFile
                         files={files}
                         updateFiles={updateFiles}
+                        changeStateFileIsUploading={changeStateFileIsUploading}
+                        changeStateAnyFileUploaded={changeStateAnyFileUploaded}
                         api={api}
                         supportedFiles={supportedFiles}></InputFile>
                     <Form>

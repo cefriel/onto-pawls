@@ -6,11 +6,15 @@ import '../style/InputFile.scss';
 const InputFile = ({
     files,
     updateFiles,
+    changeStateFileIsUploading,
+    changeStateAnyFileUploaded,
     api,
     supportedFiles,
 }: {
     files: any;
     updateFiles: any;
+    changeStateFileIsUploading: any;
+    changeStateAnyFileUploaded: any;
     api: any;
     supportedFiles: string;
 }) => {
@@ -33,6 +37,7 @@ const InputFile = ({
             return;
         }
         fileObj.isUploading = true;
+        changeStateFileIsUploading(true);
         updateFiles(fileObj);
         console.log('fileObj is', fileObj);
         // reset file input
@@ -43,10 +48,20 @@ const InputFile = ({
 
         // can still access file object here with  fileObj and fileObj.name
         formData.append('file', fileObj, fileObj.name);
-        api(formData);
+        api(formData)
+            .then((result: any) => {
+                console.log('Response after the document was uploaded', result);
+                updateFiles(fileObj);
+                fileObj.isUploading = false;
+                changeStateFileIsUploading(false);
+                changeStateAnyFileUploaded(true);
+            })
+            .catch((error: any) => {
+                console.log('An error occured after trying to upload a file:', error);
+                fileObj.isUploading = false;
+                changeStateFileIsUploading(false);
+            });
         // da fare try catch (se uploadOntology ok => ... altrimenti catch errore)
-        fileObj.isUploading = false;
-        updateFiles(fileObj);
     };
 
     return (
