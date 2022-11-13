@@ -32,7 +32,9 @@ def export_annotations(path: str, path_export: str):
         analyze_relation(relation, g)
 
     path_export_with_extension = path_export+"."+format_predefined
+
     g.serialize(destination=path_export_with_extension, format=format_predefined)
+    os.chmod(path_export_with_extension, 0o777)
 
     return os.path.abspath(path_export_with_extension)
 

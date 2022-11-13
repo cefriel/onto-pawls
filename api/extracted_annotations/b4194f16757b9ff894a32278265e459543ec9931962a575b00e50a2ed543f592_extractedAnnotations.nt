@@ -1,0 +1,44 @@
+<https://w3id.org/ep-plan/resource/2b1aa58d-d95c-4caa-bc2e-b1680a0c4229> <http://purl.org/net/p-plan#isPrecededBy> <https://w3id.org/ep-plan/resource/9ef6d54b-ab0e-4b4a-881e-eabc5aec433e> .
+<https://w3id.org/ep-plan/resource/c9b219f6-7826-41a8-8fb2-43ced9f88e44> <https://w3id.org/ep-plan#isPrecededBy> <https://w3id.org/ep-plan/resource/8739ce1f-7bcb-4c08-9ee6-5990ee5f10a3> .
+<https://w3id.org/ep-plan/resource/92d35d53-7ba2-409d-8684-c03e1d060517> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Step> .
+<https://w3id.org/ep-plan/resource/2b1aa58d-d95c-4caa-bc2e-b1680a0c4229> <https://w3id.org/ep-plan#isStepOfPlan> <https://w3id.org/ep-plan/resource/8289df0f-6048-4ba5-8ef7-d4eb6416c57e> .
+<https://w3id.org/ep-plan/resource/5550134e-90aa-47d5-9564-2a3392ca1004> <https://w3id.org/ep-plan#isStepOfPlan> <https://w3id.org/ep-plan/resource/8289df0f-6048-4ba5-8ef7-d4eb6416c57e> .
+<https://w3id.org/ep-plan/resource/c9b219f6-7826-41a8-8fb2-43ced9f88e44> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#MultiStep> .
+<https://w3id.org/ep-plan/resource/bb1c3438-75ef-4bae-929d-44f98a97ec1e> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Step> .
+<https://w3id.org/ep-plan/resource/2b1aa58d-d95c-4caa-bc2e-b1680a0c4229> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Step> .
+<https://w3id.org/ep-plan/resource/5550134e-90aa-47d5-9564-2a3392ca1004> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Step> .
+<https://w3id.org/ep-plan/resource/bf51c888-e974-459a-9775-97bc03d25c60> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Plan> .
+<https://w3id.org/ep-plan/resource/d701fda5-72c6-4054-a9fb-20ef6383378e> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Step> .
+<https://w3id.org/ep-plan/resource/92ba236b-7223-4965-a85c-4b1ef5c18f09> <https://w3id.org/ep-plan#isPrecededBy> <https://w3id.org/ep-plan/resource/92d35d53-7ba2-409d-8684-c03e1d060517> .
+<https://w3id.org/ep-plan/resource/5550134e-90aa-47d5-9564-2a3392ca1004> <http://www.w3.org/2000/01/rdf-schema#comment> "Install the oiler." .
+<https://w3id.org/ep-plan/resource/13e3334b-efaf-4c26-89af-2d7c70e52e9e> <https://w3id.org/ep-plan#isStepOfPlan> <https://w3id.org/ep-plan/resource/8289df0f-6048-4ba5-8ef7-d4eb6416c57e> .
+<https://w3id.org/ep-plan/resource/9ef6d54b-ab0e-4b4a-881e-eabc5aec433e> <http://www.w3.org/2000/01/rdf-schema#comment> "Remove the oiler." .
+<https://w3id.org/ep-plan/resource/8739ce1f-7bcb-4c08-9ee6-5990ee5f10a3> <http://www.w3.org/2000/01/rdf-schema#comment> "Flush the bearing housing with the proper lubricating oil to ensure oil quality after cleaning." .
+<https://w3id.org/ep-plan/resource/8739ce1f-7bcb-4c08-9ee6-5990ee5f10a3> <https://w3id.org/ep-plan#isPrecededBy> <https://w3id.org/ep-plan/resource/bb1c3438-75ef-4bae-929d-44f98a97ec1e> .
+<https://w3id.org/ep-plan/resource/9ef6d54b-ab0e-4b4a-881e-eabc5aec433e> <https://w3id.org/ep-plan#isStepOfPlan> <https://w3id.org/ep-plan/resource/8289df0f-6048-4ba5-8ef7-d4eb6416c57e> .
+<https://w3id.org/ep-plan/resource/92d35d53-7ba2-409d-8684-c03e1d060517> <https://w3id.org/ep-plan#isStepOfPlan> <https://w3id.org/ep-plan/resource/8289df0f-6048-4ba5-8ef7-d4eb6416c57e> .
+<https://w3id.org/ep-plan/resource/bf51c888-e974-459a-9775-97bc03d25c60> <http://www.w3.org/2000/01/rdf-schema#comment> "Lubricate the bearings after a shutdown period" .
+<https://w3id.org/ep-plan/resource/13e3334b-efaf-4c26-89af-2d7c70e52e9e> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Step> .
+<https://w3id.org/ep-plan/resource/c9b219f6-7826-41a8-8fb2-43ced9f88e44> <https://w3id.org/ep-plan#isDecomposedAsPlan> <https://w3id.org/ep-plan/resource/8289df0f-6048-4ba5-8ef7-d4eb6416c57e> .
+<https://w3id.org/ep-plan/resource/bb1c3438-75ef-4bae-929d-44f98a97ec1e> <http://www.w3.org/2000/01/rdf-schema#comment> "Flush out the bearings and bearing frame with a light oil to remove contaminants. During flushing, make sure to rotate the shaft slowly by hand." .
+<https://w3id.org/ep-plan/resource/13e3334b-efaf-4c26-89af-2d7c70e52e9e> <http://www.w3.org/2000/01/rdf-schema#comment> "Replace the adjustment assembly in the oiler." .
+<https://w3id.org/ep-plan/resource/92ba236b-7223-4965-a85c-4b1ef5c18f09> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Step> .
+<https://w3id.org/ep-plan/resource/8289df0f-6048-4ba5-8ef7-d4eb6416c57e> <https://w3id.org/ep-plan#isSubPlanOfPlan> <https://w3id.org/ep-plan/resource/bf51c888-e974-459a-9775-97bc03d25c60> .
+<https://w3id.org/ep-plan/resource/92d35d53-7ba2-409d-8684-c03e1d060517> <https://w3id.org/ep-plan#isPrecededBy> <https://w3id.org/ep-plan/resource/2b1aa58d-d95c-4caa-bc2e-b1680a0c4229> .
+<https://w3id.org/ep-plan/resource/8739ce1f-7bcb-4c08-9ee6-5990ee5f10a3> <https://w3id.org/ep-plan#isStepOfPlan> <https://w3id.org/ep-plan/resource/bf51c888-e974-459a-9775-97bc03d25c60> .
+<https://w3id.org/ep-plan/resource/bb1c3438-75ef-4bae-929d-44f98a97ec1e> <https://w3id.org/ep-plan#isStepOfPlan> <https://w3id.org/ep-plan/resource/bf51c888-e974-459a-9775-97bc03d25c60> .
+<https://w3id.org/ep-plan/resource/8739ce1f-7bcb-4c08-9ee6-5990ee5f10a3> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Step> .
+<https://w3id.org/ep-plan/resource/c9b219f6-7826-41a8-8fb2-43ced9f88e44> <https://w3id.org/ep-plan#isStepOfPlan> <https://w3id.org/ep-plan/resource/bf51c888-e974-459a-9775-97bc03d25c60> .
+<https://w3id.org/ep-plan/resource/2b1aa58d-d95c-4caa-bc2e-b1680a0c4229> <http://www.w3.org/2000/01/rdf-schema#comment> "Remove the adjustment assembly from the oiler." .
+<https://w3id.org/ep-plan/resource/8289df0f-6048-4ba5-8ef7-d4eb6416c57e> <http://www.w3.org/2000/01/rdf-schema#comment> "Lubricate the bearings with oil" .
+<https://w3id.org/ep-plan/resource/9ef6d54b-ab0e-4b4a-881e-eabc5aec433e> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Step> .
+<https://w3id.org/ep-plan/resource/92ba236b-7223-4965-a85c-4b1ef5c18f09> <https://w3id.org/ep-plan#isStepOfPlan> <https://w3id.org/ep-plan/resource/8289df0f-6048-4ba5-8ef7-d4eb6416c57e> .
+<https://w3id.org/ep-plan/resource/c9b219f6-7826-41a8-8fb2-43ced9f88e44> <http://www.w3.org/2000/01/rdf-schema#comment> "Refer to Reassembly section for proper bearing lubrication procedure." .
+<https://w3id.org/ep-plan/resource/92ba236b-7223-4965-a85c-4b1ef5c18f09> <http://www.w3.org/2000/01/rdf-schema#comment> "Lock in position." .
+<https://w3id.org/ep-plan/resource/5550134e-90aa-47d5-9564-2a3392ca1004> <https://w3id.org/ep-plan#isPrecededBy> <https://w3id.org/ep-plan/resource/13e3334b-efaf-4c26-89af-2d7c70e52e9e> .
+<https://w3id.org/ep-plan/resource/13e3334b-efaf-4c26-89af-2d7c70e52e9e> <https://w3id.org/ep-plan#isPrecededBy> <https://w3id.org/ep-plan/resource/92ba236b-7223-4965-a85c-4b1ef5c18f09> .
+<https://w3id.org/ep-plan/resource/d701fda5-72c6-4054-a9fb-20ef6383378e> <https://w3id.org/ep-plan#isPrecededBy> <https://w3id.org/ep-plan/resource/5550134e-90aa-47d5-9564-2a3392ca1004> .
+<https://w3id.org/ep-plan/resource/8289df0f-6048-4ba5-8ef7-d4eb6416c57e> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Plan> .
+<https://w3id.org/ep-plan/resource/d701fda5-72c6-4054-a9fb-20ef6383378e> <https://w3id.org/ep-plan#isStepOfPlan> <https://w3id.org/ep-plan/resource/8289df0f-6048-4ba5-8ef7-d4eb6416c57e> .
+<https://w3id.org/ep-plan/resource/92d35d53-7ba2-409d-8684-c03e1d060517> <http://www.w3.org/2000/01/rdf-schema#comment> "Adjust the bars to dimension A as specified in Bar adjustment (page 36). The oiler desired oil level setting should be 3.175 mm | 0.125\" lower than the Frame oil level." .
+<https://w3id.org/ep-plan/resource/d701fda5-72c6-4054-a9fb-20ef6383378e> <http://www.w3.org/2000/01/rdf-schema#comment> "Fill each bottle with oil and replace in the oiler housing. The oil reservoir in the bearing housing is filled when the oil remains visible in the bottle. You will need to fill the bottle several times." .
