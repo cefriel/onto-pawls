@@ -14,7 +14,7 @@ const App = ({ annotationStore }: { annotationStore: any }) => {
     const [anyFileUploaded, setAnyFileUploaded] = useState<boolean>(false);
     const supportedFiles = 'N-Triples, RDF/XML, OWL/XML';
     const api = (param: any) => {
-        uploadOntology(param);
+        return uploadOntology(param);
     };
     const changeStateFileIsUploading = (value: boolean) => {
         setIsUploading(value);
