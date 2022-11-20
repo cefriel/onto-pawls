@@ -1,0 +1,132 @@
+{
+    "annotations": [
+        {
+            "id": "33f992a9-9b29-43b8-b61d-110e108a5c8e",
+            "page": 0,
+            "ontoClass": {
+                "id": "ce6f2e6c-cacf-476e-9715-e23b20d24fc6",
+                "text": "ep-plan#CommunicationSpecification",
+                "baseIri": "https://w3id.org/ep-plan#",
+                "iri": "https://w3id.org/ep-plan#CommunicationSpecification",
+                "labelFromOwlready": "ep-plan.nt.CommunicationSpecification"
+            },
+            "bounds": {
+                "left": 136.04748,
+                "top": 56.618894242000124,
+                "right": 475.95385038000006,
+                "bottom": 76.82163224200008
+            },
+            "tokens": [
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 29
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 30
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 31
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 32
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 33
+                }
+            ],
+            "text": "Bayesian Symbol-Re\ufb01ned Tree Substitution Grammars"
+        },
+        {
+            "id": "c15d2770-3bd6-47dd-84bf-9de1a0439cd2",
+            "page": 0,
+            "ontoClass": {
+                "id": "ce6f2e6c-cacf-476e-9715-e23b20d24fc6",
+                "text": "ep-plan#CommunicationSpecification",
+                "baseIri": "https://w3id.org/ep-plan#",
+                "iri": "https://w3id.org/ep-plan#CommunicationSpecification",
+                "labelFromOwlready": "ep-plan.nt.CommunicationSpecification"
+            },
+            "bounds": {
+                "left": 125.27132999999998,
+                "top": 95.493168406,
+                "right": 489.1924464078,
+                "bottom": 114.62209043200005
+            },
+            "tokens": [
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 37
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 38
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 39
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 40
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 41
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 42
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 43
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 44
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 45
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 46
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 47
+                },
+                {
+                    "pageIndex": 0,
+                    "tokenIndex": 48
+                }
+            ],
+            "text": "Hiroyuki Shindo \u2020 Yusuke Miyao \u2021 Akinori Fujino \u2020 Masaaki Nagata \u2020"
+        }
+    ],
+    "relations": [
+        {
+            "id": "a1da5a35-ba03-431c-ba2c-00e6f74b57a7",
+            "sourceIds": [
+                "33f992a9-9b29-43b8-b61d-110e108a5c8e"
+            ],
+            "targetIds": [
+                "c15d2770-3bd6-47dd-84bf-9de1a0439cd2"
+            ],
+            "ontoProperty": {
+                "id": "3617404a-bc6a-4c3e-af65-4a4957fd0b71",
+                "text": "p-plan#correspondsToStep",
+                "baseIri": "https://w3id.org/ep-plan#",
+                "iri": "http://purl.org/net/p-plan#correspondsToStep",
+                "labelFromOwlready": "p-plan.correspondsToStep",
+                "domain": [],
+                "range": []
+            }
+        }
+    ]
+}

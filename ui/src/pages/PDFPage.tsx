@@ -296,7 +296,10 @@ export const PDFPage = () => {
                                         />
                                     ) : null}
                                     {activeOntoProperty ? (
-                                        <Relations relations={pdfAnnotations.relations} />
+                                        <Relations
+                                            annotations={pdfAnnotations.annotations}
+                                            relations={pdfAnnotations.relations}
+                                        />
                                     ) : null}
                                     {activePaperStatus ? (
                                         <Comment sha={sha} paperStatus={activePaperStatus} />

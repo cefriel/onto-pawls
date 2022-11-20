@@ -38,7 +38,7 @@ export const RelationModal = ({
                 const sourceIds = source
                     .filter((s) => !targetKeys.some((k) => k === s.id))
                     .map((s) => s.id);
-                onClick(new RelationGroup(sourceIds, targetKeys, label));
+                onClick(new RelationGroup(undefined, sourceIds, targetKeys, label));
                 setTargetKeys([]);
             }}>
             <h5>Choose a Relation</h5>

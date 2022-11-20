@@ -9,12 +9,22 @@ export interface TokenId {
     tokenIndex: number;
 }
 
+export interface infoRelation {
+    sourceAnnotation: Annotation | undefined;
+    targetAnnotation: Annotation | undefined;
+    ontoProperty: OntoProperty;
+}
+
 export class RelationGroup {
+    public readonly id: string;
     constructor(
+        id: string | undefined = undefined,
         public sourceIds: string[],
         public targetIds: string[],
         public ontoProperty: OntoProperty
-    ) {}
+    ) {
+        this.id = id || uuidv4();
+    }
 
     updateForAnnotationDeletion(a: Annotation): RelationGroup | undefined {
         const sourceEmpty = this.sourceIds.length === 0;
@@ -45,11 +55,11 @@ export class RelationGroup {
             return undefined;
         }
 
-        return new RelationGroup(newSourceIds, newTargetIds, this.ontoProperty);
+        return new RelationGroup(undefined, newSourceIds, newTargetIds, this.ontoProperty);
     }
 
     static fromObject(obj: RelationGroup) {
-        return new RelationGroup(obj.sourceIds, obj.targetIds, obj.ontoProperty);
+        return new RelationGroup(obj.id, obj.sourceIds, obj.targetIds, obj.ontoProperty);
     }
 }
 
@@ -129,6 +139,24 @@ export class PdfAnnotations {
             .filter((r) => r !== undefined);
 
         return new PdfAnnotations(this.annotations, newRelations as RelationGroup[], true);
+    }
+
+    getAnnotationsOfRelation(r: RelationGroup): infoRelation {
+        const sourceAnnotation: Annotation | undefined = this.annotations.find(
+            (annotation) => annotation.id === r.sourceIds[0]
+            // just the first element because for now we let the creation of a relation
+            // between exactly 2 annotatios
+        );
+        const targetAnnotation: Annotation | undefined = this.annotations.find(
+            (annotation) => annotation.id === r.targetIds[0]
+        );
+
+        const result: infoRelation = {
+            sourceAnnotation: sourceAnnotation,
+            targetAnnotation: targetAnnotation,
+            ontoProperty: r.ontoProperty,
+        };
+        return result;
     }
 }
 

@@ -53,6 +53,7 @@ class Annotation(BaseModel):
 
 
 class RelationGroup(BaseModel):
+    id: str
     sourceIds: List[str]
     targetIds: List[str]
     ontoProperty: OntoProperty
