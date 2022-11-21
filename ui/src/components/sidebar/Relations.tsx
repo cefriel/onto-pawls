@@ -28,10 +28,7 @@ export const Relations = ({ annotations, relations }: RelationProps) => {
                     {relations.map((relation, i) => (
                         <li key={relation.id}>
                             R#{i + 1}
-                            <ModalPopupRelationInfo
-                                info={annotationStore.pdfAnnotations.getAnnotationsOfRelation(
-                                    relation
-                                )}></ModalPopupRelationInfo>
+                            <ModalPopupRelationInfo relation={relation}></ModalPopupRelationInfo>
                         </li>
                     ))}
                 </ul>

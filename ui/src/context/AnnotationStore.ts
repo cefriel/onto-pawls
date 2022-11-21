@@ -10,6 +10,7 @@ export interface TokenId {
 }
 
 export interface infoRelation {
+    idRelation: string;
     sourceAnnotation: Annotation | undefined;
     targetAnnotation: Annotation | undefined;
     ontoProperty: OntoProperty;
@@ -128,6 +129,11 @@ export class PdfAnnotations {
         return new PdfAnnotations(newAnnotations, newRelations as RelationGroup[], true);
     }
 
+    deleteRelation(relation: RelationGroup): PdfAnnotations {
+        const newRelations = this.relations.filter((r) => r.id !== relation.id);
+        return new PdfAnnotations(this.annotations, newRelations as RelationGroup[], true);
+    }
+
     undoAnnotation(): PdfAnnotations {
         const popped = this.annotations.pop();
         if (!popped) {
@@ -152,6 +158,7 @@ export class PdfAnnotations {
         );
 
         const result: infoRelation = {
+            idRelation: r.id,
             sourceAnnotation: sourceAnnotation,
             targetAnnotation: targetAnnotation,
             ontoProperty: r.ontoProperty,

@@ -1,7 +1,10 @@
 import React from 'react';
-import { RelationProps } from './ModalPopupRelationInfo';
+import { infoRelation } from '../../context';
 
-export const RelationInfo = ({ info }: RelationProps) => {
+interface RelationInfoProps {
+    info: infoRelation;
+}
+export const RelationInfo = ({ info }: RelationInfoProps) => {
     return (
         <>
             {info.sourceAnnotation !== undefined && info.targetAnnotation !== undefined ? (
