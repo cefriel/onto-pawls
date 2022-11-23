@@ -18,6 +18,9 @@ export const RelationInfo = ({ info }: RelationInfoProps) => {
                     <p>
                         <b>Text</b>: {info.sourceAnnotation.text}
                     </p>
+                    <p>
+                        <b>Page</b>: {info.sourceAnnotation.page}
+                    </p>
                     <p>//////////////////////////</p>
                     <p>
                         <b>Target annotation ID</b>: {info.targetAnnotation.toString()}
@@ -27,6 +30,9 @@ export const RelationInfo = ({ info }: RelationInfoProps) => {
                     </p>
                     <p>
                         <b>Text</b>: {info.targetAnnotation.text}
+                    </p>
+                    <p>
+                        <b>Page</b>: {info.targetAnnotation.page}
                     </p>
                     <p>//////////////////////////</p>
                     <p>

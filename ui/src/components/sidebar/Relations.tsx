@@ -24,14 +24,13 @@ export const Relations = ({ annotations, relations }: RelationProps) => {
             {relations.length === 0 ? (
                 <>None</>
             ) : (
-                <ul>
-                    {relations.map((relation, i) => (
-                        <li key={relation.id}>
-                            R#{i + 1}
+                <>
+                    {relations.map((relation) => (
+                        <>
                             <ModalPopupRelationInfo relation={relation}></ModalPopupRelationInfo>
-                        </li>
+                        </>
                     ))}
-                </ul>
+                </>
             )}
         </SidebarItem>
     );

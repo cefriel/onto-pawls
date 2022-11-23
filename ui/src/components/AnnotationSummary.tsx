@@ -30,8 +30,8 @@ export const AnnotationSummary = ({ annotation }: AnnotationSummaryProps) => {
             : annotation.tokens.map((t) => pageInfo.tokens[t.tokenIndex].text).join(' ');
     return (
         <PaddedRow>
-            <Overflow>{text}</Overflow>
-            <SmallTag>{annotation.ontoClass.text}</SmallTag>
+            <Overflow title={text}>{text}</Overflow>
+            <SmallTag title={annotation.ontoClass.text}>{annotation.ontoClass.text}</SmallTag>
             <SmallTag color="grey">Page {pageInfo.page.pageNumber}</SmallTag>
             <DeleteFilled onClick={onDelete} />
         </PaddedRow>
@@ -51,6 +51,10 @@ const SmallTag = styled(Tag)`
     border-radius: 4px;
     color: black;
     line-height: 1;
+    max-width: 14ch;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 `;
 const Overflow = styled.span`
     line-height: 1;
