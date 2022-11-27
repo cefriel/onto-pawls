@@ -87,11 +87,33 @@ export const RelationInfo = ({ info }: RelationInfoProps) => {
                                     defaultValue={properties[iRelationInfoInListPropeprties]}
                                     styles={colourStyles}
                                     onChange={(choice: any) => {
+                                        console.log('choice v:', choice.value);
                                         const resultProperty:
                                             | OntoProperty
                                             | undefined = ontoPropertyFromId(choice.value);
-                                        if (resultProperty !== undefined) {
+                                        const _relation = annotationStore.pdfAnnotations.getRelationFromId(
+                                            info.idRelation
+                                        );
+                                        console.log('resultProperty:', resultProperty);
+                                        if (
+                                            resultProperty !== undefined &&
+                                            _relation !== undefined
+                                        ) {
                                             setNewProperty(resultProperty);
+                                            console.log(
+                                                'Relation before updating ontoProp: ',
+                                                _relation
+                                            );
+                                            annotationStore.setPdfAnnotations(
+                                                annotationStore.pdfAnnotations
+                                                    .deleteRelation(_relation)
+                                                    .withNewRelation(
+                                                        _relation.updateOntoProperty({
+                                                            ontoProperty: resultProperty,
+                                                        })
+                                                    )
+                                            );
+                                            console.log('Relation updated: ', _relation);
                                         }
                                     }}
                                 />

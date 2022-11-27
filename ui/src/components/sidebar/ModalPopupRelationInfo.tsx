@@ -55,13 +55,10 @@ const App = ({ relation }: RelationProps) => {
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="danger" onClick={deleteRelation}>
-                                Delete
+                                Delete Relation
                             </Button>
                             <Button variant="secondary" onClick={handleClose}>
                                 Close
-                            </Button>
-                            <Button variant="primary" onClick={handleClose}>
-                                Save Changes
                             </Button>
                         </Modal.Footer>
                     </Modal>

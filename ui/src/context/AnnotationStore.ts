@@ -62,6 +62,15 @@ export class RelationGroup {
     static fromObject(obj: RelationGroup) {
         return new RelationGroup(obj.id, obj.sourceIds, obj.targetIds, obj.ontoProperty);
     }
+
+    updateOntoProperty(delta: Partial<RelationGroup> = {}) {
+        return new RelationGroup(
+            this.id,
+            this.sourceIds,
+            this.targetIds,
+            delta.ontoProperty ?? this.ontoProperty
+        );
+    }
 }
 
 export class Annotation {
@@ -164,6 +173,11 @@ export class PdfAnnotations {
             ontoProperty: r.ontoProperty,
         };
         return result;
+    }
+
+    getRelationFromId(id: string): RelationGroup | undefined {
+        const relation = this.relations.find((iR) => iR.id === id);
+        return relation;
     }
 }
 
