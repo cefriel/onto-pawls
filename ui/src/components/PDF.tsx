@@ -142,6 +142,7 @@ const Page = ({ pageInfo, onError }: PageProps) => {
                 setScale(pageInfo.scale);
                 determinePageVisiblity();
             };
+            console.log('Is visible: ', isVisible);
             window.addEventListener('resize', handleResize);
             window.addEventListener('scroll', determinePageVisiblity);
             return () => {
@@ -156,6 +157,7 @@ const Page = ({ pageInfo, onError }: PageProps) => {
     return (
         <PageAnnotationsContainer
             ref={containerRef}
+            id={pageInfo.page.pageNumber.toString()}
             onMouseDown={(event) => {
                 if (containerRef.current === null) {
                     throw new Error('No Container');
@@ -212,6 +214,9 @@ const Page = ({ pageInfo, onError }: PageProps) => {
             {
                 // We only render the tokens if the page is visible, as rendering them all makes the
                 // page slow and/or crash.
+                // quando si preme su un'annotazione nella sidebar per visualizzare la pagina in cui
+                // si trova, le annotazioni in quelle pagina non vengono visualizzate finchè non si
+                // un minimo scrolling con il mouse
                 scale &&
                     isVisible &&
                     annotations.map((annotation) => (

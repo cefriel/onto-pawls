@@ -79,6 +79,8 @@ export const PDFPage = () => {
 
     const [relationModalVisible, setRelationModalVisible] = useState<boolean>(false);
     const [ontoNames, setOntoNames] = useState<OntologiesNames>();
+
+    const [relationMode, setRelationMode] = useState<boolean>(false);
     // React's Error Boundaries don't work for us because a lot of work is done by pdfjs in
     // a background task (a web worker). We instead setup a top level error handler that's
     // passed around as needed so we can display a nice error to the user when something
@@ -276,18 +278,20 @@ export const PDFPage = () => {
                                 toggleFreeFormAnnotations,
                                 hideLabels,
                                 setHideLabels,
+                                relationMode,
+                                setRelationMode,
                             }}>
                             <listeners.UndoAnnotation />
-                            <listeners.HandleAnnotationSelection
-                                setModalVisible={setRelationModalVisible}
-                            />
                             <listeners.SaveWithTimeout sha={sha} />
                             <listeners.SaveBeforeUnload sha={sha} />
                             <listeners.HideAnnotationLabels />
                             <WithSidebar width={sidebarWidth}>
                                 <SidebarContainer width={sidebarWidth}>
                                     <Header />
-                                    <Labels sha={sha} />
+                                    <Labels
+                                        sha={sha}
+                                        _setRelationModalVisible={setRelationModalVisible}
+                                    />
                                     <AssignedPaperList papers={assignedPaperStatuses} />
                                     {activePaperStatus ? (
                                         <Annotations

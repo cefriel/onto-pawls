@@ -12,8 +12,13 @@ import DropdownOntoProperties from './DropdownOntoProperties';
 import { DownloadExportedAnnotations } from './DownloadExportedAnnotations';
 import ModalPopupImportOnto from './ModalPopupImportOnto';
 import ModalPopupImportDocuments from './ModalPopupImportDocuments';
+import CreationRelation from './CreationRelation';
 
-export const Labels = ({ sha }: any) => {
+interface Props {
+    sha: string;
+    _setRelationModalVisible: (state: boolean) => void;
+}
+export const Labels = ({ sha, _setRelationModalVisible }: Props) => {
     const annotationStore = useContext(AnnotationStore);
     const onToggle = () => {
         annotationStore.toggleFreeFormAnnotations(!annotationStore.freeFormAnnotations);
@@ -36,6 +41,11 @@ export const Labels = ({ sha }: any) => {
                             annotationStore={annotationStore}></DropdownOntoProperties>
                     </div>
                 </>
+                <div>
+                    <SidebarItemTitle>Relation Mode</SidebarItemTitle>
+                    <CreationRelation
+                        setRelationModalVisible={_setRelationModalVisible}></CreationRelation>
+                </div>
                 <div>
                     Free Form Annotations
                     <Toggle

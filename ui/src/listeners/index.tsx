@@ -45,47 +45,6 @@ export const HideAnnotationLabels = () => {
     return null;
 };
 
-interface HandleAnnotationSelectionProps {
-    setModalVisible: (v: boolean) => void;
-}
-export const HandleAnnotationSelection = ({ setModalVisible }: HandleAnnotationSelectionProps) => {
-    const annotationStore = useContext(AnnotationStore);
-    const { selectedAnnotations, setSelectedAnnotations, activeOntoProperty } = annotationStore;
-    useEffect(() => {
-        const onShiftUp = (e: KeyboardEvent) => {
-            const shift = e.keyCode === 16;
-            const somethingSelected = selectedAnnotations.length !== 0;
-            const hasRelations = activeOntoProperty !== undefined;
-            // user can create a relation between exactly 2 annotations
-            if (shift && (selectedAnnotations.length > 2 || selectedAnnotations.length === 1)) {
-                notification.error({
-                    message: 'Are you trying to create a relation?',
-                    description: 'To create a Relation you need to select exactly 2 annnotations.',
-                });
-                setSelectedAnnotations([]);
-            }
-            // Shift key up, the user has selected something,
-            // and this annotation project has relation labels.
-            else if (shift && somethingSelected && hasRelations) {
-                setModalVisible(true);
-            }
-            // Otherwise we just clear the selection,
-            // if there is something selected, because
-            // there are no relations to annotate.
-            else if (shift && somethingSelected) {
-                setSelectedAnnotations([]);
-            }
-        };
-
-        window.addEventListener('keyup', onShiftUp);
-        return () => {
-            window.removeEventListener('keyup', onShiftUp);
-        };
-    }, [activeOntoProperty, selectedAnnotations, setModalVisible]);
-
-    return null;
-};
-
 interface WithSha {
     sha: string;
 }

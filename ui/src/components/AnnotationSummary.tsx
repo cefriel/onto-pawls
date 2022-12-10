@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Annotation, PDFStore, AnnotationStore } from '../context';
 import { Tag } from '@allenai/varnish';
 import styled from 'styled-components';
-import { DeleteFilled } from '@ant-design/icons';
+import { DeleteFilled, RightCircleOutlined } from '@ant-design/icons';
 
 interface AnnotationSummaryProps {
     annotation: Annotation;
@@ -16,6 +16,10 @@ export const AnnotationSummary = ({ annotation }: AnnotationSummaryProps) => {
         annotationStore.setPdfAnnotations(
             annotationStore.pdfAnnotations.deleteAnnotation(annotation)
         );
+    };
+    const handleScrolling = () => {
+        const divPage = document.getElementById(pageInfo.page.pageNumber.toString());
+        divPage?.scrollIntoView({ behavior: 'smooth' });
     };
 
     if (!pdfStore.pages) {
@@ -32,8 +36,8 @@ export const AnnotationSummary = ({ annotation }: AnnotationSummaryProps) => {
         <PaddedRow>
             <Overflow title={text}>{text}</Overflow>
             <SmallTag title={annotation.ontoClass.text}>{annotation.ontoClass.text}</SmallTag>
-            <SmallTag color="grey">Page {pageInfo.page.pageNumber}</SmallTag>
             <DeleteFilled onClick={onDelete} />
+            <RightCircleOutlined onClick={handleScrolling} />
         </PaddedRow>
     );
 };

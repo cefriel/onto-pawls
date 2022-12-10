@@ -1,6 +1,6 @@
 import React, { MouseEvent, useContext, useState, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { Modal, Select } from '@allenai/varnish';
+import { Modal, Select, notification } from '@allenai/varnish';
 
 import { Bounds, TokenId, PDFPageInfo, Annotation, AnnotationStore } from '../context';
 import { CloseCircleFilled, EditFilled } from '@ant-design/icons';
@@ -241,23 +241,43 @@ export const Selection = ({ pageInfo, annotation, showInfo = true }: SelectionPr
     };
 
     const onShiftClick = () => {
-        const current = annotationStore.selectedAnnotations.slice(0);
+        if (annotationStore.relationMode === true) {
+            const current = annotationStore.selectedAnnotations.slice(0);
 
-        // Current contains this annotation, so we remove it.
-        if (current.some((other) => other.id === annotation.id)) {
-            const next = current.filter((other) => other.id !== annotation.id);
-            annotationStore.setSelectedAnnotations(next);
-            // Otherwise we add it.
+            // Current contains this annotation, so we remove it.
+            if (current.some((other) => other.id === annotation.id)) {
+                const next = current.filter((other) => other.id !== annotation.id);
+                annotationStore.setSelectedAnnotations(next);
+                notification.warning({
+                    message: 'Annotation unselected',
+                    description: annotation.text,
+                    placement: 'bottomRight',
+                });
+                // Otherwise we add it.
+            } else {
+                current.push(annotation);
+                annotationStore.setSelectedAnnotations(current);
+                console.log('Aggiunta annotazione ', current);
+                notification.info({
+                    message: 'Annotation selected',
+                    description: annotation.text,
+                    placement: 'bottomRight',
+                });
+            }
         } else {
-            current.push(annotation);
-            annotationStore.setSelectedAnnotations(current);
+            notification.warning({
+                message: 'Relation Mode is not activated',
+                description:
+                    'If you want to select an annotation for a relation you need first to ' +
+                    'enable the Relation Mode.',
+            });
         }
     };
 
     const selected = annotationStore.selectedAnnotations.includes(annotation);
 
     return (
-        <>
+        <div id={'onPDF_' + annotation.id}>
             <SelectionBoundary
                 color={color}
                 bounds={bounds}
@@ -306,7 +326,7 @@ export const Selection = ({ pageInfo, annotation, showInfo = true }: SelectionPr
                     onHide={() => setIsEditLabelModalVisible(false)}
                 />
             ) : null}
-        </>
+        </div>
     );
 };
 

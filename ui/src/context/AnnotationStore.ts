@@ -206,6 +206,9 @@ interface _AnnotationStore {
 
     hideLabels: boolean;
     setHideLabels: (state: boolean) => void;
+
+    relationMode: boolean;
+    setRelationMode: (state: boolean) => void;
 }
 
 export const AnnotationStore = createContext<_AnnotationStore>({
@@ -243,6 +246,10 @@ export const AnnotationStore = createContext<_AnnotationStore>({
     },
     hideLabels: false,
     setHideLabels: (_: boolean) => {
+        throw new Error('Unimplemented');
+    },
+    relationMode: false,
+    setRelationMode: (_: boolean) => {
         throw new Error('Unimplemented');
     },
 });
