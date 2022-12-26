@@ -8,7 +8,6 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { SidebarItem, SidebarItemTitle } from './common';
 
 import DropdownOntoClasses from './DropdownOntoClasses';
-import DropdownOntoProperties from './DropdownOntoProperties';
 import { DownloadExportedAnnotations } from './DownloadExportedAnnotations';
 import ModalPopupImportOnto from './ModalPopupImportOnto';
 import ModalPopupImportDocuments from './ModalPopupImportDocuments';
@@ -29,22 +28,15 @@ export const Labels = ({ sha, _setRelationModalVisible }: Props) => {
             <ModalPopupImportDocuments></ModalPopupImportDocuments>
             <ModalPopupImportOnto annotationStore={annotationStore}></ModalPopupImportOnto>
             <DownloadExportedAnnotations sha={sha}></DownloadExportedAnnotations>
+            <div>
+                <SidebarItemTitle>Relation Mode</SidebarItemTitle>
+                <CreationRelation
+                    setRelationModalVisible={_setRelationModalVisible}></CreationRelation>
+            </div>
             <SidebarItemTitle>Classes</SidebarItemTitle>
             <Container>
                 <div>
                     <DropdownOntoClasses annotationStore={annotationStore}></DropdownOntoClasses>
-                </div>
-                <>
-                    <SidebarItemTitle>Properties</SidebarItemTitle>
-                    <div>
-                        <DropdownOntoProperties
-                            annotationStore={annotationStore}></DropdownOntoProperties>
-                    </div>
-                </>
-                <div>
-                    <SidebarItemTitle>Relation Mode</SidebarItemTitle>
-                    <CreationRelation
-                        setRelationModalVisible={_setRelationModalVisible}></CreationRelation>
                 </div>
                 <div>
                     Free Form Annotations

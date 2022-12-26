@@ -7,6 +7,7 @@ const App = ({ annotationStore }: { annotationStore: any }) => {
 
     useEffect(() => {
         console.log('useEffect - AnnotationStore.ontoClasses: ', annotationStore.ontoClasses);
+        console.log('useEffect - AnnotationStore.ontoProperty: ', annotationStore.ontoProperties);
         const listLabels = annotationStore.ontoClasses.map((ontoClass: OntoClass) => ({
             value: ontoClass.id,
             label: ontoClass.text,

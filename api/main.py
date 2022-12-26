@@ -12,6 +12,7 @@ from typing import Union
 import shutil
 
 from owlready2 import *
+from rdflib import Graph
 
 from fastapi import FastAPI, HTTPException, Header, Response, Body, Form, File, UploadFile, Query
 from fastapi.responses import FileResponse
@@ -138,13 +139,56 @@ def getClassesAndPropertiesFromJsonOntology(filename: str) -> OntologyData:
 def analyze_ontology(path: str) -> OntologyData:  
     #https://owlready2.readthedocs.io/en/v0.37/onto.html -> Loading an ontology from OWL files
 
+    g = Graph()
+
     classes_result = list() 
     properties_result = list()
 
-    onto = os.path.join("file://", f"{path}")
-    onto = get_ontology(onto).load() 
+    path_onto = os.path.join("file://", f"{path}")
+    onto = get_ontology(path_onto).load() 
+    print("path of onto: ", path_onto)
 
-    print("path of onto: ", onto)
+    g.parse(path_onto)
+    prop_domain = {}
+    prop_range = {}
+
+
+    #getting all the possible domain for all properties
+    q = """
+        prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        prefix owl:   <http://www.w3.org/2002/07/owl#>
+        prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+        prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+
+        select ?p ?d where {
+            ?p rdfs:domain/(owl:unionOf/rdf:rest*/rdf:first)* ?d
+            filter isIri(?d)
+        }
+    """
+    for r in g.query(q):
+        if prop_domain.get(str(r["p"])) is not None:
+            prop_domain.get(str(r["p"])).append(str(r["d"]))
+        else:
+            prop_domain[str(r["p"])] = [str(r["d"])]
+
+    #getting all the possible range for all properties
+    q = """
+        prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        prefix owl:   <http://www.w3.org/2002/07/owl#>
+        prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+        prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+
+        select ?p ?d where {
+            ?p rdfs:range/(owl:unionOf/rdf:rest*/rdf:first)* ?d
+            filter isIri(?d)
+        }
+    """
+    for r in g.query(q):
+        if prop_range.get(str(r["p"])) is not None:
+            prop_range.get(str(r["p"])).append(str(r["d"]))
+        else:
+            prop_range[str(r["p"])] = [str(r["d"])]
+    ##############################################
 
     def extractNameFromIri(entity):
         return entity.iri.rsplit('/', 1)[-1]
@@ -164,6 +208,7 @@ def analyze_ontology(path: str) -> OntologyData:
             classes_result.append(ontoClass)
 
     def getProperties():
+        print("TEST ----> ", prop_range)
         for data_property in list(onto.data_properties()):
             propertyName = extractNameFromIri(data_property)
 
@@ -173,10 +218,8 @@ def analyze_ontology(path: str) -> OntologyData:
                 baseIri=onto.base_iri,
                 iri=data_property.iri,
                 labelFromOwlready=str(data_property),
-                domain=[], #TODO da sostituire con i dati reali
-                range=[]
-                #domain=data_property.domain, # TODO: conterrà la lista degli IRI completi di modo poi di fare il check
-                #range=data_property.range
+                domain=prop_domain.get(data_property.iri, []),
+                range=prop_range.get(data_property.iri, [])
             )
 
             properties_result.append(ontoProperty)
@@ -190,10 +233,8 @@ def analyze_ontology(path: str) -> OntologyData:
                 baseIri=onto.base_iri,
                 iri=object_property.iri,
                 labelFromOwlready=str(object_property),
-                domain=[], #TODO da sostituire con i dati reali
-                range=[]
-                #domain=object_property.domain, #TODO: conterrà la lista degli IRI completi di modo poi di fare il check
-                #range=object_property.range   
+                domain=prop_domain.get(object_property.iri, []),
+                range=prop_range.get(object_property.iri, [])
             )
 
             properties_result.append(ontoProperty)
