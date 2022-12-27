@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Select from 'react-select';
+import { AnnotationStore } from '../../context';
 import { OntoProperty } from '../../api';
 
-const App = ({ annotationStore }: { annotationStore: any }) => {
+interface DropdownPropertiesProps {
+    ontoProperties: OntoProperty[];
+}
+const App = ({ ontoProperties }: DropdownPropertiesProps) => {
+    const annotationStore = useContext(AnnotationStore);
     const [properties, setProperties]: [properties: any, setProperties: any] = useState([]);
     useEffect(() => {
-        const listLabels = annotationStore.ontoProperties.map((ontoProperty: OntoProperty) => ({
+        const listLabels = ontoProperties.map((ontoProperty: OntoProperty) => ({
             value: ontoProperty.id,
             label: ontoProperty.text,
         }));
         setProperties(listLabels);
-    }, [annotationStore.ontoProperties]);
+    }, [ontoProperties]);
     const colourStyles = {
         control: (styles: any) => ({ ...styles, backgroundColor: 'white' }),
         option: (styles: any) => {
@@ -23,7 +28,7 @@ const App = ({ annotationStore }: { annotationStore: any }) => {
         },
     };
     const ontoPropertyFromId = (id: string) => {
-        return annotationStore.ontoProperties.find((ontoProperty: OntoProperty) => {
+        return ontoProperties.find((ontoProperty: OntoProperty) => {
             return ontoProperty.id === id;
         });
     };
@@ -35,7 +40,9 @@ const App = ({ annotationStore }: { annotationStore: any }) => {
                 const resultProperty: OntoProperty | undefined = ontoPropertyFromId(choice.value);
                 console.log('choice.label: ', choice.label);
                 console.log('Property found from id ', choice.value, ' is: ', resultProperty);
-                annotationStore.setActiveOntoProperty(resultProperty);
+                if (resultProperty !== undefined) {
+                    annotationStore.setActiveOntoProperty(resultProperty);
+                }
             }}
         />
     );
