@@ -13,20 +13,41 @@ export const RelationInfo = ({ info }: RelationInfoProps) => {
     const [properties, setProperties]: [properties: any, setProperties: any] = useState([]);
     const [iRelationInfoInListPropeprties, setIRelationInfoInListPropeprties] = useState<number>(0);
     const setNewProperty = useState<OntoProperty>()[1];
+    const checkCompatibilityWithProperty = (
+        p: OntoProperty,
+        sourceClasses: string,
+        targetClasses: string
+    ) => {
+        return (
+            (p.domain.includes(sourceClasses[0]) && p.range.includes(targetClasses[0])) ||
+            (p.domain.includes(sourceClasses[0]) && p.range.length === 0) ||
+            (p.domain.length === 0 && p.range.includes(targetClasses[0])) ||
+            (p.domain.length === 0 && p.range.length === 0)
+        );
+    };
     useEffect(() => {
-        const listLabels = annotationStore.ontoProperties.map((ontoProperty: OntoProperty) => ({
-            value: ontoProperty.id,
-            label: ontoProperty.text,
-        }));
-        setProperties(listLabels);
-        const indexRelationInfo = listLabels.findIndex((r) => r.label === info.ontoProperty.text);
-        // al momento non si fa il controllo dell'id poichè se un'ontologia viene eliminata
-        // e poi ricaricata => verranno assegnati nuovi id alle classi => si perde la coerenza tra
-        // gli id delle classi delle annotazioni e degli id delle classi dell'ontologia.
-        // Il problema non si porrà nel caso si decide che le ontologie non si possono eliminare
-        console.log('Indice: ', indexRelationInfo, ' => ', listLabels[indexRelationInfo]);
-        if (indexRelationInfo !== undefined || indexRelationInfo >= 0) {
-            setIRelationInfoInListPropeprties(indexRelationInfo);
+        if (info.sourceAnnotation !== undefined && info.targetAnnotation !== undefined) {
+            const sourceClasses = info.sourceAnnotation.ontoClass.iri;
+            const targetClasses = info.targetAnnotation.ontoClass.iri;
+            const ontoPropertiesCompatible = annotationStore.ontoProperties.filter((p) =>
+                checkCompatibilityWithProperty(p, sourceClasses, targetClasses)
+            );
+            const listLabels = ontoPropertiesCompatible.map((ontoProperty: OntoProperty) => ({
+                value: ontoProperty.id,
+                label: ontoProperty.text,
+            }));
+            setProperties(listLabels);
+            const indexRelationInfo = listLabels.findIndex(
+                (r) => r.label === info.ontoProperty.text
+            );
+            // al momento non si fa il controllo dell'id poichè se un'ontologia viene eliminata
+            // e poi ricaricata => verranno assegnati nuovi id alle classi => si perde la coerenza tra
+            // gli id delle classi delle annotazioni e degli id delle classi dell'ontologia.
+            // Il problema non si porrà nel caso si decide che le ontologie non si possono eliminare
+            console.log('Indice: ', indexRelationInfo, ' => ', listLabels[indexRelationInfo]);
+            if (indexRelationInfo !== undefined || indexRelationInfo >= 0) {
+                setIRelationInfoInListPropeprties(indexRelationInfo);
+            }
         }
     }, [annotationStore.ontoProperties]);
     const colourStyles = {
