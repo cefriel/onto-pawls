@@ -8,6 +8,7 @@ import { Result, Progress, notification } from '@allenai/varnish';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
 import { PDF, CenterOnPage, RelationModal } from '../components';
+import ModalPopupImportDocuments from '../components/sidebar/ModalPopupImportDocuments';
 import {
     SidebarContainer,
     Labels,
@@ -242,6 +243,7 @@ export const PDFPage = () => {
                 <WithSidebar width={sidebarWidth}>
                     <SidebarContainer width={sidebarWidth}>
                         <Header />
+                        <ModalPopupImportDocuments></ModalPopupImportDocuments>
                         <AssignedPaperList papers={assignedPaperStatuses} />
                     </SidebarContainer>
                     <CenterOnPage>

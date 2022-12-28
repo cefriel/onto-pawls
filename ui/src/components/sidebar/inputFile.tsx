@@ -24,7 +24,6 @@ const InputFile = ({
         // open file input box on click of other element
         inputRef?.current?.click();
     };
-
     const handleFileChange = async (event: any) => {
         event.preventDefault();
         const fileObj = event.target.files && event.target.files[0];

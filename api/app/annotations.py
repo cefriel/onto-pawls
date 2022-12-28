@@ -47,6 +47,7 @@ class Annotation(BaseModel):
     id: str
     page: int
     ontoClass: OntoClass
+    date: str
     bounds: Bounds
     tokens: Optional[List[TokenId]] = None
     text: str = None
@@ -54,6 +55,7 @@ class Annotation(BaseModel):
 
 class RelationGroup(BaseModel):
     id: str
+    date: str
     sourceIds: List[str]
     targetIds: List[str]
     ontoProperty: OntoProperty

@@ -9,11 +9,9 @@ def preprocess(preprocessor: str, p: str):
     Run a pre-processor on a pdf/directory of pawls pdfs and
     write the resulting token information to the pdf location.
 
-    Current preprocessor options are: "grobid".
+    Current preprocessor options are: "pdfplumber".
 
-    To send all pawls structured pdfs in the current directory for processing:
-
-        `pawls preprocess grobid ./`
+    Return the total number of pages
     """
     path = Path(p)
     sha = path.name.strip(".pdf")
@@ -23,7 +21,7 @@ def preprocess(preprocessor: str, p: str):
     with open(path.parent / "pdf_structure.json", "w+") as f:
 
         json.dump(data, f)
-        """
+    """
         if preprocessor == "grobid":
             data = process_grobid(str(path))
         elif preprocessor == "pdfplumber":
@@ -34,5 +32,8 @@ def preprocess(preprocessor: str, p: str):
         with open(path.parent / "pdf_structure.json", "w+") as f:
 
             json.dump(data, f)
-        """
+    """
+    
+    return len(data)
+        
 

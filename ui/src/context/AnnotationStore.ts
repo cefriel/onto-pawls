@@ -16,15 +16,27 @@ export interface infoRelation {
     ontoProperty: OntoProperty;
 }
 
+const getDate = () => {
+    // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd?page=1&tab=scoredesc#tab-top
+    const date = new Date();
+    const offset = date.getTimezoneOffset();
+    const range = offset * 60 * 1000;
+    const today = new Date(date.getTime() - range);
+    return today.toISOString().split('T')[0];
+};
+
 export class RelationGroup {
     public readonly id: string;
+    public readonly date: string;
     constructor(
         id: string | undefined = undefined,
         public sourceIds: string[],
         public targetIds: string[],
-        public ontoProperty: OntoProperty
+        public ontoProperty: OntoProperty,
+        date: string | undefined = undefined
     ) {
         this.id = id || uuidv4();
+        this.date = date || getDate();
     }
 
     updateForAnnotationDeletion(a: Annotation): RelationGroup | undefined {
@@ -75,6 +87,7 @@ export class RelationGroup {
 
 export class Annotation {
     public readonly id: string;
+    public readonly date: string;
 
     constructor(
         public bounds: Bounds,
@@ -82,9 +95,11 @@ export class Annotation {
         public readonly ontoClass: OntoClass, // prima era generico: Label usato anche per Relations
         public readonly tokens: TokenId[] | null = null,
         id: string | undefined = undefined,
-        public readonly text: string | null
+        public readonly text: string | null,
+        date: string | undefined = undefined
     ) {
         this.id = id || uuidv4();
+        this.date = date || getDate();
     }
 
     toString() {

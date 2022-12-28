@@ -9,6 +9,8 @@ def assign(
     path: str,
     annotator: str,
     sha: str,
+    npages: int,
+    file_location: str,
 ):
     """
     Assign pdfs and annotators for a project.
@@ -64,6 +66,8 @@ def assign(
     pdf_status[sha] = {
         "sha": sha,
         "name": name,
+        "path": file_location,
+        "totalPages": npages,
         "annotations": 0,
         "relations": 0,
         "finished": False,

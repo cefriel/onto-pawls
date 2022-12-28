@@ -1,0 +1,28 @@
+<https://example.com#d2c455ea-68f9-4a38-865f-37128121c70a> <http://www.w3.org/2000/01/rdf-schema#comment> "Estraete la scheda di memoria." .
+<https://example.com#annotation3> <https://knowledge.c-innovationhub.com/k-hub/annotation#hasTopic> <https://example.com#23a7e76c-fe99-4fc5-80d2-3676eecd531b> .
+<https://example.com#7bf08a35-6c71-41dd-aad1-9851b19421d2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Step> .
+<https://example.com#annotation2> <https://knowledge.c-innovationhub.com/k-hub/annotation#hasSnippet> "Estraete la scheda di memoria." .
+<https://example.com#annotation1> <https://knowledge.c-innovationhub.com/k-hub/annotation#hasPage> "14"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://example.com#annotation3> <https://knowledge.c-innovationhub.com/k-hub/annotation#hasSnippet> "Riposizionate la batteria e la cover posteriore." .
+<https://example.com#annotation2> <https://knowledge.c-innovationhub.com/k-hub/annotation#hasTopic> <https://example.com#d2c455ea-68f9-4a38-865f-37128121c70a> .
+<https://example.com#annotation0> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://knowledge.c-innovationhub.com/k-hub/annotation#TopicAnnotation> .
+<https://example.com#7bf08a35-6c71-41dd-aad1-9851b19421d2> <http://www.w3.org/2000/01/rdf-schema#comment> "Rimuovete la cover posteriore e la batteria come raffigurato precedentemente." .
+<https://example.com#annotation0> <http://purl.org/dc/terms/created> "2022-12-28" .
+<https://example.com#annotation1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://knowledge.c-innovationhub.com/k-hub/annotation#TopicAnnotation> .
+<https://example.com#d2c455ea-68f9-4a38-865f-37128121c70a> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Step> .
+<https://example.com#23a7e76c-fe99-4fc5-80d2-3676eecd531b> <http://www.w3.org/2000/01/rdf-schema#comment> "Riposizionate la batteria e la cover posteriore." .
+<https://example.com#annotation1> <https://knowledge.c-innovationhub.com/k-hub/annotation#hasSnippet> "Rimuovete la cover posteriore e la batteria come raffigurato precedentemente." .
+<https://example.com#annotation0> <https://knowledge.c-innovationhub.com/k-hub/annotation#hasSnippet> "Rimozione della scheda di memoria" .
+<https://example.com#annotation0> <https://knowledge.c-innovationhub.com/k-hub/annotation#hasPage> "14"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://example.com#annotation1> <https://knowledge.c-innovationhub.com/k-hub/annotation#hasTopic> <https://example.com#7bf08a35-6c71-41dd-aad1-9851b19421d2> .
+<https://example.com#annotation3> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://knowledge.c-innovationhub.com/k-hub/annotation#TopicAnnotation> .
+<https://example.com#18b9254f-e91c-4afe-88a9-6fa8372b9f22> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Plan> .
+<https://example.com#annotation0> <https://knowledge.c-innovationhub.com/k-hub/annotation#hasTopic> <https://example.com#18b9254f-e91c-4afe-88a9-6fa8372b9f22> .
+<https://example.com#annotation1> <http://purl.org/dc/terms/created> "2022-12-28" .
+<https://example.com#annotation2> <http://purl.org/dc/terms/created> "2022-12-28" .
+<https://example.com#18b9254f-e91c-4afe-88a9-6fa8372b9f22> <http://www.w3.org/2000/01/rdf-schema#comment> "Rimozione della scheda di memoria" .
+<https://example.com#23a7e76c-fe99-4fc5-80d2-3676eecd531b> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/ep-plan#Step> .
+<https://example.com#annotation2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://knowledge.c-innovationhub.com/k-hub/annotation#TopicAnnotation> .
+<https://example.com#annotation3> <http://purl.org/dc/terms/created> "2022-12-28" .
+<https://example.com#annotation2> <https://knowledge.c-innovationhub.com/k-hub/annotation#hasPage> "14"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://example.com#annotation3> <https://knowledge.c-innovationhub.com/k-hub/annotation#hasPage> "14"^^<http://www.w3.org/2001/XMLSchema#integer> .

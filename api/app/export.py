@@ -3,7 +3,8 @@ from rdflib import *
 import os
 import json
 
-format_predefined = "nt"
+#format_predefined = "nt"
+format_predefined = "ttl"
 
 def load_annotations(path: str):
     with open(path) as f:
@@ -14,35 +15,51 @@ def load_annotations(path: str):
 annotations = list()
 relations = list()
 
-def export_annotations(path: str, path_export: str):
-    data = load_annotations(path)
+def export_annotations(
+    annotationPath: str,
+    path_export: str,
+    title: str,
+    documentPath: str,
+    npages: int
+):
+    # servono alcuni dati del pdf:
+    # titolo, #pagine_totali, url
+
+    data = load_annotations(annotationPath)
 
     global annotations
     global relations
+    global kh_a
+    global ex
+    global dc
 
     annotations = data['annotations']
     relations = data['relations']
 
     g = Graph()
 
-    for annotation in annotations:
-        analyze_annotation(annotation, g)
+    # declare namespaces end binding for prefixe
+    kh_a = Namespace("https://knowledge.c-innovationhub.com/k-hub/annotation#")
+    ex = Namespace("https://example.com#")
+    dc = Namespace("http://purl.org/dc/terms/")
+    g.bind("ex", ex)
+    g.bind("kh-a", kh_a)
+    g.bind("dc", dc)
+
+    # populate the graph
+    for i in range(len(annotations)):
+        analyze_topicAnnotation(i, annotations[i], g)
 
     for relation in relations:
         analyze_relation(relation, g)
 
+    # export to file
     path_export_with_extension = path_export+"."+format_predefined
 
     g.serialize(destination=path_export_with_extension, format=format_predefined)
     os.chmod(path_export_with_extension, 0o777)
 
     return os.path.abspath(path_export_with_extension)
-
-def get_iriResource(object: Any):
-    base_iri = object['ontoClass']['iri'].split('#')[0]
-    resource_iri = base_iri + "/resource/" + object['id']
-    
-    return resource_iri
 
 def get_annotation_by_id(id: str):
     for annotation in annotations:
@@ -51,9 +68,35 @@ def get_annotation_by_id(id: str):
     
     return None
 
+def analyze_topicAnnotation(i: int, object: Any, g: Graph):
+    subject = "annotation" + str(i)
+    print("subject: ", subject)
+    s = URIRef(ex[subject])
+
+    print("s = ", s)
+
+    hasPage = URIRef(kh_a["hasPage"])
+    hasSnippet = URIRef(kh_a["hasSnippet"])
+    hasData = URIRef(dc["created"])
+    hasTopic = URIRef(kh_a["hasTopic"])
+
+    topicAnnotation = URIRef(kh_a["TopicAnnotation"])
+    page = Literal(object['page'])
+    snippet = Literal(object['text'])
+    dataCreation = Literal(object['date'])
+    topic = URIRef(ex[object["id"]])
+
+    g.add((s, RDF.type, topicAnnotation))
+    g.add((s, hasPage, page))
+    g.add((s, hasSnippet, snippet))
+    g.add((s, hasData, dataCreation))
+    # manca collegamento con AUTORE
+    g.add((s, hasTopic, topic))
+    
+    analyze_annotation(object, g)
+
 def analyze_annotation(object: Any, g: Graph):
-    resource_iri = get_iriResource(object)
-    s = URIRef(resource_iri)
+    s = URIRef(ex[object["id"]])
     o = URIRef(object['ontoClass']['iri'])
     comment = Literal(object['text'])
 
