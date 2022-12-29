@@ -1,13 +1,14 @@
 @prefix dc: <http://purl.org/dc/terms/> .
+@prefix ep-plan: <https://w3id.org/ep-plan#> .
 @prefix ex: <https://example.com#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix kh-a: <https://knowledge.c-innovationhub.com/k-hub/annotation#> .
-@prefix ns1: <http://purl.org/net/p-plan#> .
+@prefix p-plan: <http://purl.org/net/p-plan#> .
 @prefix provo: <http://www.w3.org/ns/prov#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-ex:ff50c801-1b1b-414e-a15d-91890aefa2c1 a foaf:Document ;
+ex:58cfa186-887f-4892-8b68-bd2f21d8fa77 a foaf:Document ;
     dc:format "pdf" ;
     dc:source "/skiff_files/apps/pawls/papers/P12-1046/P12-1046.pdf" ;
     dc:title "P12-1046" ;
@@ -16,8 +17,8 @@ ex:ff50c801-1b1b-414e-a15d-91890aefa2c1 a foaf:Document ;
         ex:annotation2 ;
     kh-a:hasTotalNumberOfPages 9 .
 
-ex:8d2f32df-7329-4914-a050-a47c630b6364 a <https://w3id.org/ep-plan#Step> ;
-    ns1:isInputVarOf ex:1fd1f5ee-93ea-46fb-bbfb-2da72c226dad ;
+ex:8d2f32df-7329-4914-a050-a47c630b6364 a ep-plan:Step ;
+    p-plan:isInputVarOf ex:1fd1f5ee-93ea-46fb-bbfb-2da72c226dad ;
     rdfs:comment "Bayesian Symbol-Reﬁned Tree Substitution Grammars" .
 
 ex:annotation0 a kh-a:TopicAnnotation ;
@@ -41,10 +42,10 @@ ex:annotation2 a kh-a:TopicAnnotation ;
     kh-a:hasSnippet "We propose Symbol-Reﬁned Tree Substitu- tion Grammars (SR-TSGs) for syntactic pars-" ;
     kh-a:hasTopic ex:f5dacffa-9ca8-4761-86ef-95f1ca29ce7e .
 
-ex:f5dacffa-9ca8-4761-86ef-95f1ca29ce7e a <https://w3id.org/ep-plan#CommunicationSpecification> ;
+ex:f5dacffa-9ca8-4761-86ef-95f1ca29ce7e a ep-plan:CommunicationSpecification ;
     rdfs:comment "We propose Symbol-Reﬁned Tree Substitu- tion Grammars (SR-TSGs) for syntactic pars-" .
 
-ex:1fd1f5ee-93ea-46fb-bbfb-2da72c226dad a <https://w3id.org/ep-plan#Plan> ;
+ex:1fd1f5ee-93ea-46fb-bbfb-2da72c226dad a ep-plan:Plan ;
     rdfs:comment "Abstract" .
 
 ex:utente a provo:agent ;
