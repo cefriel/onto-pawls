@@ -110,9 +110,6 @@ def update_status_json(status_path: str, sha: str, data: Dict[str, Any]):
         st.truncate()
 
 def renderLabelsOfOntology(entity):
-    #label = entity.label.first() #soltanto con p_pan le prop. vengono del tipo C:\Users\...\ontologie\p_plan.correspondsToStep
-    #label = entity.name
-    #con entrambe le istruzioni precedenti perdo l'informazione: onto.Nome
     """
     if label == None:
         return entity
@@ -146,7 +143,6 @@ def analyze_ontology(path: str) -> OntologyData:
 
     path_onto = os.path.join("file://", f"{path}")
     onto = get_ontology(path_onto).load() 
-    print("path of onto: ", path_onto)
 
     g.parse(path_onto)
     prop_domain = {}
@@ -194,6 +190,9 @@ def analyze_ontology(path: str) -> OntologyData:
         return entity.iri.rsplit('/', 1)[-1]
 
     def getClasses():
+        colors = ["#FF0000", "#EFDDF5", "#CEEBFC", "#FFDA77", "#A8DDA8", "#B8DE6F", "#70DDBA", "#C6CC82"]
+        current_i_color = 0
+        
         for entity in onto.classes():
             className = extractNameFromIri(entity)
 
@@ -202,13 +201,21 @@ def analyze_ontology(path: str) -> OntologyData:
                 text=className,
                 baseIri=onto.base_iri,
                 iri=entity.iri,
-                labelFromOwlready=str(entity)
+                labelFromOwlready=str(entity),
+                color=""
             )
+
+            if current_i_color == len(colors):
+                current_i_color = 0
+                ontoClass.color = colors[current_i_color]
+                current_i_color += 1
+            else:
+                ontoClass.color = colors[current_i_color]
+                current_i_color += 1
 
             classes_result.append(ontoClass)
 
     def getProperties():
-        print("TEST ----> ", prop_range)
         for data_property in list(onto.data_properties()):
             propertyName = extractNameFromIri(data_property)
 
@@ -428,12 +435,10 @@ def get_classes(ontoNames: List[str]) -> List[OntoClass]:
     """
     Get the labels used for annotation for this app.
     """
-    print("OntoNames rivevuti: ", ontoNames)
     resultClasses = list()
     for filename in ontoNames:
-        print("working on onto: ", filename)
         classes_properties = getClassesAndPropertiesFromJsonOntology(filename)
-        print("----> classes: ", classes_properties['classes'])
+        
         resultClasses.extend(classes_properties['classes'])
 
     return resultClasses
@@ -444,12 +449,10 @@ def get_properties(ontoNames: List[str]) -> List[OntoProperty]:
     """
     Get the relations used for annotation for this app.
     """
-    print("OntoNames rivevuti: ", ontoNames)
     resultProperties = list()
     for filename in ontoNames:
-        print("working on onto: ", filename)
         classes_properties = getClassesAndPropertiesFromJsonOntology(filename)
-        print("----> properties: ", classes_properties['properties'])
+        
         resultProperties.extend(classes_properties['properties'])
 
     return resultProperties
@@ -512,21 +515,15 @@ def uploadDocument(x_auth_request_email: str = Header(None), file: UploadFile = 
     """
     Add a PDF to the pawls dataset (skiff_files/).
     """
-    #base_dir = Path("skiff_files/apps/pawls/papers")
-    #base_dir.mkdir(exist_ok=True, parents=True)
     user = get_user_from_header(x_auth_request_email)
 
     pdf = str(file.filename)
 
     pdf_name = Path(pdf).stem
-    print("pdf_name: ", pdf_name)
 
     output_dir = os.path.join(configuration.output_directory, pdf_name)
 
-    print("output_dir: ", output_dir)
-
     file_location = os.path.join(output_dir, f"{file.filename}")
-    print("file_location: ", os.path.abspath(file_location))
     
     os.umask(0)
     os.mkdir(output_dir, 0o777)
@@ -542,17 +539,16 @@ def uploadDocument(x_auth_request_email: str = Header(None), file: UploadFile = 
 
 @app.delete("/api/ontology/{filename}") 
 def deleteOntology(filename: str):
-    print("file name of Ontology to delete: ", filename)
     def removeOntology():
         file_location = os.path.join(configuration.upload_ontology_directory, f"{filename}")
         path = os.path.abspath(file_location)
-        print("Path of file to remove:", path)
+        
         os.remove(path)
     
     def removeDataJsonOntology(): 
         file_location = os.path.join(configuration.extracted_data_from_ontology_directory, f"{filename}.json")
         path = os.path.abspath(file_location)
-        print("Path of file to remove:", path)
+        
         os.remove(path)
 
     removeOntology()

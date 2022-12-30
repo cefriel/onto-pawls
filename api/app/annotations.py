@@ -19,6 +19,7 @@ class OntoClass(BaseModel):
     baseIri: str
     iri: str
     labelFromOwlready: str # permetterà di fare i controlli con domain/range di Relation
+    color: str
 
 class OntoProperty(BaseModel):
     id: str  # serve per il rendering nei menù

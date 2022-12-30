@@ -8,7 +8,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-ex:58cfa186-887f-4892-8b68-bd2f21d8fa77 a foaf:Document ;
+ex:eeaccdff-19d9-462c-bc37-7b0174254467 a foaf:Document ;
     dc:format "pdf" ;
     dc:source "/skiff_files/apps/pawls/papers/P12-1046/P12-1046.pdf" ;
     dc:title "P12-1046" ;
@@ -22,21 +22,21 @@ ex:8d2f32df-7329-4914-a050-a47c630b6364 a ep-plan:Step ;
     rdfs:comment "Bayesian Symbol-Reﬁned Tree Substitution Grammars" .
 
 ex:annotation0 a kh-a:TopicAnnotation ;
-    dc:created "2022-12-29" ;
+    dc:created "2022-12-30" ;
     provo:wasAttributedTo ex:utente ;
     kh-a:hasPage 1 ;
     kh-a:hasSnippet "Abstract" ;
     kh-a:hasTopic ex:1fd1f5ee-93ea-46fb-bbfb-2da72c226dad .
 
 ex:annotation1 a kh-a:TopicAnnotation ;
-    dc:created "2022-12-29" ;
+    dc:created "2022-12-30" ;
     provo:wasAttributedTo ex:utente ;
     kh-a:hasPage 1 ;
     kh-a:hasSnippet "Bayesian Symbol-Reﬁned Tree Substitution Grammars" ;
     kh-a:hasTopic ex:8d2f32df-7329-4914-a050-a47c630b6364 .
 
 ex:annotation2 a kh-a:TopicAnnotation ;
-    dc:created "2022-12-29" ;
+    dc:created "2022-12-30" ;
     provo:wasAttributedTo ex:utente ;
     kh-a:hasPage 1 ;
     kh-a:hasSnippet "We propose Symbol-Reﬁned Tree Substitu- tion Grammars (SR-TSGs) for syntactic pars-" ;

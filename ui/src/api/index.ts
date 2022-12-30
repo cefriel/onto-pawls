@@ -46,6 +46,7 @@ export interface OntoClass {
     baseIri: string;
     iri: string;
     labelFromOwlready: string; // permetterà di fare i controlli con domain/range di Relation
+    color: string;
 }
 
 export interface OntoProperty {
