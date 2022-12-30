@@ -23,7 +23,7 @@ const CreationRelation = ({ setRelationModalVisible }: Props) => {
         const numberAnn = annotationStore.selectedAnnotations.length;
         if (numberAnn !== 2) {
             notification.warning({
-                message: 'Can not create relatione',
+                message: 'Can not create the relation',
                 description:
                     'Remember that currently you can create a relation' +
                     ' beetween exactly 2 annotations',
@@ -44,7 +44,7 @@ const CreationRelation = ({ setRelationModalVisible }: Props) => {
             });
         } else {
             notification.info({
-                message: 'Relation Mode disactivated',
+                message: 'Relation Mode is disactivated',
             });
         }
     }, [showNotification]);

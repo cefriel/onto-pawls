@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Modal, Transfer } from '@allenai/varnish';
+import { Modal, Transfer, notification } from '@allenai/varnish';
 import Form from 'react-bootstrap/Form';
 import { Annotation, RelationGroup, AnnotationStore } from '../context';
 import { OntoProperty } from '../api';
@@ -59,6 +59,53 @@ export const RelationModal = ({
         }
     }, [targetKeys, showAll]);
 
+    const createRelation = () => {
+        if (propertiesCompatible.length === 0) {
+            notification.warning({
+                message: 'There are no properties available',
+                description:
+                    'Check if you did upload the correct ontology. You can also' +
+                    ' toogle "Show all properties" to force the creation of the relation.',
+            });
+        } else {
+            const sourceClasses = source
+                .filter((s) => !targetKeys.some((k) => k === s.id))
+                .map((s) => s.ontoClass.iri);
+            const targetClasses = source
+                .filter((t) => targetKeys.some((k) => k === t.id))
+                .map((t) => t.ontoClass.iri);
+            const sourceIds = source
+                .filter((s) => !targetKeys.some((k) => k === s.id))
+                .map((s) => s.id);
+
+            if (sourceClasses.length === 0 || targetClasses.length === 0) {
+                notification.warning({
+                    message: 'You need to have a source and a target annotation',
+                });
+            } else {
+                if (!checkCompatibilityWithProperty(label, sourceClasses, targetClasses)) {
+                    const text =
+                        'Property selected: ' +
+                        label.text +
+                        '. ' +
+                        'Are you sure you want to create an invalid relation?';
+                    if (confirm(text) === true) {
+                        onClick(new RelationGroup(undefined, sourceIds, targetKeys, label));
+                        setTargetKeys([]);
+
+                        notification.success({
+                            message: 'Relation created.',
+                            description: 'Property used: ' + label.text,
+                        });
+                    }
+                } else {
+                    onClick(new RelationGroup(undefined, sourceIds, targetKeys, label));
+                    setTargetKeys([]);
+                }
+            }
+        }
+    };
+
     return (
         <Modal
             title="Annotate Relations"
@@ -69,27 +116,7 @@ export const RelationModal = ({
                 setTargetKeys([]);
                 onCancel();
             }}
-            onOk={() => {
-                const sourceClasses = source
-                    .filter((s) => !targetKeys.some((k) => k === s.id))
-                    .map((s) => s.ontoClass.iri);
-                const targetClasses = source
-                    .filter((t) => targetKeys.some((k) => k === t.id))
-                    .map((t) => t.ontoClass.iri);
-                const sourceIds = source
-                    .filter((s) => !targetKeys.some((k) => k === s.id))
-                    .map((s) => s.id);
-                if (!checkCompatibilityWithProperty(label, sourceClasses, targetClasses)) {
-                    const text = 'Sicuro di voler creare una relazione non valida?';
-                    if (confirm(text) === true) {
-                        onClick(new RelationGroup(undefined, sourceIds, targetKeys, label));
-                        setTargetKeys([]);
-                    }
-                } else {
-                    onClick(new RelationGroup(undefined, sourceIds, targetKeys, label));
-                    setTargetKeys([]);
-                }
-            }}>
+            onOk={createRelation}>
             <h5>Choose a Relation</h5>
             <DropdownOntoProperties ontoProperties={propertiesCompatible}></DropdownOntoProperties>
             <br />
