@@ -73,7 +73,7 @@ export const AssignedPaperList = ({ papers }: { papers: PaperStatus[] }) => {
                     ))}
                 </>
             ) : (
-                <>No Pdfs Allocated!</>
+                <div>No Pdfs uploaded!</div>
             )}
         </SidebarItem>
     );

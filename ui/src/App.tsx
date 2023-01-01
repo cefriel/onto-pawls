@@ -15,6 +15,7 @@ import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 
 import { PDFPage } from './pages';
 import { CenterOnPage } from './components';
+import ModalPopupImportDocuments from './components/sidebar/ModalPopupImportDocuments';
 import { getAllocatedPaperStatus, PaperStatus } from './api';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
@@ -36,11 +37,11 @@ const RedirectToFirstPaper = () => {
 
         /** First available sha */
         const sha = papers.find((p) => !!p.sha)?.sha;
-
         if (!papers.length || !sha) {
             return (
                 <CenterOnPage>
                     <Result icon={<QuestionCircleOutlined />} title="PDFs Not Found" />
+                    <ModalPopupImportDocuments></ModalPopupImportDocuments>
                 </CenterOnPage>
             );
         }

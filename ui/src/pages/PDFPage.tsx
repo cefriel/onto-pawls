@@ -141,14 +141,23 @@ export const PDFPage = () => {
     useEffect(() => {
         getAllocatedPaperStatus()
             .then((allocation) => {
-                setAssignedPaperStatuses(allocation.papers);
-                setActivePaperStatus(allocation.papers.filter((p) => p.sha === sha)[0]);
-                if (!allocation.hasAllocatedPapers) {
-                    notification.warn({
-                        message: 'Read Only Mode!',
-                        description:
-                            "This annotation project has no assigned papers for your email address. You can make annotations but they won't be saved.",
-                    });
+                if (allocation.papers.length === 0) {
+                    window.location.replace('/');
+                } else {
+                    setAssignedPaperStatuses(allocation.papers);
+                    setActivePaperStatus(allocation.papers.filter((p) => p.sha === sha)[0]);
+                    console.log(
+                        'Active paper status: ',
+                        allocation.papers.filter((p) => p.sha === sha)[0]
+                    );
+                    if (!allocation.hasAllocatedPapers) {
+                        notification.warn({
+                            message: 'Read Only Mode!',
+                            description:
+                                "This annotation project has no assigned papers for your email address. You can make annotations but they won't be saved.",
+                        });
+                    }
+                    console.log('allocation info: ', allocation);
                 }
             })
             .catch((err: any) => {
