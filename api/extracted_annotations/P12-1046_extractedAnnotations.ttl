@@ -7,78 +7,47 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-ex:c90495bb-bc3b-404f-886e-6c1788010a69 a foaf:Document ;
+ex:59788380-e441-46b2-b814-b832db0e0002 a foaf:Document ;
     dc:format "pdf" ;
-    dc:source "/skiff_files/apps/pawls/papers/P12-1046/P12-1046.pdf" ;
+    dc:source "file:///skiff_files/apps/pawls/papers/P12-1046/P12-1046.pdf" ;
     dc:title "P12-1046" ;
     kh-a:hasTopicAnnotation ex:annotation0,
         ex:annotation1,
         ex:annotation2,
-        ex:annotation3,
-        ex:annotation4,
-        ex:annotation5,
-        ex:annotation6 ;
+        ex:annotation3 ;
     kh-a:hasTotalNumberOfPages 9 .
-
-ex:51345a9c-57bb-44eb-8a2b-c8a0259f4fb8 a ep-plan:ResponsibleAgent ;
-    rdfs:comment "None" .
 
 ex:56bcb625-9f0c-40ae-85e2-89901a318357 a ep-plan:Step ;
     rdfs:comment "We propose Symbol-Reﬁned Tree Substitu- tion Grammars (SR-TSGs) for syntactic pars- ing. An SR-TSG is an extension of the con- ventional TSG model where each nonterminal symbol can be reﬁned (subcategorized) to ﬁt" ;
-    ep-plan:isPrecededBy ex:03af4648-a5d5-45e2-a49f-a0aaaab750c2 ;
-    ep-plan:isStepOfPlan ex:184afaff-0e5a-42ed-a0a2-46eb08318a50 .
-
-ex:81275371-7ae6-4951-b2f1-cd1fc2ba1c2e a ep-plan:CommunicationSpecification ;
-    rdfs:comment "None" .
+    ep-plan:isPrecededBy ex:03af4648-a5d5-45e2-a49f-a0aaaab750c2 .
 
 ex:annotation0 a kh-a:TopicAnnotation ;
-    dc:created "2023-01-10" ;
-    provo:wasAttributedTo ex:utente ;
-    kh-a:hasPage 1 ;
-    kh-a:hasSnippet "Abstract" ;
-    kh-a:hasTopic ex:184afaff-0e5a-42ed-a0a2-46eb08318a50 .
-
-ex:annotation1 a kh-a:TopicAnnotation ;
-    dc:created "2023-01-10" ;
+    dc:created "2023-01-17" ;
     provo:wasAttributedTo ex:utente ;
     kh-a:hasPage 1 ;
     kh-a:hasSnippet "We propose Symbol-Reﬁned Tree Substitu- tion Grammars (SR-TSGs) for syntactic pars- ing. An SR-TSG is an extension of the con- ventional TSG model where each nonterminal symbol can be reﬁned (subcategorized) to ﬁt" ;
     kh-a:hasTopic ex:56bcb625-9f0c-40ae-85e2-89901a318357 .
 
-ex:annotation2 a kh-a:TopicAnnotation ;
-    dc:created "2023-01-10" ;
+ex:annotation1 a kh-a:TopicAnnotation ;
+    dc:created "2023-01-17" ;
     provo:wasAttributedTo ex:utente ;
     kh-a:hasPage 1 ;
     kh-a:hasSnippet "recent years, there has been an increasing in tree substitution grammar (TSG)" ;
     kh-a:hasTopic ex:de6d0df6-4702-4052-af2d-62d852be3b1e .
 
-ex:annotation3 a kh-a:TopicAnnotation ;
-    dc:created "2023-01-10" ;
+ex:annotation2 a kh-a:TopicAnnotation ;
+    dc:created "2023-01-17" ;
     provo:wasAttributedTo ex:utente ;
     kh-a:hasPage 1 ;
     kh-a:hasSnippet "nonterminal symbols can be rewritten (substituted) arbitrarily large tree fragments. These have great advantages over tiny they can capture non-local contexts" ;
     kh-a:hasTopic ex:fab34630-d085-4645-9b8e-9dd10450c7f9 .
 
-ex:annotation4 a kh-a:TopicAnnotation ;
-    dc:created "2023-01-10" ;
+ex:annotation3 a kh-a:TopicAnnotation ;
+    dc:created "2023-01-17" ;
     provo:wasAttributedTo ex:utente ;
     kh-a:hasPage 1 ;
     kh-a:hasSnippet "automatic and consistent fashion. We present a novel probabilistic SR-TSG model based on the hierarchical Pitman-Yor Process to en- code backoff smoothing from a ﬁne-grained" ;
     kh-a:hasTopic ex:03af4648-a5d5-45e2-a49f-a0aaaab750c2 .
-
-ex:annotation5 a kh-a:TopicAnnotation ;
-    dc:created "2023-01-10" ;
-    provo:wasAttributedTo ex:utente ;
-    kh-a:hasPage 3 ;
-    kh-a:hasSnippet "None" ;
-    kh-a:hasTopic ex:81275371-7ae6-4951-b2f1-cd1fc2ba1c2e .
-
-ex:annotation6 a kh-a:TopicAnnotation ;
-    dc:created "2023-01-10" ;
-    provo:wasAttributedTo ex:utente ;
-    kh-a:hasPage 3 ;
-    kh-a:hasSnippet "None" ;
-    kh-a:hasTopic ex:51345a9c-57bb-44eb-8a2b-c8a0259f4fb8 .
 
 ex:de6d0df6-4702-4052-af2d-62d852be3b1e a ep-plan:CommunicationSpecification ;
     rdfs:comment "recent years, there has been an increasing in tree substitution grammar (TSG)" .
@@ -89,9 +58,6 @@ ex:fab34630-d085-4645-9b8e-9dd10450c7f9 a ep-plan:Step ;
 ex:03af4648-a5d5-45e2-a49f-a0aaaab750c2 a ep-plan:Step ;
     rdfs:comment "automatic and consistent fashion. We present a novel probabilistic SR-TSG model based on the hierarchical Pitman-Yor Process to en- code backoff smoothing from a ﬁne-grained" .
 
-ex:184afaff-0e5a-42ed-a0a2-46eb08318a50 a ep-plan:Plan ;
-    rdfs:comment "Abstract" .
-
-ex:utente a provo:agent ;
+ex:utente a provo:Agent ;
     foaf:name "ontopawls" .
 

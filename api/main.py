@@ -523,18 +523,18 @@ def uploadDocument(x_auth_request_email: str = Header(None), file: UploadFile = 
 
     output_dir = os.path.join(configuration.output_directory, pdf_name)
 
-    file_location = os.path.join(output_dir, f"{file.filename}")
-    
     os.umask(0)
     os.mkdir(output_dir, 0o777)
+    abspath_output_dir = os.path.abspath(output_dir)
+    file_location = os.path.join(abspath_output_dir, f"{file.filename}")
 
     with open(file_location, "wb+") as buffer:
         shutil.copyfileobj(file.file, buffer)
     
     npages = preprocess("pdfplumber", file_location)
 
+    
     assign(configuration.output_directory, user, pdf_name, npages, file_location)
-
     return "ok"
 
 @app.delete("/api/ontology/{filename}") 
@@ -581,6 +581,7 @@ def export_annotations(sha: str, x_auth_request_email: str = Header(None)):
 
     total_pages = pdfs_satus[sha]["totalPages"]
     path_document = pdfs_satus[sha]["path"]
+    abspath_document = os.path.abspath(path_document)
 
     if not exists:
         raise HTTPException(status_code=404, detail=f"pdf {sha} not found.")
@@ -596,7 +597,7 @@ def export_annotations(sha: str, x_auth_request_email: str = Header(None)):
         abspath_annotations,
         abspath_export,
         sha,
-        path_document,
+        abspath_document,
         total_pages
     )
     filename_export_result = abspath_export_result.split("/")[-1]

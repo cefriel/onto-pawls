@@ -120,6 +120,30 @@ export const RelationModal = ({
             <h5>Choose a Relation</h5>
             <DropdownOntoProperties ontoProperties={propertiesCompatible}></DropdownOntoProperties>
             <br />
+            {label && label !== undefined ? (
+                <div>
+                    <>
+                        <b>Domain of property:</b>
+                        <ul>
+                            {label.domain.length > 0
+                                ? label.domain.map((d) => {
+                                      return <li>{d.split('/').pop()}</li>;
+                                  })
+                                : 'No data'}
+                        </ul>
+                    </>
+                    <>
+                        <b>Range of property:</b>
+                        <ul>
+                            {label.range.length > 0
+                                ? label.range.map((r) => {
+                                      return <li>{r.split('/').pop()}</li>;
+                                  })
+                                : 'No data'}
+                        </ul>
+                    </>
+                </div>
+            ) : null}
             <Form.Group>
                 <Form.Check type={'checkbox'}>
                     <Form.Check.Input

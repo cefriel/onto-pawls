@@ -61,7 +61,7 @@ def export_annotations(
     user = ex["utente"]
 
     # metadata about the user 
-    g.add((user, RDF.type, PROV.agent))
+    g.add((user, RDF.type, PROV.Agent))
     g.add((user, FOAF.name, Literal(default_user)))
 
     # metadata about document pdf
@@ -93,10 +93,12 @@ def analyze_document(title: str, documentPath: str, npages: int, g: Graph):
     id_document=str(uuid.uuid4())
     subject_document = URIRef(ex[id_document])
     
+    docPath = str("file://"+documentPath)
+
     g.add((subject_document, RDF.type, FOAF.Document))
     g.add((subject_document, dc["title"], Literal(title)))
     g.add((subject_document, dc["format"], Literal(format_document)))
-    g.add((subject_document, dc["source"], Literal(documentPath)))
+    g.add((subject_document, dc["source"], Literal(docPath)))
     g.add((subject_document, kh_a["hasTotalNumberOfPages"], Literal(npages)))
 
     return subject_document
@@ -170,20 +172,21 @@ def analyze_annotation(object: Any, g: Graph):
     g.add((s, RDFS.comment, comment))
 
 def analyze_relation(object: Any, g: Graph):
-    source_annotation_id = object['sourceIds'][0]
-    target_annotation_id = object['targetIds'][0]
+    if len(object['sourceIds']) > 0 and len(object['targetIds']) > 0:
+        source_annotation_id = object['sourceIds'][0]
+        target_annotation_id = object['targetIds'][0]
 
-    source_annotation = get_annotation_by_id(source_annotation_id)
-    target_annotation = get_annotation_by_id(target_annotation_id)
-    
-    if source_annotation is not None and target_annotation is not None:
-        predicate_uriref, nameProperty= getUrirefUserOntology(object['ontoProperty']['iri'], g)
-
-        s = URIRef(ex[source_annotation_id])
-        p = predicate_uriref[nameProperty]
-        o = URIRef(ex[target_annotation_id])
+        source_annotation = get_annotation_by_id(source_annotation_id)
+        target_annotation = get_annotation_by_id(target_annotation_id)
         
-        g.add((s, p, o))
+        if source_annotation is not None and target_annotation is not None:
+            predicate_uriref, nameProperty= getUrirefUserOntology(object['ontoProperty']['iri'], g)
+
+            s = URIRef(ex[source_annotation_id])
+            p = predicate_uriref[nameProperty]
+            o = URIRef(ex[target_annotation_id])
+            
+            g.add((s, p, o))
 
 
 
