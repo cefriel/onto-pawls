@@ -1,12 +1,11 @@
-<div align="center">
-    ONTO-PAWLS
-</div>
+# ONTO-PAWLS
 
-------------------------------------------------
-  ONTO-PAWLS is a web application that let you annotate documents in the format of PDF.
-  The annotation are created using also any ontology you provide in N-triples, RDF/XML or OWL/XML.
+⚠️ ONTO-PAWLS is NO LONGER BEING DEVELOPED and MAINTAINED
+
+ONTO-PAWLS is a web application that let you annotate documents in the format of PDF.
+The annotation are created using also any ontology you provide in N-triples, RDF/XML or OWL/XML.
   
-  Current functionalities: 
+Current functionalities: 
 - Import one or more pdf documents
 - Import one or more ontologies
 - Annotate entities and relations
